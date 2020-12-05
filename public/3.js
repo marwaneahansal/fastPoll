@@ -1,4 +1,39 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[1],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[3],{
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ColorSwatch.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ColorSwatch.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_swatches__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-swatches */ "./node_modules/vue-swatches/dist/vue-swatches.umd.min.js");
+/* harmony import */ var vue_swatches__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_swatches__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_swatches_dist_vue_swatches_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-swatches/dist/vue-swatches.css */ "./node_modules/vue-swatches/dist/vue-swatches.css");
+/* harmony import */ var vue_swatches_dist_vue_swatches_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_swatches_dist_vue_swatches_css__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+ // Import the styles too, typically in App.vue or main.js
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    VSwatches: vue_swatches__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  data: function data() {
+    return {
+      color: '#1CA085'
+    };
+  }
+});
+
+/***/ }),
 
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/NewPoll.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************!*\
@@ -9,10 +44,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
+/* harmony import */ var _components_ColorSwatch_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ColorSwatch.vue */ "./resources/js/components/ColorSwatch.vue");
 //
 //
 //
@@ -36,31 +68,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ColorSwatch: _components_ColorSwatch_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       pollQuestion: '',
+      optionsCount: 4,
       pollOptions: [{
-        option: ''
+        pollOption: ''
       }, {
-        option: ''
+        pollOption: ''
       }, {
-        option: ''
+        pollOption: ''
       }, {
-        option: ''
+        pollOption: ''
       }]
     };
-  },
-  methods: {
-    createPoll: function createPoll() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/polls', {
-        pollQuestion: this.pollQuestion,
-        pollOptions: this.pollOptions
-      }).then(function (res) {
-        return console.log(res);
-      })["catch"](function (err) {
-        return console.log(err);
-      });
-    }
   }
 });
 
@@ -115,6 +139,44 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ColorSwatch.vue?vue&type=template&id=004c0638&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ColorSwatch.vue?vue&type=template&id=004c0638& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("v-swatches", {
+        model: {
+          value: _vm.color,
+          callback: function($$v) {
+            _vm.color = $$v
+          },
+          expression: "color"
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/NewPoll.vue?vue&type=template&id=f272bba0&":
 /*!*****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/NewPoll.vue?vue&type=template&id=f272bba0& ***!
@@ -130,7 +192,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "mt-12 w-1/2 mx-auto" }, [
+  return _c("div", { staticClass: "mt-12" }, [
     _c("p", { staticClass: "text-3xl font-semibold" }, [
       _vm._v("Create a poll")
     ]),
@@ -139,13 +201,13 @@ var render = function() {
       _vm._v("Complete the below fileds to create your poll")
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "poll w-full mt-8 mb-12" }, [
+    _c("div", { staticClass: "poll w-1/2 mt-8 mb-6" }, [
       _c(
         "div",
         { staticClass: "pollQuestion w-full" },
         [
           _c("vs-input", {
-            staticClass: "w-full mb-3",
+            staticClass: "w-full",
             attrs: {
               shadow: "",
               primary: "",
@@ -170,8 +232,10 @@ var render = function() {
           _vm._l(_vm.pollOptions, function(pollOption, index) {
             return _c(
               "div",
-              { key: index, staticClass: "mb-3 relative" },
+              { key: index, staticClass: "mb-6 relative" },
               [
+                _c("color-swatch", { staticClass: "colorSwatch absolute" }),
+                _vm._v(" "),
                 _c("vs-input", {
                   staticClass: "py-2",
                   attrs: {
@@ -193,33 +257,15 @@ var render = function() {
           }),
           _vm._v(" "),
           _c(
-            "div",
-            { staticClass: "flex" },
-            [
-              _c(
-                "vs-button",
-                {
-                  attrs: { disabled: _vm.pollOptions.length === 8 },
-                  on: {
-                    click: function($event) {
-                      return _vm.pollOptions.push({ option: "" })
-                    }
-                  }
-                },
-                [_vm._v("Add another Option")]
-              ),
-              _vm._v(" "),
-              _c(
-                "vs-button",
-                {
-                  staticClass: "ml-4 text-black",
-                  attrs: { color: "success" },
-                  on: { click: _vm.createPoll }
-                },
-                [_vm._v("Create your poll")]
-              )
-            ],
-            1
+            "vs-button",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.pollOptions.push({ pollOption: "" })
+                }
+              }
+            },
+            [_vm._v("Add Option")]
           )
         ],
         2
@@ -229,6 +275,75 @@ var render = function() {
 }
 var staticRenderFns = []
 render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/ColorSwatch.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/ColorSwatch.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ColorSwatch_vue_vue_type_template_id_004c0638___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ColorSwatch.vue?vue&type=template&id=004c0638& */ "./resources/js/components/ColorSwatch.vue?vue&type=template&id=004c0638&");
+/* harmony import */ var _ColorSwatch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ColorSwatch.vue?vue&type=script&lang=js& */ "./resources/js/components/ColorSwatch.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ColorSwatch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ColorSwatch_vue_vue_type_template_id_004c0638___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ColorSwatch_vue_vue_type_template_id_004c0638___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ColorSwatch.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ColorSwatch.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/ColorSwatch.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorSwatch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ColorSwatch.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ColorSwatch.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorSwatch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ColorSwatch.vue?vue&type=template&id=004c0638&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/ColorSwatch.vue?vue&type=template&id=004c0638& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorSwatch_vue_vue_type_template_id_004c0638___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ColorSwatch.vue?vue&type=template&id=004c0638& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ColorSwatch.vue?vue&type=template&id=004c0638&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorSwatch_vue_vue_type_template_id_004c0638___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorSwatch_vue_vue_type_template_id_004c0638___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

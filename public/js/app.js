@@ -20298,7 +20298,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "bg-gray-200 min-h-screen", attrs: { id: "app" } },
+    { staticClass: "bg-gray-200 min-h-screen h-full", attrs: { id: "app" } },
     [_c("router-view")],
     1
   )
@@ -52350,8 +52350,18 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
  // vuesax scss
 
+ // import Vuelidate from 'vuelidate';
+// Vue.use(Vuelidate);
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuesax__WEBPACK_IMPORTED_MODULE_1___default.a); // Vue.component('home-component', require('./views/app.vue').default);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuesax__WEBPACK_IMPORTED_MODULE_1___default.a, {
+  colors: {
+    primary: '#5b3cc4',
+    success: 'rgb(23, 201, 100)',
+    danger: 'rgb(242, 19, 93)',
+    warning: 'rgb(255, 130, 0)',
+    dark: 'rgb(36, 33, 69)'
+  }
+}); // Vue.component('home-component', require('./views/app.vue').default);
 
 
 
@@ -52425,13 +52435,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/home',
       name: 'home',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./views/landing-hero.vue */ "./resources/js/views/landing-hero.vue"));
+        return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./views/landing-hero.vue */ "./resources/js/views/landing-hero.vue"));
       }
     }, {
       path: '/createpoll',
       name: 'create_poll',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./views/NewPoll.vue */ "./resources/js/views/NewPoll.vue"));
+        return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./views/NewPoll.vue */ "./resources/js/views/NewPoll.vue"));
       }
     }]
   }]
