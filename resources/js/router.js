@@ -23,6 +23,11 @@ const router = new Router({
                     path: '/createpoll',
                     name: 'create_poll',
                     component: () => import('./views/NewPoll.vue')
+                },
+                {
+                    path: '/poll/:uri',
+                    name: 'poll',
+                    component: () => import('./views/poll.vue')
                 }
             ]
         }

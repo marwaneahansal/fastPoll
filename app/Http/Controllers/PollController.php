@@ -19,6 +19,12 @@ class PollController extends Controller
         return('Comming Soon');
     }
 
+    public function getPoll($uri) {
+        $poll = DB::table('polls')->where('uri','=', $uri)->first();
+        if($poll == null) return ['error' => 'Poll not found, Please check the url again!'];
+        return ['poll' => $poll];
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -37,12 +43,11 @@ class PollController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
-        // $validateRequest = $request->validate([
-        //     'pollQuestion' => 'required',
-        //     'pollOptions.option1' => 'required',
-        //     'pollOptions.option2' => 'required',
-        // ]);
+        $validateRequest = $request->validate([
+            'pollQuestion' => 'required',
+            'option1' => 'required',
+            'option2' => 'required',
+        ]);
 
         $uri = Str::Random(10);
         $searchUri = DB::table('polls')->where('uri', $uri)->first();
@@ -51,28 +56,16 @@ class PollController extends Controller
             $searchUri = DB::table('polls')->where('uri', $uri)->first();
         }
 
-        $input = $request->all();
-        $pollQuestion = $input['pollQuestion'];
-        $option1 = $input['pollOptions'][0][0];
-        $option2 = $input['pollOptions'][1][1];
-        $option3 = !$input['pollOptions'][2][2] ? 'null' : $input['pollOptions'][2][2];
-        // $option4 = $input['pollOptions'][3][3] || null;
-        // $option5 = $input['pollOptions'][4][4] || null;
-        // $option6 = $input['pollOptions'][5][5] || null;
-        // $option7 = $input['pollOptions'][6][6] || null;
-        // $option8 = $input['pollOptions'][7][7] || null;
-        return [
-            'option1' => $option1,
-            'option2' => $option2,
-            'option3' => $option3,
-            // 'option4' => $option4,
-            // 'option5' => $option5,
-            // 'option6' => $option6,
-            // 'option7' => $option7,
-            // 'option8' => $option8,
-            'input' => $input,
-        ];
-
+        $pollQuestion = $request->input('pollQuestion');
+        $option1 = $request->input('option1');
+        $option2 = $request->input('option2');
+        $option3 = $request->input('option3');
+        $option4 = $request->input('option4');
+        $option5 = $request->input('option5');
+        $option6 = $request->input('option6');
+        $option7 = $request->input('option7');
+        $option8 = $request->input('option8');
+        
         DB::table('polls')->insert([
             'uri' => $uri,
             'poll_question' => $pollQuestion,
@@ -84,12 +77,23 @@ class PollController extends Controller
             'option_6' => $option6,
             'option_7' => $option7,
             'option_8' => $option8,
+            'created_at' => now()
         ]);
 
        
         return [
             'uri' => $uri,
-            'poll' => $validateRequest
+            'poll' => [
+                'poll_question' => $pollQuestion,
+                'option_1' => $option1,
+                'option_2' => $option2,
+                'option_3' => $option3,
+                'option_4' => $option4,
+                'option_5' => $option5,
+                'option_6' => $option6,
+                'option_7' => $option7,
+                'option_8' => $option8,
+            ]
         ];
     }
 
@@ -101,7 +105,7 @@ class PollController extends Controller
      */
     public function show(Poll $poll)
     {
-        //
+
     }
 
     /**

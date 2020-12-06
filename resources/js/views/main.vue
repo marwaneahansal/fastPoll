@@ -1,13 +1,15 @@
 <template>
 <div class="container mx-auto">
-  <div class="py-4 flex items-center justify-between">
-      <h3 class="text-3xl">Fast<span class="text-blue-500">Poll</span></h3>
-      <div>
-        <a href="#" class="text-xl mr-4">Public Polls</a>
-        <a href="#" class="text-blue-500 text-xl">Create poll</a>
-      </div>
-  </div>
-  <router-view></router-view>
+  <vs-navbar center-collapsed>
+        <template #left>
+          <h2 class="text-2xl font-semibold cursor-pointer" @click="$router.push('/')">FastPoll</h2>
+        </template>
+        <template #right>
+          <vs-button flat transparent>Public Polls</vs-button>
+          <vs-button @click="$router.push({name: 'create_poll'})">Create poll</vs-button>
+        </template>
+      </vs-navbar>
+  <router-view class="mt-16"></router-view>
 </div>
 </template>
 

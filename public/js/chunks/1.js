@@ -34,22 +34,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      pollQuestion: null,
+      pollQuestion: '',
       pollOptions: [{
-        option: null
+        option: ''
       }, {
-        option: null
+        option: ''
       }, {
-        option: null
+        option: ''
       }, {
-        option: null
+        option: ''
       }],
       isPollCreated: false,
-      pollUrl: null
+      pollUrl: '',
+      pollUri: ''
     };
   },
   methods: {
@@ -60,25 +84,29 @@ __webpack_require__.r(__webpack_exports__);
         pollQuestion: this.pollQuestion,
         option1: this.pollOptions[0].option,
         option2: this.pollOptions[1].option,
-        option3: this.pollOptions[2].option,
-        option4: this.pollOptions[3].option,
-        option5: this.pollOptions[4].option,
-        option6: this.pollOptions[5].option,
-        option7: this.pollOptions[6].option,
-        option8: this.pollOptions[7].option
+        option3: this.pollOptions[2] ? this.pollOptions[2].option : null,
+        option4: this.pollOptions[3] ? this.pollOptions[3].option : null,
+        option5: this.pollOptions[4] ? this.pollOptions[4].option : null,
+        option6: this.pollOptions[5] ? this.pollOptions[5].option : null,
+        option7: this.pollOptions[6] ? this.pollOptions[6].option : null,
+        option8: this.pollOptions[7] ? this.pollOptions[7].option : null
       }).then(function (res) {
-        _this.pollUrl = "localhost:3000/poll/".concat(res.data.data.uri);
+        _this.pollUri = res.data.uri;
+        _this.pollUrl = "localhost:3000/poll/".concat(_this.pollUri);
         _this.isPollCreated = true;
       })["catch"](function (err) {
         return console.log(err);
       });
+    },
+    checkPoll: function checkPoll() {
+      this.isPollCreated = false;
+      this.$router.push({
+        name: 'poll',
+        params: {
+          uri: this.pollUri
+        }
+      });
     }
-  },
-  created: function created() {
-    this.$vs.notification({
-      title: 'Documentation Vuesax 4.0+',
-      text: "These documents refer to the latest version of vuesax (4.0+),\n            to see the documents of the previous versions you can do it here \uD83D\uDC49 Vuesax3.x"
-    });
   }
 });
 
@@ -96,7 +124,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".poll .vs-con-input-label {\n  width: 100% !important;\n}\n.colorSwatch {\n  z-index: 1000;\n}\n", ""]);
+exports.push([module.i, ".vs-input-content {\n  background-color: white !important;\n}\n.vs-input {\n  width: 100%;\n}\r\n", ""]);
 
 // exports
 
@@ -193,6 +221,7 @@ var render = function() {
                 _c("vs-input", {
                   staticClass: "py-2",
                   attrs: {
+                    color: "success",
                     shadow: "",
                     primary: "",
                     "label-placeholder": "Option " + (index + 1)
@@ -217,7 +246,10 @@ var render = function() {
               _c(
                 "vs-button",
                 {
-                  attrs: { disabled: _vm.pollOptions.length === 8 },
+                  attrs: {
+                    size: "large",
+                    disabled: _vm.pollOptions.length === 8
+                  },
                   on: {
                     click: function($event) {
                       return _vm.pollOptions.push({ option: "" })
@@ -230,11 +262,101 @@ var render = function() {
               _c(
                 "vs-button",
                 {
-                  staticClass: "ml-4 text-black",
-                  attrs: { color: "success" },
+                  staticClass: "ml-4",
+                  attrs: { size: "large", success: "", flat: "", shadow: "" },
                   on: { click: _vm.createPoll }
                 },
                 [_vm._v("Create your poll")]
+              ),
+              _vm._v(" "),
+              _c(
+                "vs-dialog",
+                {
+                  attrs: { width: "300px", "not-center": "" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "header",
+                      fn: function() {
+                        return [
+                          _c("h4", { staticClass: "not-margin" }, [
+                            _vm._v(
+                              "\n                        Your poll created successfully\n                    "
+                            )
+                          ])
+                        ]
+                      },
+                      proxy: true
+                    },
+                    {
+                      key: "footer",
+                      fn: function() {
+                        return [
+                          _c(
+                            "div",
+                            { staticClass: "con-footer" },
+                            [
+                              _c(
+                                "vs-button",
+                                { on: { click: _vm.checkPoll } },
+                                [
+                                  _vm._v(
+                                    "\n                        Check poll\n                        "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "vs-button",
+                                {
+                                  attrs: { dark: "", transparent: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.isPollCreated = false
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                        Cancel\n                        "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ]
+                      },
+                      proxy: true
+                    }
+                  ]),
+                  model: {
+                    value: _vm.isPollCreated,
+                    callback: function($$v) {
+                      _vm.isPollCreated = $$v
+                    },
+                    expression: "isPollCreated"
+                  }
+                },
+                [
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "con-content" },
+                    [
+                      _c("vs-input", {
+                        attrs: { placeholder: "Poll Url" },
+                        model: {
+                          value: _vm.pollUrl,
+                          callback: function($$v) {
+                            _vm.pollUrl = $$v
+                          },
+                          expression: "pollUrl"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ]
               )
             ],
             1

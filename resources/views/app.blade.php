@@ -8,12 +8,13 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/vuesax.css') }}">
 </head>
-<body class="bg-gray-200 min-h-screen h-full">
+<body class="bg-gray-100  h-full">
     <div id="app">
     </div>
 
 
-    <script src="{{ asset(mix('js/app.js')) }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

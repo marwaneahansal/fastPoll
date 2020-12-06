@@ -18,3 +18,10 @@ mix.js('resources/js/app.js', 'public/js')
     .copy('node_modules/vuesax/dist/vuesax.css', 'public/css/vuesax.css')
     .copyDirectory('resources/assets/', 'public/assets/')
     .browserSync('localhost:8000');
+
+
+mix.webpackConfig({
+    output: {
+        chunkFilename: 'js/chunks/[name].js',
+    }
+});
