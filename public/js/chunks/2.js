@@ -65,13 +65,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       poll: null,
       error: false,
-      option: null
+      option: null,
+      showPoll: true
     };
   },
   methods: {
@@ -227,232 +241,298 @@ var render = function() {
       _vm.poll
         ? _c("div", { staticClass: "mx-auto w-1/2" }, [
             _c("div", { staticClass: "vs-card py-4 px-6" }, [
-              _c("div", [
-                _c("h3", { staticClass: "text-2xl font-semibold" }, [
-                  _vm._v(_vm._s(_vm.poll.poll_question) + "?")
-                ])
+              _c("h2", { staticClass: "text-2xl font-semibold" }, [
+                _vm._v(_vm._s(_vm.poll.poll_question) + "?")
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "mt-5" },
-                [
-                  _vm.poll.option_1
-                    ? _c(
-                        "vs-radio",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { val: "1" },
-                          model: {
-                            value: _vm.option,
-                            callback: function($$v) {
-                              _vm.option = $$v
+              _vm.showPoll
+                ? _c("div", [
+                    _c(
+                      "div",
+                      { staticClass: "mt-5" },
+                      [
+                        _vm.poll.option_1
+                          ? _c(
+                              "vs-radio",
+                              {
+                                staticClass: "mt-2",
+                                attrs: { val: "1" },
+                                model: {
+                                  value: _vm.option,
+                                  callback: function($$v) {
+                                    _vm.option = $$v
+                                  },
+                                  expression: "option"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.poll.option_1) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.poll.option_2
+                          ? _c(
+                              "vs-radio",
+                              {
+                                staticClass: "mt-2",
+                                attrs: { val: "2" },
+                                model: {
+                                  value: _vm.option,
+                                  callback: function($$v) {
+                                    _vm.option = $$v
+                                  },
+                                  expression: "option"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.poll.option_2) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.poll.option_3
+                          ? _c(
+                              "vs-radio",
+                              {
+                                staticClass: "mt-2",
+                                attrs: { val: "3" },
+                                model: {
+                                  value: _vm.option,
+                                  callback: function($$v) {
+                                    _vm.option = $$v
+                                  },
+                                  expression: "option"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.poll.option_3) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.poll.option_4
+                          ? _c(
+                              "vs-radio",
+                              {
+                                staticClass: "mt-2",
+                                attrs: { val: "4" },
+                                model: {
+                                  value: _vm.option,
+                                  callback: function($$v) {
+                                    _vm.option = $$v
+                                  },
+                                  expression: "option"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.poll.option_4) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.poll.option_5
+                          ? _c(
+                              "vs-radio",
+                              {
+                                staticClass: "mt-2",
+                                attrs: { val: "5" },
+                                model: {
+                                  value: _vm.option,
+                                  callback: function($$v) {
+                                    _vm.option = $$v
+                                  },
+                                  expression: "option"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.poll.option_5) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.poll.option_6
+                          ? _c(
+                              "vs-radio",
+                              {
+                                staticClass: "mt-2",
+                                attrs: { val: "6" },
+                                model: {
+                                  value: _vm.option,
+                                  callback: function($$v) {
+                                    _vm.option = $$v
+                                  },
+                                  expression: "option"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.poll.option_6) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.poll.option_7
+                          ? _c(
+                              "vs-radio",
+                              {
+                                staticClass: "mt-2",
+                                attrs: { val: "7" },
+                                model: {
+                                  value: _vm.option,
+                                  callback: function($$v) {
+                                    _vm.option = $$v
+                                  },
+                                  expression: "option"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.poll.option_7) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.poll.option_8
+                          ? _c(
+                              "vs-radio",
+                              {
+                                staticClass: "mt-2",
+                                attrs: { val: "8" },
+                                model: {
+                                  value: _vm.option,
+                                  callback: function($$v) {
+                                    _vm.option = $$v
+                                  },
+                                  expression: "option"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(_vm.poll.option_8) +
+                                    "\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex items-center justify-between mt-6" },
+                      [
+                        _c(
+                          "vs-button",
+                          {
+                            attrs: {
+                              primary: "",
+                              icon: "",
+                              disabled: !_vm.option
                             },
-                            expression: "option"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.poll.option_1) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.poll.option_2
-                    ? _c(
-                        "vs-radio",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { val: "2" },
-                          model: {
-                            value: _vm.option,
-                            callback: function($$v) {
-                              _vm.option = $$v
-                            },
-                            expression: "option"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.poll.option_2) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.poll.option_3
-                    ? _c(
-                        "vs-radio",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { val: "3" },
-                          model: {
-                            value: _vm.option,
-                            callback: function($$v) {
-                              _vm.option = $$v
-                            },
-                            expression: "option"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.poll.option_3) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.poll.option_4
-                    ? _c(
-                        "vs-radio",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { val: "4" },
-                          model: {
-                            value: _vm.option,
-                            callback: function($$v) {
-                              _vm.option = $$v
-                            },
-                            expression: "option"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.poll.option_4) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.poll.option_5
-                    ? _c(
-                        "vs-radio",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { val: "5" },
-                          model: {
-                            value: _vm.option,
-                            callback: function($$v) {
-                              _vm.option = $$v
-                            },
-                            expression: "option"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.poll.option_5) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.poll.option_6
-                    ? _c(
-                        "vs-radio",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { val: "6" },
-                          model: {
-                            value: _vm.option,
-                            callback: function($$v) {
-                              _vm.option = $$v
-                            },
-                            expression: "option"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.poll.option_6) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.poll.option_7
-                    ? _c(
-                        "vs-radio",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { val: "7" },
-                          model: {
-                            value: _vm.option,
-                            callback: function($$v) {
-                              _vm.option = $$v
-                            },
-                            expression: "option"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.poll.option_7) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.poll.option_8
-                    ? _c(
-                        "vs-radio",
-                        {
-                          staticClass: "mt-2",
-                          attrs: { val: "8" },
-                          model: {
-                            value: _vm.option,
-                            callback: function($$v) {
-                              _vm.option = $$v
-                            },
-                            expression: "option"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.poll.option_8) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e()
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "flex items-center justify-between mt-6" },
-                [
-                  _c(
-                    "vs-button",
-                    {
-                      attrs: { primary: "", icon: "", disabled: !_vm.option },
-                      on: { click: _vm.submitPoll }
-                    },
-                    [_vm._v("\n                    Submit\n                ")]
-                  ),
-                  _vm._v(" "),
-                  _c("vs-button", { attrs: { shadow: "", primary: "" } }, [
-                    _vm._v(
-                      "\n                    Jump to result\n                "
+                            on: { click: _vm.submitPoll }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        Submit\n                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "vs-button",
+                          {
+                            attrs: { shadow: "", primary: "" },
+                            on: {
+                              click: function($event) {
+                                _vm.showPoll = false
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        Jump to result\n                    "
+                            )
+                          ]
+                        )
+                      ],
+                      1
                     )
                   ])
-                ],
-                1
-              ),
+                : _c("div", [
+                    _c("div", { staticClass: "mt-5" }, [
+                      _c(
+                        "div",
+                        { staticClass: "vs-card py-4 px-6" },
+                        [
+                          _c(
+                            "h3",
+                            { staticClass: "text-xl mb-4 font-semibold" },
+                            [_vm._v("Cool")]
+                          ),
+                          _vm._v(" "),
+                          _c("k-progress", { attrs: { percent: "40" } }),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "mt-4 text-sm text-black" }, [
+                            _vm._v("31 Votes")
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "flex justify-end mt-6" },
+                        [
+                          _c(
+                            "vs-button",
+                            {
+                              attrs: { shadow: "", primary: "" },
+                              on: {
+                                click: function($event) {
+                                  _vm.showPoll = true
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Back to vote\n                        "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  ]),
               _vm._v(" "),
               _c(
                 "p",

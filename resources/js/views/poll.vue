@@ -8,43 +8,56 @@
         </vs-alert>
         <div class="mx-auto w-1/2" v-if="poll">
             <div class="vs-card py-4 px-6">
-                <div>
-                    <h3 class="text-2xl font-semibold">{{ poll.poll_question }}?</h3>
-                    
+                <h2 class="text-2xl font-semibold">{{ poll.poll_question }}?</h2>
+                <div v-if="showPoll">
+                    <div class="mt-5">
+                        <vs-radio class="mt-2" v-model="option" val="1" v-if="poll.option_1">
+                            {{ poll.option_1 }}
+                        </vs-radio>
+                        <vs-radio class="mt-2" v-model="option" val="2" v-if="poll.option_2">
+                            {{ poll.option_2 }}
+                        </vs-radio>
+                        <vs-radio class="mt-2" v-model="option" val="3" v-if="poll.option_3">
+                            {{ poll.option_3 }}
+                        </vs-radio>
+                        <vs-radio class="mt-2" v-model="option" val="4" v-if="poll.option_4">
+                            {{ poll.option_4 }}
+                        </vs-radio>
+                        <vs-radio class="mt-2" v-model="option" val="5" v-if="poll.option_5">
+                            {{ poll.option_5 }}
+                        </vs-radio>
+                        <vs-radio class="mt-2" v-model="option" val="6" v-if="poll.option_6">
+                            {{ poll.option_6 }}
+                        </vs-radio>
+                        <vs-radio class="mt-2" v-model="option" val="7" v-if="poll.option_7">
+                            {{ poll.option_7 }}
+                        </vs-radio>
+                        <vs-radio class="mt-2" v-model="option" val="8" v-if="poll.option_8">
+                            {{ poll.option_8 }}
+                        </vs-radio>
+                    </div>
+                    <div class="flex items-center justify-between mt-6">
+                        <vs-button primary icon :disabled="!option" @click="submitPoll">
+                            Submit
+                        </vs-button>
+                        <vs-button shadow primary @click="showPoll = false">
+                            Jump to result
+                        </vs-button>
+                    </div>
                 </div>
-                <div class="mt-5">
-                    <vs-radio class="mt-2" v-model="option" val="1" v-if="poll.option_1">
-                        {{ poll.option_1 }}
-                    </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" val="2" v-if="poll.option_2">
-                        {{ poll.option_2 }}
-                    </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" val="3" v-if="poll.option_3">
-                        {{ poll.option_3 }}
-                    </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" val="4" v-if="poll.option_4">
-                        {{ poll.option_4 }}
-                    </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" val="5" v-if="poll.option_5">
-                        {{ poll.option_5 }}
-                    </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" val="6" v-if="poll.option_6">
-                        {{ poll.option_6 }}
-                    </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" val="7" v-if="poll.option_7">
-                        {{ poll.option_7 }}
-                    </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" val="8" v-if="poll.option_8">
-                        {{ poll.option_8 }}
-                    </vs-radio>
-                </div>
-                <div class="flex items-center justify-between mt-6">
-                    <vs-button primary icon :disabled="!option" @click="submitPoll">
-                        Submit
-                    </vs-button>
-                    <vs-button shadow primary>
-                        Jump to result
-                    </vs-button>
+                <div v-else>
+                    <div class="mt-5">
+                        <div class="vs-card py-4 px-6">
+                            <h3 class="text-xl mb-4 font-semibold">Cool</h3>
+                            <k-progress percent="40" />
+                            <p class="mt-4 text-sm text-black">31 Votes</p>
+                        </div>
+                        <div class="flex justify-end mt-6">
+                            <vs-button shadow primary @click="showPoll = true">
+                                Back to vote
+                            </vs-button>
+                        </div>
+                    </div>
                 </div>
                 <p class="text-sm mt-4 text-gray-900 text-opacity-50">asked by {{ poll.created_by }}</p>
             </div>
@@ -59,7 +72,8 @@ export default {
         return {
             poll: null,
             error: false,
-            option: null
+            option: null,
+            showPoll: true,
         }
     },
     methods: {

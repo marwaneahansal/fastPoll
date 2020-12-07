@@ -12,6 +12,9 @@ Vue.use(VeeValidate)
 
 Vue.use(Vuesax);
 
+import KProgress from 'k-progress';
+Vue.component('k-progress', KProgress);
+
 
 // Vue.component('home-component', require('./views/app.vue').default);
 import App from './views/App.vue';
