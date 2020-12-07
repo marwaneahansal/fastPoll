@@ -73249,7 +73249,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     path: '/',
     redirect: 'home',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./views/main.vue */ "./resources/js/views/main.vue"));
+      return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/main.vue */ "./resources/js/views/main.vue"));
     },
     children: [{
       path: '/home',
@@ -73267,7 +73267,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/poll/:uri',
       name: 'poll',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/poll.vue */ "./resources/js/views/poll.vue"));
+        return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./views/poll.vue */ "./resources/js/views/poll.vue"));
       }
     }]
   }]

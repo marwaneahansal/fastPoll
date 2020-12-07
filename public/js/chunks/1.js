@@ -293,7 +293,10 @@ var render = function() {
                         return [
                           _c(
                             "div",
-                            { staticClass: "con-footer" },
+                            {
+                              staticClass:
+                                "con-footer flex items-center justify-between"
+                            },
                             [
                               _c(
                                 "vs-button",

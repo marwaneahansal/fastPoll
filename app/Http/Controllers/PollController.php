@@ -128,7 +128,15 @@ class PollController extends Controller
      */
     public function update(Request $request, Poll $poll)
     {
-        //
+        $option = $request->input('option');
+        $optionRow = 'option_' . $option . '_votes';
+        $option_votes = $poll[$optionRow];
+        $total_votes = $poll->total_votes;
+        $updatedPoll = DB::table('polls')->where('id', $poll->id)->update([$optionRow => ($option_votes + 1), 'total_votes' => ($total_votes + 1)]);
+
+        if($updatedPoll === 1) return ['message' => 'Thank you for your vote'];
+        return [ 'error' => 'Erro happend'];
+        
     }
 
     /**

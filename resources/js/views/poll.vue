@@ -13,40 +13,40 @@
                     
                 </div>
                 <div class="mt-5">
-                    <vs-radio class="mt-2" v-model="option" :val="poll.option_1" v-if="poll.option_1">
+                    <vs-radio class="mt-2" v-model="option" val="1" v-if="poll.option_1">
                         {{ poll.option_1 }}
                     </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" :val="poll.option_2" v-if="poll.option_2">
+                    <vs-radio class="mt-2" v-model="option" val="2" v-if="poll.option_2">
                         {{ poll.option_2 }}
                     </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" :val="poll.option_3" v-if="poll.option_3">
+                    <vs-radio class="mt-2" v-model="option" val="3" v-if="poll.option_3">
                         {{ poll.option_3 }}
                     </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" :val="poll.option_4" v-if="poll.option_4">
+                    <vs-radio class="mt-2" v-model="option" val="4" v-if="poll.option_4">
                         {{ poll.option_4 }}
                     </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" :val="poll.option_5" v-if="poll.option_5">
+                    <vs-radio class="mt-2" v-model="option" val="5" v-if="poll.option_5">
                         {{ poll.option_5 }}
                     </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" :val="poll.option_6" v-if="poll.option_6">
+                    <vs-radio class="mt-2" v-model="option" val="6" v-if="poll.option_6">
                         {{ poll.option_6 }}
                     </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" :val="poll.option_7" v-if="poll.option_7">
+                    <vs-radio class="mt-2" v-model="option" val="7" v-if="poll.option_7">
                         {{ poll.option_7 }}
                     </vs-radio>
-                    <vs-radio class="mt-2" v-model="option" :val="poll.option_8" v-if="poll.option_8">
+                    <vs-radio class="mt-2" v-model="option" val="8" v-if="poll.option_8">
                         {{ poll.option_8 }}
                     </vs-radio>
                 </div>
                 <div class="flex items-center justify-between mt-6">
-                    <vs-button primary icon>
+                    <vs-button primary icon :disabled="!option" @click="submitPoll">
                         Submit
                     </vs-button>
                     <vs-button shadow primary>
                         Jump to result
                     </vs-button>
                 </div>
-                <p class="text-small text-gray-900 text-opacity-50">asked by {{ poll.created_by }}</p>
+                <p class="text-sm mt-4 text-gray-900 text-opacity-50">asked by {{ poll.created_by }}</p>
             </div>
         </div>
     </div>
@@ -66,7 +66,6 @@ export default {
         fetchPollDetails() {
             axios.get(`/api/poll/${this.$route.params.uri}`)
             .then(res => {
-                console.log(res.data.poll)
                 if(res.data.poll) {
                     this.poll = res.data.poll;
                 } else {
@@ -74,6 +73,34 @@ export default {
                 }
             })
             .catch(err => console.log(err))
+        },
+        submitPoll() {
+            axios.put(`/api/polls/${this.poll.id}`, {
+                option: this.option,
+            })
+            .then(res => {
+                console.log('submit',res)
+                if(res.data.message) {
+                    this.$vs.notification({
+                        title: 'Vote saved successfully',
+                        text: `${res.data.message}`,
+                        color: 'success'
+                    })
+                } else {
+                    this.$vs.notification({
+                        title: 'Somtheing gone wrong!!',
+                        text: `${res.data.error}`,
+                        color: 'danger'
+                    })
+                }
+            })
+            .catch(err => {
+                this.$vs.notification({
+                    title: 'Error',
+                    text: `${err}`,
+                    color: 'danger'
+                });
+            })
         }
     },
     created() {

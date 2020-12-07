@@ -28,7 +28,7 @@
                         </div>
 
                         <template #footer>
-                        <div class="con-footer">
+                        <div class="con-footer flex items-center justify-between">
                             <vs-button @click="checkPoll">
                             Check poll
                             </vs-button>
