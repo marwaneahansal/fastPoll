@@ -45,8 +45,7 @@ class PollController extends Controller
     {
         $validateRequest = $request->validate([
             'pollQuestion' => 'required',
-            'option1' => 'required',
-            'option2' => 'required',
+            'pollOptions' => 'required'
         ]);
 
         $uri = Str::Random(10);
@@ -56,43 +55,20 @@ class PollController extends Controller
             $searchUri = DB::table('polls')->where('uri', $uri)->first();
         }
 
-        $pollQuestion = $request->input('pollQuestion');
-        $option1 = $request->input('option1');
-        $option2 = $request->input('option2');
-        $option3 = $request->input('option3');
-        $option4 = $request->input('option4');
-        $option5 = $request->input('option5');
-        $option6 = $request->input('option6');
-        $option7 = $request->input('option7');
-        $option8 = $request->input('option8');
+        $poll = new Poll();
+
+        $poll->uri = $uri;
+        $poll->poll_question = $request->input('pollQuestion');
+        $poll->pollOptions = $request->input('pollOptions');
         
-        DB::table('polls')->insert([
-            'uri' => $uri,
-            'poll_question' => $pollQuestion,
-            'option_1' => $option1,
-            'option_2' => $option2,
-            'option_3' => $option3,
-            'option_4' => $option4,
-            'option_5' => $option5,
-            'option_6' => $option6,
-            'option_7' => $option7,
-            'option_8' => $option8,
-            'created_at' => now()
-        ]);
+        $poll->save();
 
        
         return [
             'uri' => $uri,
             'poll' => [
-                'poll_question' => $pollQuestion,
-                'option_1' => $option1,
-                'option_2' => $option2,
-                'option_3' => $option3,
-                'option_4' => $option4,
-                'option_5' => $option5,
-                'option_6' => $option6,
-                'option_7' => $option7,
-                'option_8' => $option8,
+                'poll_question' => $poll->poll_question,
+                'poll_options' => $poll->pollOptions,
             ]
         ];
     }
@@ -128,14 +104,12 @@ class PollController extends Controller
      */
     public function update(Request $request, Poll $poll)
     {
-        $option = $request->input('option');
-        $optionRow = 'option_' . $option . '_votes';
-        $option_votes = $poll[$optionRow];
-        $total_votes = $poll->total_votes;
-        $updatedPoll = DB::table('polls')->where('id', $poll->id)->update([$optionRow => ($option_votes + 1), 'total_votes' => ($total_votes + 1)]);
+        $poll->pollOptions = $request->input('pollOptions');
+        $poll->totalVotes = $poll->totalVotes + 1;
+        $poll->update($request->all());
 
-        if($updatedPoll === 1) return ['message' => 'Thank you for your vote'];
-        return [ 'error' => 'Erro happend'];
+
+        return ['message' => 'Thank you for your vote'];
         
     }
 

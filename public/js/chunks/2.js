@@ -57,27 +57,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -85,8 +64,25 @@ __webpack_require__.r(__webpack_exports__);
       poll: null,
       error: false,
       option: null,
-      showPoll: true
+      showPoll: true,
+      colors: ['#409eff', '#581b98', '#f3558e', '#482ff7', '#21e6c1', '#faee1c', '#fc5185', '#ff5959', '#0e153a']
     };
+  },
+  watch: {
+    showPoll: function showPoll() {
+      if (this.showPoll === false) {
+        console.log(this.poll);
+        JSON.parse(this.poll.pollOptions).sort(function (a, b) {
+          return a.votes > b.votes ? 1 : -1;
+        });
+        console.log(JSON.parse(this.poll.pollOptions));
+      }
+    }
+  },
+  computed: {
+    pollOptions: function pollOptions() {
+      return JSON.parse(this.poll.pollOptions);
+    }
   },
   methods: {
     fetchPollDetails: function fetchPollDetails() {
@@ -105,31 +101,41 @@ __webpack_require__.r(__webpack_exports__);
     submitPoll: function submitPoll() {
       var _this2 = this;
 
+      var selectedOption = this.pollOptions.find(function (option) {
+        return _this2.option === option.id;
+      });
+      selectedOption.votes += 1;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/polls/".concat(this.poll.id), {
-        option: this.option
+        pollOptions: this.pollOptions
       }).then(function (res) {
-        console.log('submit', res);
-
-        if (res.data.message) {
-          _this2.$vs.notification({
-            title: 'Vote saved successfully',
-            text: "".concat(res.data.message),
-            color: 'success'
-          });
-        } else {
-          _this2.$vs.notification({
-            title: 'Somtheing gone wrong!!',
-            text: "".concat(res.data.error),
-            color: 'danger'
-          });
-        }
+        _this2.$vs.notification({
+          title: 'Vote saved successfully',
+          text: "".concat(res.data.message),
+          color: 'success'
+        });
       })["catch"](function (err) {
+        console.log(err.response);
+
         _this2.$vs.notification({
           title: 'Error',
           text: "".concat(err),
           color: 'danger'
         });
       });
+    },
+    getVotesPercent: function getVotesPercent(votes, totalVotes) {
+      return parseFloat((votes / totalVotes * 100).toFixed(1));
+    },
+    compare: function compare(pollOptionsA, pollOptionsB) {
+      if (pollOptionsA.votes < pollOptionsB.votes) {
+        return -1;
+      }
+
+      if (pollOptionsA.votes > pollOptionsB.votes) {
+        return 1;
+      }
+
+      return 0;
     }
   },
   created: function created() {
@@ -151,7 +157,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".vs-card {\n  cursor: auto !important;\n  max-width: 100% !important;\n}\n.vs-radio-content {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\r\n", ""]);
+exports.push([module.i, ".vs-card {\n  cursor: auto !important;\n  max-width: 100% !important;\n}\n.pollOption {\n  transition: transform 1s ease-out;\n}\n.pollOption:hover {\n  transform: translateY(-5px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n.vs-radio-content {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\r\n", ""]);
 
 // exports
 
@@ -239,7 +245,7 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _vm.poll
-        ? _c("div", { staticClass: "mx-auto w-1/2" }, [
+        ? _c("div", { staticClass: "mx-auto w-1/2 mb-12" }, [
             _c("div", { staticClass: "vs-card py-4 px-6" }, [
               _c("h2", { staticClass: "text-2xl font-semibold" }, [
                 _vm._v(_vm._s(_vm.poll.poll_question) + "?")
@@ -250,199 +256,30 @@ var render = function() {
                     _c(
                       "div",
                       { staticClass: "mt-5" },
-                      [
-                        _vm.poll.option_1
-                          ? _c(
-                              "vs-radio",
-                              {
-                                staticClass: "mt-2",
-                                attrs: { val: "1" },
-                                model: {
-                                  value: _vm.option,
-                                  callback: function($$v) {
-                                    _vm.option = $$v
-                                  },
-                                  expression: "option"
-                                }
+                      _vm._l(_vm.pollOptions, function(pollOption) {
+                        return _c(
+                          "vs-radio",
+                          {
+                            key: pollOption.id,
+                            staticClass: "mt-2",
+                            attrs: { val: pollOption.id },
+                            model: {
+                              value: _vm.option,
+                              callback: function($$v) {
+                                _vm.option = $$v
                               },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.poll.option_1) +
-                                    "\n                    "
-                                )
-                              ]
+                              expression: "option"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(pollOption.option) +
+                                "\n                    "
                             )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.poll.option_2
-                          ? _c(
-                              "vs-radio",
-                              {
-                                staticClass: "mt-2",
-                                attrs: { val: "2" },
-                                model: {
-                                  value: _vm.option,
-                                  callback: function($$v) {
-                                    _vm.option = $$v
-                                  },
-                                  expression: "option"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.poll.option_2) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.poll.option_3
-                          ? _c(
-                              "vs-radio",
-                              {
-                                staticClass: "mt-2",
-                                attrs: { val: "3" },
-                                model: {
-                                  value: _vm.option,
-                                  callback: function($$v) {
-                                    _vm.option = $$v
-                                  },
-                                  expression: "option"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.poll.option_3) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.poll.option_4
-                          ? _c(
-                              "vs-radio",
-                              {
-                                staticClass: "mt-2",
-                                attrs: { val: "4" },
-                                model: {
-                                  value: _vm.option,
-                                  callback: function($$v) {
-                                    _vm.option = $$v
-                                  },
-                                  expression: "option"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.poll.option_4) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.poll.option_5
-                          ? _c(
-                              "vs-radio",
-                              {
-                                staticClass: "mt-2",
-                                attrs: { val: "5" },
-                                model: {
-                                  value: _vm.option,
-                                  callback: function($$v) {
-                                    _vm.option = $$v
-                                  },
-                                  expression: "option"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.poll.option_5) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.poll.option_6
-                          ? _c(
-                              "vs-radio",
-                              {
-                                staticClass: "mt-2",
-                                attrs: { val: "6" },
-                                model: {
-                                  value: _vm.option,
-                                  callback: function($$v) {
-                                    _vm.option = $$v
-                                  },
-                                  expression: "option"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.poll.option_6) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.poll.option_7
-                          ? _c(
-                              "vs-radio",
-                              {
-                                staticClass: "mt-2",
-                                attrs: { val: "7" },
-                                model: {
-                                  value: _vm.option,
-                                  callback: function($$v) {
-                                    _vm.option = $$v
-                                  },
-                                  expression: "option"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.poll.option_7) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.poll.option_8
-                          ? _c(
-                              "vs-radio",
-                              {
-                                staticClass: "mt-2",
-                                attrs: { val: "8" },
-                                model: {
-                                  value: _vm.option,
-                                  callback: function($$v) {
-                                    _vm.option = $$v
-                                  },
-                                  expression: "option"
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(_vm.poll.option_8) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          : _vm._e()
-                      ],
+                          ]
+                        )
+                      }),
                       1
                     ),
                     _vm._v(" "),
@@ -488,50 +325,70 @@ var render = function() {
                     )
                   ])
                 : _c("div", [
-                    _c("div", { staticClass: "mt-5" }, [
-                      _c(
-                        "div",
-                        { staticClass: "vs-card py-4 px-6" },
-                        [
-                          _c(
-                            "h3",
-                            { staticClass: "text-xl mb-4 font-semibold" },
-                            [_vm._v("Cool")]
-                          ),
-                          _vm._v(" "),
-                          _c("k-progress", { attrs: { percent: "40" } }),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "mt-4 text-sm text-black" }, [
-                            _vm._v("31 Votes")
-                          ])
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "flex justify-end mt-6" },
-                        [
-                          _c(
-                            "vs-button",
+                    _c(
+                      "div",
+                      { staticClass: "mt-5" },
+                      [
+                        _vm._l(_vm.pollOptions, function(pollOption, index) {
+                          return _c(
+                            "div",
                             {
-                              attrs: { shadow: "", primary: "" },
-                              on: {
-                                click: function($event) {
-                                  _vm.showPoll = true
-                                }
-                              }
+                              key: pollOption.id,
+                              staticClass: "pollOption vs-card py-4 px-6 mb-3"
                             },
                             [
-                              _vm._v(
-                                "\n                            Back to vote\n                        "
+                              _c(
+                                "h3",
+                                { staticClass: "text-xl mb-4 font-semibold" },
+                                [_vm._v(_vm._s(pollOption.option))]
+                              ),
+                              _vm._v(" "),
+                              _c("k-progress", {
+                                attrs: {
+                                  color: _vm.colors[index],
+                                  percent: _vm.getVotesPercent(
+                                    pollOption.votes,
+                                    _vm.poll.totalVotes
+                                  )
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                { staticClass: "mt-4 text-sm text-black" },
+                                [_vm._v(_vm._s(pollOption.votes) + " Votes")]
                               )
-                            ]
+                            ],
+                            1
                           )
-                        ],
-                        1
-                      )
-                    ])
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "flex justify-end mt-6" },
+                          [
+                            _c(
+                              "vs-button",
+                              {
+                                attrs: { shadow: "", primary: "" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.showPoll = true
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            Back to vote\n                        "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      2
+                    )
                   ]),
               _vm._v(" "),
               _c(

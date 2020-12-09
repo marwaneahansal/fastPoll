@@ -63,13 +63,13 @@ __webpack_require__.r(__webpack_exports__);
     return {
       pollQuestion: '',
       pollOptions: [{
-        option: ''
+        id: 1,
+        option: '',
+        votes: 0
       }, {
-        option: ''
-      }, {
-        option: ''
-      }, {
-        option: ''
+        id: 2,
+        option: '',
+        votes: 0
       }],
       isPollCreated: false,
       pollUrl: '',
@@ -82,14 +82,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/polls', {
         pollQuestion: this.pollQuestion,
-        option1: this.pollOptions[0].option,
-        option2: this.pollOptions[1].option,
-        option3: this.pollOptions[2] ? this.pollOptions[2].option : null,
-        option4: this.pollOptions[3] ? this.pollOptions[3].option : null,
-        option5: this.pollOptions[4] ? this.pollOptions[4].option : null,
-        option6: this.pollOptions[5] ? this.pollOptions[5].option : null,
-        option7: this.pollOptions[6] ? this.pollOptions[6].option : null,
-        option8: this.pollOptions[7] ? this.pollOptions[7].option : null
+        pollOptions: this.pollOptions
       }).then(function (res) {
         _this.pollUri = res.data.uri;
         _this.pollUrl = "localhost:3000/poll/".concat(_this.pollUri);
@@ -105,6 +98,13 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           uri: this.pollUri
         }
+      });
+    },
+    addOption: function addOption() {
+      this.pollOptions.push({
+        id: this.pollOptions.length + 1,
+        option: '',
+        votes: 0
       });
     }
   }
@@ -250,11 +250,7 @@ var render = function() {
                     size: "large",
                     disabled: _vm.pollOptions.length === 8
                   },
-                  on: {
-                    click: function($event) {
-                      return _vm.pollOptions.push({ option: "" })
-                    }
-                  }
+                  on: { click: _vm.addOption }
                 },
                 [_vm._v("Add another Option")]
               ),

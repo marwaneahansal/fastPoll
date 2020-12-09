@@ -13,7 +13,7 @@
                     <vs-input class="py-2" color="success" shadow primary v-model="pollOption.option" :label-placeholder="'Option ' + (index + 1)"/>
                 </div>
                 <div class="flex">
-                    <vs-button size="large" @click="pollOptions.push({option: ''})" :disabled="pollOptions.length === 8">Add another Option</vs-button>
+                    <vs-button size="large" @click="addOption" :disabled="pollOptions.length === 8">Add another Option</vs-button>
                     <vs-button size="large" success flat shadow  class="ml-4" @click="createPoll">Create your poll</vs-button>
                     <vs-dialog width="300px" not-center v-model="isPollCreated">
                         <template #header>
@@ -51,10 +51,8 @@ export default {
         return {
             pollQuestion: '',
             pollOptions: [
-                {option: ''},
-                {option: ''},
-                {option: ''},
-                {option: ''}
+                {id: 1, option: '', votes: 0},
+                {id: 2, option: '', votes: 0},
             ],
             isPollCreated: false,
             pollUrl: '',
@@ -65,14 +63,7 @@ export default {
         createPoll() {
             axios.post('/api/polls', {
                 pollQuestion: this.pollQuestion,
-                option1: this.pollOptions[0].option,
-                option2: this.pollOptions[1].option,
-                option3: this.pollOptions[2] ? this.pollOptions[2].option : null,
-                option4: this.pollOptions[3] ? this.pollOptions[3].option : null,
-                option5: this.pollOptions[4] ? this.pollOptions[4].option : null,
-                option6: this.pollOptions[5] ? this.pollOptions[5].option : null,
-                option7: this.pollOptions[6] ? this.pollOptions[6].option : null,
-                option8: this.pollOptions[7] ? this.pollOptions[7].option : null,
+                pollOptions: this.pollOptions
             })
             .then(res => {
                 this.pollUri = res.data.uri;
@@ -84,6 +75,9 @@ export default {
         checkPoll() {
             this.isPollCreated = false;
             this.$router.push({name: 'poll', params: {uri: this.pollUri}})
+        },
+        addOption() {
+            this.pollOptions.push({id: this.pollOptions.length + 1, option: '', votes: 0});
         }
     },
     

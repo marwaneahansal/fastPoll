@@ -6,34 +6,13 @@
             </template>
             <p>Poll you requested not found, Please check again your poll url.</p>
         </vs-alert>
-        <div class="mx-auto w-1/2" v-if="poll">
+        <div class="mx-auto w-1/2 mb-12" v-if="poll">
             <div class="vs-card py-4 px-6">
                 <h2 class="text-2xl font-semibold">{{ poll.poll_question }}?</h2>
                 <div v-if="showPoll">
                     <div class="mt-5">
-                        <vs-radio class="mt-2" v-model="option" val="1" v-if="poll.option_1">
-                            {{ poll.option_1 }}
-                        </vs-radio>
-                        <vs-radio class="mt-2" v-model="option" val="2" v-if="poll.option_2">
-                            {{ poll.option_2 }}
-                        </vs-radio>
-                        <vs-radio class="mt-2" v-model="option" val="3" v-if="poll.option_3">
-                            {{ poll.option_3 }}
-                        </vs-radio>
-                        <vs-radio class="mt-2" v-model="option" val="4" v-if="poll.option_4">
-                            {{ poll.option_4 }}
-                        </vs-radio>
-                        <vs-radio class="mt-2" v-model="option" val="5" v-if="poll.option_5">
-                            {{ poll.option_5 }}
-                        </vs-radio>
-                        <vs-radio class="mt-2" v-model="option" val="6" v-if="poll.option_6">
-                            {{ poll.option_6 }}
-                        </vs-radio>
-                        <vs-radio class="mt-2" v-model="option" val="7" v-if="poll.option_7">
-                            {{ poll.option_7 }}
-                        </vs-radio>
-                        <vs-radio class="mt-2" v-model="option" val="8" v-if="poll.option_8">
-                            {{ poll.option_8 }}
+                        <vs-radio class="mt-2" v-model="option" :val="pollOption.id" v-for="pollOption in pollOptions" :key="pollOption.id">
+                            {{ pollOption.option }}
                         </vs-radio>
                     </div>
                     <div class="flex items-center justify-between mt-6">
@@ -47,10 +26,10 @@
                 </div>
                 <div v-else>
                     <div class="mt-5">
-                        <div class="vs-card py-4 px-6">
-                            <h3 class="text-xl mb-4 font-semibold">Cool</h3>
-                            <k-progress percent="40" />
-                            <p class="mt-4 text-sm text-black">31 Votes</p>
+                        <div class="pollOption vs-card py-4 px-6 mb-3" v-for="(pollOption, index) in pollOptions" :key="pollOption.id">
+                            <h3 class="text-xl mb-4 font-semibold">{{ pollOption.option }}</h3>
+                            <k-progress :color="colors[index]"  :percent="getVotesPercent(pollOption.votes, poll.totalVotes)" />
+                            <p class="mt-4 text-sm text-black">{{ pollOption.votes }} Votes</p>
                         </div>
                         <div class="flex justify-end mt-6">
                             <vs-button shadow primary @click="showPoll = true">
@@ -74,7 +53,32 @@ export default {
             error: false,
             option: null,
             showPoll: true,
+            colors: [
+                '#409eff',
+                '#581b98',
+                '#f3558e',
+                '#482ff7',
+                '#21e6c1',
+                '#faee1c',
+                '#fc5185',
+                '#ff5959',
+                '#0e153a',
+            ]
         }
+    },
+    watch: {
+        showPoll() {
+            if(this.showPoll === false) {
+                console.log(this.poll)
+                JSON.parse(this.poll.pollOptions).sort((a,b) => a.votes > b.votes ? 1 : -1);
+                console.log(JSON.parse(this.poll.pollOptions));
+            }
+        }
+    },
+    computed: {
+        pollOptions() {
+            return JSON.parse(this.poll.pollOptions);
+        },
     },
     methods: {
         fetchPollDetails() {
@@ -89,32 +93,38 @@ export default {
             .catch(err => console.log(err))
         },
         submitPoll() {
+            let selectedOption = this.pollOptions.find(option => this.option === option.id);
+            selectedOption.votes += 1;
             axios.put(`/api/polls/${this.poll.id}`, {
-                option: this.option,
+                pollOptions: this.pollOptions
             })
             .then(res => {
-                console.log('submit',res)
-                if(res.data.message) {
-                    this.$vs.notification({
-                        title: 'Vote saved successfully',
-                        text: `${res.data.message}`,
-                        color: 'success'
-                    })
-                } else {
-                    this.$vs.notification({
-                        title: 'Somtheing gone wrong!!',
-                        text: `${res.data.error}`,
-                        color: 'danger'
-                    })
-                }
+                this.$vs.notification({
+                    title: 'Vote saved successfully',
+                    text: `${res.data.message}`,
+                    color: 'success'
+                })
             })
             .catch(err => {
+                console.log(err.response)
                 this.$vs.notification({
                     title: 'Error',
                     text: `${err}`,
                     color: 'danger'
                 });
             })
+        },
+        getVotesPercent(votes, totalVotes) {
+            return parseFloat(((votes / totalVotes) * 100).toFixed(1)); 
+        },
+        compare( pollOptionsA, pollOptionsB ) {
+            if ( pollOptionsA.votes < pollOptionsB.votes ){
+                return -1;
+            }
+            if ( pollOptionsA.votes > pollOptionsB.votes ){
+                return 1;
+            }
+            return 0;
         }
     },
     created() {
@@ -128,6 +138,16 @@ export default {
     cursor: auto !important;
     max-width: 100% !important;
 }
+
+.pollOption {
+    transition: transform 1s ease-out;
+}
+
+.pollOption:hover {
+    transform: translateY(-5px);
+    /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */
+}
+
 .vs-radio-content {
     width: fit-content;
 }
