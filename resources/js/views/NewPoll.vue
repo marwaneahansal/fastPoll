@@ -14,7 +14,7 @@
                 </div>
                 <div class="flex">
                     <vs-button size="large" @click="addOption" :disabled="pollOptions.length === 8">Add another Option</vs-button>
-                    <vs-button size="large" success flat shadow  class="ml-4" @click="createPoll">Create your poll</vs-button>
+                    <vs-button size="large" success flat shadow  class="ml-4" @click="createPoll" ref="button">Create your poll</vs-button>
                     <vs-dialog width="300px" not-center v-model="isPollCreated">
                         <template #header>
                         <h4 class="not-margin">
@@ -61,16 +61,28 @@ export default {
     },
     methods: {
         createPoll() {
+            const loading = this.$vs.loading({
+                target: this.$refs.button,
+                scale: '0.6',
+                opacity: 1,
+                color: '#000'
+            });
+            //! filter pollOptions from null options
+            let pollOptionsFiltered = this.pollOptions.filter(option => option.option !== '');
             axios.post('/api/polls', {
                 pollQuestion: this.pollQuestion,
-                pollOptions: this.pollOptions
+                pollOptions: pollOptionsFiltered
             })
             .then(res => {
+                loading.close();
                 this.pollUri = res.data.uri;
                 this.pollUrl = `localhost:3000/poll/${this.pollUri}`;
                 this.isPollCreated = true;
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                loading.close();
+                console.log(err.response)
+            })
         },
         checkPoll() {
             this.isPollCreated = false;

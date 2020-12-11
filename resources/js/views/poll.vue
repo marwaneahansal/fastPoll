@@ -8,7 +8,8 @@
         </vs-alert>
         <div class="mx-auto w-1/2 mb-12" v-if="poll">
             <div class="vs-card py-4 px-6">
-                <h2 class="text-2xl font-semibold">{{ poll.poll_question }}?</h2>
+                <h2 class="text-2xl font-semibold" v-if="this.poll.poll_question[this.poll.poll_question.length - 1] === '?'">{{ poll.poll_question }}</h2>
+                <h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
                 <div v-if="showPoll">
                     <div class="mt-5">
                         <vs-radio class="mt-2" v-model="option" :val="pollOption.id" v-for="pollOption in pollOptions" :key="pollOption.id">
@@ -16,7 +17,7 @@
                         </vs-radio>
                     </div>
                     <div class="flex items-center justify-between mt-6">
-                        <vs-button primary icon :disabled="!option" @click="submitPoll">
+                        <vs-button ref="button" primary icon :disabled="!option" @click="submitPoll">
                             Submit
                         </vs-button>
                         <vs-button shadow primary @click="showPoll = false">
@@ -26,7 +27,7 @@
                 </div>
                 <div v-else>
                     <div class="mt-5">
-                        <div class="pollOption vs-card py-4 px-6 mb-3" v-for="(pollOption, index) in pollOptions" :key="pollOption.id">
+                        <div class="pollOption vs-card py-4 px-6 mb-3"  v-for="(pollOption, index) in pollOptionsSorted" :key="pollOption.id">
                             <h3 class="text-xl mb-4 font-semibold">{{ pollOption.option }}</h3>
                             <k-progress :color="colors[index]"  :percent="getVotesPercent(pollOption.votes, poll.totalVotes)" />
                             <p class="mt-4 text-sm text-black">{{ pollOption.votes }} Votes</p>
@@ -63,16 +64,8 @@ export default {
                 '#fc5185',
                 '#ff5959',
                 '#0e153a',
-            ]
-        }
-    },
-    watch: {
-        showPoll() {
-            if(this.showPoll === false) {
-                console.log(this.poll)
-                JSON.parse(this.poll.pollOptions).sort((a,b) => a.votes > b.votes ? 1 : -1);
-                console.log(JSON.parse(this.poll.pollOptions));
-            }
+            ],
+            pollOptionsSorted: [],
         }
     },
     computed: {
@@ -82,23 +75,40 @@ export default {
     },
     methods: {
         fetchPollDetails() {
+            const fetchLoading = this.$vs.loading({
+                text: 'loading...',
+                type: 'circles',
+            });
             axios.get(`/api/poll/${this.$route.params.uri}`)
             .then(res => {
                 if(res.data.poll) {
+                    fetchLoading.close();
                     this.poll = res.data.poll;
+                    this.pollOptionsSorted = [...this.pollOptions].sort((a,b) => a.votes > b.votes ? -1 : 1);
                 } else {
+                    fetchLoading.close();
                     this.error = true;
                 }
             })
             .catch(err => console.log(err))
         },
         submitPoll() {
+            const loading = this.$vs.loading({
+                target: this.$refs.button,
+                scale: '0.6',
+                background: 'primary',
+                opacity: 1,
+                color: '#fff'
+            });
             let selectedOption = this.pollOptions.find(option => this.option === option.id);
             selectedOption.votes += 1;
+            this.poll.totalVotes += 1;
+            this.pollOptionsSorted = [...this.pollOptions].sort((a,b) => a.votes > b.votes ? -1 : 1);
             axios.put(`/api/polls/${this.poll.id}`, {
                 pollOptions: this.pollOptions
             })
             .then(res => {
+                loading.close();
                 this.$vs.notification({
                     title: 'Vote saved successfully',
                     text: `${res.data.message}`,
@@ -106,7 +116,7 @@ export default {
                 })
             })
             .catch(err => {
-                console.log(err.response)
+                loading.close();
                 this.$vs.notification({
                     title: 'Error',
                     text: `${err}`,
@@ -115,17 +125,9 @@ export default {
             })
         },
         getVotesPercent(votes, totalVotes) {
+            if(totalVotes === 0) return 0
             return parseFloat(((votes / totalVotes) * 100).toFixed(1)); 
         },
-        compare( pollOptionsA, pollOptionsB ) {
-            if ( pollOptionsA.votes < pollOptionsB.votes ){
-                return -1;
-            }
-            if ( pollOptionsA.votes > pollOptionsB.votes ){
-                return 1;
-            }
-            return 0;
-        }
     },
     created() {
         this.fetchPollDetails();
@@ -140,7 +142,7 @@ export default {
 }
 
 .pollOption {
-    transition: transform 1s ease-out;
+    transition: transform 1s ease;
 }
 
 .pollOption:hover {

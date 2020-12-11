@@ -80,15 +80,27 @@ __webpack_require__.r(__webpack_exports__);
     createPoll: function createPoll() {
       var _this = this;
 
+      var loading = this.$vs.loading({
+        target: this.$refs.button,
+        scale: '0.6',
+        opacity: 1,
+        color: '#000'
+      }); //! filter pollOptions from null options
+
+      var pollOptionsFiltered = this.pollOptions.filter(function (option) {
+        return option.option !== '';
+      });
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/polls', {
         pollQuestion: this.pollQuestion,
-        pollOptions: this.pollOptions
+        pollOptions: pollOptionsFiltered
       }).then(function (res) {
+        loading.close();
         _this.pollUri = res.data.uri;
         _this.pollUrl = "localhost:3000/poll/".concat(_this.pollUri);
         _this.isPollCreated = true;
       })["catch"](function (err) {
-        return console.log(err);
+        loading.close();
+        console.log(err.response);
       });
     },
     checkPoll: function checkPoll() {
@@ -258,6 +270,7 @@ var render = function() {
               _c(
                 "vs-button",
                 {
+                  ref: "button",
                   staticClass: "ml-4",
                   attrs: { size: "large", success: "", flat: "", shadow: "" },
                   on: { click: _vm.createPoll }

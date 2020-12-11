@@ -15,5 +15,6 @@ use App\Http\Controllers\PollController;
 |
 */
 
-Route::apiResource('polls', PollController::class);
-Route::get('/poll/{uri}', [PollController::class, 'getPoll'] );
+Route::apiResource('polls', PollController::class)->except('store', 'update');
+Route::post('polls', [PollController::class, 'store']);
+Route::get('/poll/{uri}', [PollController::class, 'getPoll']);

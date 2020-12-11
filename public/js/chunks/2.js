@@ -11,6 +11,19 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
 //
 //
 //
@@ -65,19 +78,9 @@ __webpack_require__.r(__webpack_exports__);
       error: false,
       option: null,
       showPoll: true,
-      colors: ['#409eff', '#581b98', '#f3558e', '#482ff7', '#21e6c1', '#faee1c', '#fc5185', '#ff5959', '#0e153a']
+      colors: ['#409eff', '#581b98', '#f3558e', '#482ff7', '#21e6c1', '#faee1c', '#fc5185', '#ff5959', '#0e153a'],
+      pollOptionsSorted: []
     };
-  },
-  watch: {
-    showPoll: function showPoll() {
-      if (this.showPoll === false) {
-        console.log(this.poll);
-        JSON.parse(this.poll.pollOptions).sort(function (a, b) {
-          return a.votes > b.votes ? 1 : -1;
-        });
-        console.log(JSON.parse(this.poll.pollOptions));
-      }
-    }
   },
   computed: {
     pollOptions: function pollOptions() {
@@ -88,10 +91,19 @@ __webpack_require__.r(__webpack_exports__);
     fetchPollDetails: function fetchPollDetails() {
       var _this = this;
 
+      var fetchLoading = this.$vs.loading({
+        text: 'loading...',
+        type: 'circles'
+      });
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/poll/".concat(this.$route.params.uri)).then(function (res) {
         if (res.data.poll) {
+          fetchLoading.close();
           _this.poll = res.data.poll;
+          _this.pollOptionsSorted = _toConsumableArray(_this.pollOptions).sort(function (a, b) {
+            return a.votes > b.votes ? -1 : 1;
+          });
         } else {
+          fetchLoading.close();
           _this.error = true;
         }
       })["catch"](function (err) {
@@ -101,20 +113,33 @@ __webpack_require__.r(__webpack_exports__);
     submitPoll: function submitPoll() {
       var _this2 = this;
 
+      var loading = this.$vs.loading({
+        target: this.$refs.button,
+        scale: '0.6',
+        background: 'primary',
+        opacity: 1,
+        color: '#fff'
+      });
       var selectedOption = this.pollOptions.find(function (option) {
         return _this2.option === option.id;
       });
       selectedOption.votes += 1;
+      this.poll.totalVotes += 1;
+      this.pollOptionsSorted = _toConsumableArray(this.pollOptions).sort(function (a, b) {
+        return a.votes > b.votes ? -1 : 1;
+      });
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/polls/".concat(this.poll.id), {
         pollOptions: this.pollOptions
       }).then(function (res) {
+        loading.close();
+
         _this2.$vs.notification({
           title: 'Vote saved successfully',
           text: "".concat(res.data.message),
           color: 'success'
         });
       })["catch"](function (err) {
-        console.log(err.response);
+        loading.close();
 
         _this2.$vs.notification({
           title: 'Error',
@@ -124,18 +149,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getVotesPercent: function getVotesPercent(votes, totalVotes) {
+      if (totalVotes === 0) return 0;
       return parseFloat((votes / totalVotes * 100).toFixed(1));
-    },
-    compare: function compare(pollOptionsA, pollOptionsB) {
-      if (pollOptionsA.votes < pollOptionsB.votes) {
-        return -1;
-      }
-
-      if (pollOptionsA.votes > pollOptionsB.votes) {
-        return 1;
-      }
-
-      return 0;
     }
   },
   created: function created() {
@@ -157,7 +172,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".vs-card {\n  cursor: auto !important;\n  max-width: 100% !important;\n}\n.pollOption {\n  transition: transform 1s ease-out;\n}\n.pollOption:hover {\n  transform: translateY(-5px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n.vs-radio-content {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\r\n", ""]);
+exports.push([module.i, ".vs-card {\n  cursor: auto !important;\n  max-width: 100% !important;\n}\n.pollOption {\n  transition: transform 1s ease;\n}\n.pollOption:hover {\n  transform: translateY(-5px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n.vs-radio-content {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\r\n", ""]);
 
 // exports
 
@@ -247,9 +262,14 @@ var render = function() {
       _vm.poll
         ? _c("div", { staticClass: "mx-auto w-1/2 mb-12" }, [
             _c("div", { staticClass: "vs-card py-4 px-6" }, [
-              _c("h2", { staticClass: "text-2xl font-semibold" }, [
-                _vm._v(_vm._s(_vm.poll.poll_question) + "?")
-              ]),
+              this.poll.poll_question[this.poll.poll_question.length - 1] ===
+              "?"
+                ? _c("h2", { staticClass: "text-2xl font-semibold" }, [
+                    _vm._v(_vm._s(_vm.poll.poll_question))
+                  ])
+                : _c("h2", { staticClass: "text-2xl font-semibold" }, [
+                    _vm._v(_vm._s(_vm.poll.poll_question) + "?")
+                  ]),
               _vm._v(" "),
               _vm.showPoll
                 ? _c("div", [
@@ -290,6 +310,7 @@ var render = function() {
                         _c(
                           "vs-button",
                           {
+                            ref: "button",
                             attrs: {
                               primary: "",
                               icon: "",
@@ -329,7 +350,10 @@ var render = function() {
                       "div",
                       { staticClass: "mt-5" },
                       [
-                        _vm._l(_vm.pollOptions, function(pollOption, index) {
+                        _vm._l(_vm.pollOptionsSorted, function(
+                          pollOption,
+                          index
+                        ) {
                           return _c(
                             "div",
                             {
