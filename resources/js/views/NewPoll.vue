@@ -81,7 +81,11 @@ export default {
             })
             .catch(err => {
                 loading.close();
-                console.log(err.response)
+                this.$vs.notification({
+                    title: 'Error',
+                    text: `${err.response.data.message}`,
+                    color: 'danger'
+                });
             })
         },
         checkPoll() {

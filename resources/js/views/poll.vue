@@ -117,11 +117,20 @@ export default {
             })
             .catch(err => {
                 loading.close();
-                this.$vs.notification({
-                    title: 'Error',
-                    text: `${err}`,
-                    color: 'danger'
-                });
+                console.log(err.response)
+                if(err.response.status === 429) {
+                    this.$vs.notification({
+                        title: 'Error',
+                        text: `You already voted for this poll`,
+                        color: 'danger'
+                    });
+                } else {
+                    this.$vs.notification({
+                        title: 'Error',
+                        text: `${err.response.data.message}`,
+                        color: 'danger'
+                    });
+                }
             })
         },
         getVotesPercent(votes, totalVotes) {

@@ -140,12 +140,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       })["catch"](function (err) {
         loading.close();
+        console.log(err.response);
 
-        _this2.$vs.notification({
-          title: 'Error',
-          text: "".concat(err),
-          color: 'danger'
-        });
+        if (err.response.status === 429) {
+          _this2.$vs.notification({
+            title: 'Error',
+            text: "You already voted for this poll",
+            color: 'danger'
+          });
+        } else {
+          _this2.$vs.notification({
+            title: 'Error',
+            text: "".concat(err.response.data.message),
+            color: 'danger'
+          });
+        }
       });
     },
     getVotesPercent: function getVotesPercent(votes, totalVotes) {

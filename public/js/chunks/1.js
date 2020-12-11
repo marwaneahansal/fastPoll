@@ -100,7 +100,12 @@ __webpack_require__.r(__webpack_exports__);
         _this.isPollCreated = true;
       })["catch"](function (err) {
         loading.close();
-        console.log(err.response);
+
+        _this.$vs.notification({
+          title: 'Error',
+          text: "".concat(err.response.data.message),
+          color: 'danger'
+        });
       });
     },
     checkPoll: function checkPoll() {
