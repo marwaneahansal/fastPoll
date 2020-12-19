@@ -74,9 +74,18 @@ var render = function() {
             key: "right",
             fn: function() {
               return [
-                _c("vs-button", { attrs: { flat: "", transparent: "" } }, [
-                  _vm._v("Public Polls")
-                ]),
+                _c(
+                  "vs-button",
+                  {
+                    attrs: { flat: "", transparent: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.$router.push({ name: "publicPolls" })
+                      }
+                    }
+                  },
+                  [_vm._v("Public Polls")]
+                ),
                 _vm._v(" "),
                 _c(
                   "vs-button",

@@ -28,6 +28,11 @@ const router = new Router({
                     path: '/poll/:uri',
                     name: 'poll',
                     component: () => import('./views/poll.vue')
+                },
+                {
+                    path: '/polls',
+                    name: 'publicPolls',
+                    component: () => import('./views/publicPolls.vue')
                 }
             ]
         }

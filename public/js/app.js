@@ -73284,6 +73284,12 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       component: function component() {
         return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./views/poll.vue */ "./resources/js/views/poll.vue"));
       }
+    }, {
+      path: '/polls',
+      name: 'publicPolls',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/publicPolls.vue */ "./resources/js/views/publicPolls.vue"));
+      }
     }]
   }]
 });
