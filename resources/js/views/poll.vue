@@ -8,8 +8,11 @@
         </vs-alert>
         <div class="mx-auto w-1/2 mb-12" v-if="poll">
             <div class="vs-card py-4 px-6">
-                <h2 class="text-2xl font-semibold" v-if="this.poll.poll_question[this.poll.poll_question.length - 1] === '?'">{{ poll.poll_question }}</h2>
-                <h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
+                <div class="pollHeader flex items-center justify-between">
+                    <h2 class="text-2xl font-semibold" v-if="this.poll.poll_question[this.poll.poll_question.length - 1] === '?'">{{ poll.poll_question }}</h2>
+                    <h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
+                    <p v-if="!showPoll">Total Votes: {{ poll.totalVotes }}</p>
+                </div>
                 <div v-if="showPoll">
                     <div class="mt-5">
                         <vs-radio class="mt-2" v-model="option" :val="pollOption.id" v-for="pollOption in pollOptions" :key="pollOption.id">

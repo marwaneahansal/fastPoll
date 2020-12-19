@@ -16,7 +16,8 @@ class PollController extends Controller
      */
     public function index()
     {
-        return('Comming Soon');
+        $polls = DB::table('polls')->get();
+        return response(['polls' => $polls], 200);
     }
 
     public function getPoll($uri) {

@@ -70,6 +70,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -271,14 +274,27 @@ var render = function() {
       _vm.poll
         ? _c("div", { staticClass: "mx-auto w-1/2 mb-12" }, [
             _c("div", { staticClass: "vs-card py-4 px-6" }, [
-              this.poll.poll_question[this.poll.poll_question.length - 1] ===
-              "?"
-                ? _c("h2", { staticClass: "text-2xl font-semibold" }, [
-                    _vm._v(_vm._s(_vm.poll.poll_question))
-                  ])
-                : _c("h2", { staticClass: "text-2xl font-semibold" }, [
-                    _vm._v(_vm._s(_vm.poll.poll_question) + "?")
-                  ]),
+              _c(
+                "div",
+                { staticClass: "pollHeader flex items-center justify-between" },
+                [
+                  this.poll.poll_question[
+                    this.poll.poll_question.length - 1
+                  ] === "?"
+                    ? _c("h2", { staticClass: "text-2xl font-semibold" }, [
+                        _vm._v(_vm._s(_vm.poll.poll_question))
+                      ])
+                    : _c("h2", { staticClass: "text-2xl font-semibold" }, [
+                        _vm._v(_vm._s(_vm.poll.poll_question) + "?")
+                      ]),
+                  _vm._v(" "),
+                  !_vm.showPoll
+                    ? _c("p", [
+                        _vm._v("Total Votes: " + _vm._s(_vm.poll.totalVotes))
+                      ])
+                    : _vm._e()
+                ]
+              ),
               _vm._v(" "),
               _vm.showPoll
                 ? _c("div", [
