@@ -9,6 +9,8 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -21,7 +23,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {// axios.post('/api/register', {
+    //   name: 'sdkjksd',
+    //   email: 'qsqsjklqs@gmail.com',
+    //   password: '12345678',
+    //   password_confirmation: '12345678'
+    // }).then(res => console.log(res))
+    // .catch(err => console.log(err));
+  }
+});
 
 /***/ }),
 

@@ -11,7 +11,17 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+  created() {
+    // axios.post('/api/register', {
+    //   name: 'sdkjksd',
+    //   email: 'qsqsjklqs@gmail.com',
+    //   password: '12345678',
+    //   password_confirmation: '12345678'
+    // }).then(res => console.log(res))
+    // .catch(err => console.log(err));
+  }
 };
 </script>
 

@@ -16,7 +16,7 @@ class PollController extends Controller
      */
     public function index()
     {
-        $polls = DB::table('polls')->get();
+        $polls = Poll::orderByRaw('updated_at - created_at ASC')->get();
         return response(['polls' => $polls], 200);
     }
 
