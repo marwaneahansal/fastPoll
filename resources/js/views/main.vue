@@ -7,6 +7,9 @@
         <template #right>
           <vs-button flat transparent @click="$router.push({name: 'publicPolls'})">Public Polls</vs-button>
           <vs-button @click="$router.push({name: 'create_poll'})">Create poll</vs-button>
+          <p class="mx-2">|</p>
+          <vs-button flat transparent @click="$router.push({name: 'login'})">Login</vs-button>
+          <vs-button flat transparent @click="$router.push({name: 'register'})">Register</vs-button>
         </template>
       </vs-navbar>
   <router-view class="mt-16"></router-view>

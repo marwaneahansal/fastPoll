@@ -73279,7 +73279,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     path: '/',
     redirect: 'home',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/main.vue */ "./resources/js/views/main.vue"));
+      return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./views/main.vue */ "./resources/js/views/main.vue"));
     },
     children: [{
       path: '/home',
@@ -73304,6 +73304,24 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       name: 'publicPolls',
       component: function component() {
         return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/publicPolls.vue */ "./resources/js/views/publicPolls.vue"));
+      }
+    }, {
+      path: '/login',
+      name: 'login',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/Login.vue */ "./resources/js/views/Login.vue"));
+      }
+    }, {
+      path: 'register',
+      name: 'register',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./views/Register.vue */ "./resources/js/views/Register.vue"));
+      }
+    }, {
+      path: 'dashboard',
+      name: 'dashboard',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
       }
     }]
   }]

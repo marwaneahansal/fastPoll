@@ -33,6 +33,21 @@ const router = new Router({
                     path: '/polls',
                     name: 'publicPolls',
                     component: () => import('./views/publicPolls.vue')
+                },
+                {
+                    path: '/login',
+                    name: 'login',
+                    component: () => import('./views/Login.vue'),
+                },
+                {
+                    path: 'register',
+                    name: 'register',
+                    component: () => import('./views/Register.vue'),
+                },
+                {
+                    path: 'dashboard',
+                    name: 'dashboard',
+                    component: () => import('./views/Dashboard.vue'),
                 }
             ]
         }

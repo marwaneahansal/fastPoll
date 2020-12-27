@@ -20,7 +20,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('authToken')->accessToken;
 
-        return response(['user' => $user, 'token' => $token]);
+        return response(["success" => true, 'user' => $user, 'token' => $token]);
     }
 
     public function login(Request $request) {
@@ -30,12 +30,12 @@ class AuthController extends Controller
         ]);
 
         if(!auth()->attempt($validation)) {
-            return response(401)->json(["message" => 'Invalid Email or Password']);
+            return response(["success" => false, "message" => 'Invalid Email or Password']);
         }
 
         $token = auth()->user()->createToken('authToken')->accessToken;
 
 
-        return response(['user' => auth()->user(), 'token' => $token]);
+        return response(["success" => true, 'user' => auth()->user(), 'token' => $token]);
     }
 }
