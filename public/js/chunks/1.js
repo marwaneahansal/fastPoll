@@ -57,6 +57,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -123,6 +124,19 @@ __webpack_require__.r(__webpack_exports__);
         option: '',
         votes: 0
       });
+    },
+    copyUrl: function copyUrl() {
+      var _this2 = this;
+
+      navigator.clipboard.writeText(this.pollUrl).then(function () {
+        _this2.$vs.notification({
+          title: 'Text copied',
+          text: 'Poll Url copied successfully',
+          color: 'success'
+        });
+      }, function (err) {
+        console.log('Poll Url not copied', err);
+      });
     }
   }
 });
@@ -141,7 +155,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".vs-input-content {\n  background-color: white !important;\n}\n.vs-input {\n  width: 100%;\n}\r\n", ""]);
+exports.push([module.i, ".vs-input-content {\n  background-color: white !important;\n}\n.vs-input {\n  width: 100%;\n}\n.copy {\n  top: 50%;\n  right: 10px;\n  transform: translateY(-50%);\n}\r\n", ""]);
 
 // exports
 
@@ -294,7 +308,7 @@ var render = function() {
                         return [
                           _c("h4", { staticClass: "not-margin" }, [
                             _vm._v(
-                              "\n                        Your poll created successfully\n                    "
+                              "\n                            Your poll created successfully\n                        "
                             )
                           ])
                         ]
@@ -317,7 +331,7 @@ var render = function() {
                                 { on: { click: _vm.checkPoll } },
                                 [
                                   _vm._v(
-                                    "\n                        Check poll\n                        "
+                                    "\n                            Check poll\n                            "
                                   )
                                 ]
                               ),
@@ -334,7 +348,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                        Cancel\n                        "
+                                    "\n                            Cancel\n                            "
                                   )
                                 ]
                               )
@@ -358,9 +372,10 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "con-content" },
+                    { staticClass: "con-content relative" },
                     [
                       _c("vs-input", {
+                        ref: "urlInput",
                         attrs: { placeholder: "Poll Url" },
                         model: {
                           value: _vm.pollUrl,
@@ -369,6 +384,12 @@ var render = function() {
                           },
                           expression: "pollUrl"
                         }
+                      }),
+                      _vm._v(" "),
+                      _c("box-icon", {
+                        staticClass: "cursor-pointer absolute copy",
+                        attrs: { name: "copy" },
+                        on: { click: _vm.copyUrl }
                       })
                     ],
                     1

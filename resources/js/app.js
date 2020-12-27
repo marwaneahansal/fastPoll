@@ -2,6 +2,7 @@ require('./bootstrap');
 
 
 import Vue from 'vue';
+import 'boxicons';
 
 import Vuesax from 'vuesax';
 // vuesax scss

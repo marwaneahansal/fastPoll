@@ -10,32 +10,33 @@
 
             <div class="pollOptions">
                 <div class="mb-3 relative" v-for="(pollOption, index) in pollOptions" :key="index">
-                    <vs-input class="py-2" color="success" shadow primary v-model="pollOption.option" :label-placeholder="'Option ' + (index + 1)"/>
+                    <vs-input  class="py-2" color="success" shadow primary v-model="pollOption.option" :label-placeholder="'Option ' + (index + 1)"/>
                 </div>
                 <div class="flex">
                     <vs-button size="large" @click="addOption" :disabled="pollOptions.length === 8">Add another Option</vs-button>
                     <vs-button size="large" success flat shadow  class="ml-4" @click="createPoll" ref="button">Create your poll</vs-button>
                     <vs-dialog width="300px" not-center v-model="isPollCreated">
                         <template #header>
-                        <h4 class="not-margin">
-                            Your poll created successfully
-                        </h4>
+                            <h4 class="not-margin">
+                                Your poll created successfully
+                            </h4>
                         </template>
 
 
-                        <div class="con-content">
-                        <vs-input v-model="pollUrl" placeholder="Poll Url"></vs-input>
+                        <div class="con-content relative">
+                            <vs-input ref="urlInput" v-model="pollUrl" placeholder="Poll Url"></vs-input>
+                            <box-icon name='copy' @click="copyUrl" class="cursor-pointer absolute copy"></box-icon>
                         </div>
 
                         <template #footer>
-                        <div class="con-footer flex items-center justify-between">
-                            <vs-button @click="checkPoll">
-                            Check poll
-                            </vs-button>
-                            <vs-button @click="isPollCreated=false" dark transparent>
-                            Cancel
-                            </vs-button>
-                        </div>
+                            <div class="con-footer flex items-center justify-between">
+                                <vs-button @click="checkPoll">
+                                Check poll
+                                </vs-button>
+                                <vs-button @click="isPollCreated=false" dark transparent>
+                                Cancel
+                                </vs-button>
+                            </div>
                         </template>
                     </vs-dialog>
                 </div>
@@ -94,6 +95,18 @@ export default {
         },
         addOption() {
             this.pollOptions.push({id: this.pollOptions.length + 1, option: '', votes: 0});
+        },
+        copyUrl() {
+            navigator.clipboard.writeText(this.pollUrl).then(() => {
+                this.$vs.notification({
+                     title: 'Text copied',
+                    text: 'Poll Url copied successfully',
+                    color: 'success'
+                });
+            }, (err) => {
+                console.log('Poll Url not copied', err)
+            });
+
         }
     },
     
@@ -106,6 +119,12 @@ export default {
 }
 .vs-input {
     width: 100%;
+}
+
+.copy {
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
 }
 </style>
 
