@@ -42,8 +42,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
-    isUserLoggedIn: function isUserLoggedIn() {
-      return localStorage.getItem('user') && localStorage.getItem('accessToken') && localStorage.getItem('loggedIn') == 'true';
+    isUserLoggedIn: {
+      get: function get() {
+        return localStorage.getItem('user') && localStorage.getItem('accessToken') && localStorage.getItem('loggedIn') == 'true';
+      },
+      set: function set(val) {
+        this.isUserLoggedIn = val;
+      }
+    }
+  },
+  methods: {
+    logout: function logout() {
+      localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('loggedIn'); // this.isUserLoggedIn = false;
+
+      this.$router.push({
+        name: 'home'
+      });
     }
   }
 });
@@ -211,7 +227,14 @@ var render = function() {
                       [
                         _c(
                           "vs-button",
-                          { attrs: { flat: "", transparent: "" } },
+                          {
+                            attrs: { flat: "", transparent: "" },
+                            on: {
+                              click: function($event) {
+                                return _vm.$router.push({ name: "mypolls" })
+                              }
+                            }
+                          },
                           [_vm._v("My Polls")]
                         ),
                         _vm._v(" "),
@@ -221,8 +244,11 @@ var render = function() {
                           [
                             _c(
                               "vs-button",
-                              { attrs: { flat: "", transparent: "" } },
-                              [_vm._v("Profile")]
+                              {
+                                attrs: { flat: "", transparent: "" },
+                                on: { click: _vm.logout }
+                              },
+                              [_vm._v("Log out")]
                             ),
                             _vm._v(" "),
                             _c(

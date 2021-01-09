@@ -11,6 +11,12 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -91,10 +97,19 @@ __webpack_require__.r(__webpack_exports__);
       var pollOptionsFiltered = this.pollOptions.filter(function (option) {
         return option.option !== '';
       });
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/polls', {
+
+      var data = _objectSpread(_objectSpread({}, {}), {}, {
         pollQuestion: this.pollQuestion,
         pollOptions: pollOptionsFiltered
-      }).then(function (res) {
+      });
+
+      if (localStorage.getItem('user') && localStorage.getItem('accessToken') && localStorage.getItem('loggedIn') == 'true') {
+        data = _objectSpread(_objectSpread({}, data), {}, {
+          userId: JSON.parse(localStorage.getItem('user')).id
+        });
+      }
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/polls', data).then(function (res) {
         loading.close();
         _this.pollUri = res.data.uri;
         _this.pollUrl = "localhost:8000/poll/".concat(_this.pollUri);

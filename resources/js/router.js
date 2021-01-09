@@ -48,6 +48,11 @@ const router = new Router({
                     path: 'dashboard',
                     name: 'dashboard',
                     component: () => import('./views/Dashboard.vue'),
+                },
+                {
+                    path: 'mypolls',
+                    name: 'mypolls',
+                    component: () => import('./views/UserPolls.vue'),
                 }
             ]
         }

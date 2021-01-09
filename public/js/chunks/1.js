@@ -59,9 +59,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         loading.close();
 
-        if (res.success) {
-          localStorage.setItem('user', res.user);
-          localStorage.setItem('accessToken', res.token);
+        if (res.data.success === true) {
+          localStorage.setItem('user', res.data.user);
+          localStorage.setItem('accessToken', res.data.token);
           localStorage.setItem('loggedIn', true);
 
           _this.$router.push({

@@ -70,10 +70,14 @@ export default {
             });
             //! filter pollOptions from null options
             let pollOptionsFiltered = this.pollOptions.filter(option => option.option !== '');
-            axios.post('/api/polls', {
-                pollQuestion: this.pollQuestion,
-                pollOptions: pollOptionsFiltered
-            })
+            let data = {...{},pollQuestion: this.pollQuestion,pollOptions: pollOptionsFiltered};
+            if(localStorage.getItem('user') 
+                && localStorage.getItem('accessToken') 
+                && (localStorage.getItem('loggedIn') == 'true')) {
+                    data = {...data, userId: JSON.parse(localStorage.getItem('user')).id };
+            }
+
+            axios.post('/api/polls', data)
             .then(res => {
                 loading.close();
                 this.pollUri = res.data.uri;

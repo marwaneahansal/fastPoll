@@ -72,7 +72,6 @@ __webpack_require__.r(__webpack_exports__);
         password_confirmation: this.confirmpassword
       }).then(function (res) {
         loading.close();
-        console.log(res);
 
         if (res.data.success === true) {
           localStorage.setItem('user', JSON.stringify(res.data.user));

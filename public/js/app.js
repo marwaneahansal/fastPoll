@@ -73323,6 +73323,12 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       component: function component() {
         return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
       }
+    }, {
+      path: 'mypolls',
+      name: 'mypolls',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./views/UserPolls.vue */ "./resources/js/views/UserPolls.vue"));
+      }
     }]
   }]
 });

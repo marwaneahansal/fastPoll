@@ -32,12 +32,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      polls: null
+      polls: null,
+      filteredPolls: [],
+      searchQuery: '',
+      filters: {}
     };
+  },
+  watch: {
+    searchQuery: function searchQuery() {
+      this.filteredPolls = this.searchPolls(this.polls, this.searchQuery);
+    }
   },
   methods: {
     getPolls: function getPolls() {
@@ -45,12 +56,17 @@ __webpack_require__.r(__webpack_exports__);
 
       var loading = this.$vs.loading();
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/polls').then(function (res) {
-        console.log(res.data.polls);
         _this.polls = res.data.polls;
+        _this.filteredPolls = _this.polls;
         loading.close();
       })["catch"](function (err) {
         console.log(err);
         loading.close();
+      });
+    },
+    searchPolls: function searchPolls(polls, query) {
+      return polls.filter(function (item) {
+        return item.poll_question.toLowerCase().includes(query.toLowerCase()) || item.created_by.toLowerCase().includes(query.toLowerCase());
       });
     }
   },
@@ -73,7 +89,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".header {\n  width: 60%;\n}\n#publicPolls .vs-card {\n  max-width: none;\n  width: 60%;\n  transition: transform 1s ease;\n}\n#publicPolls .vs-card:hover {\n  transform: translateY(-8px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n", ""]);
+exports.push([module.i, ".header {\n  width: 60%;\n}\n#publicPolls .vs-card {\n  max-width: none;\n  width: 60%;\n  transition: transform 1s ease;\n}\n#publicPolls .vs-card:hover {\n  transform: translateY(-8px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n#publicPolls .searchInput {\n  width: 60% !important;\n}\n#publicPolls .vs-input-content, #publicPolls .vs-input{\n  background-color: white !important;\n}\n#publicPolls .vs-input {\n  width: 100%;\n}\n", ""]);
 
 // exports
 
@@ -132,7 +148,26 @@ var render = function() {
       [
         _vm._m(0),
         _vm._v(" "),
-        _vm._l(_vm.polls, function(poll) {
+        _c(
+          "div",
+          { staticClass: "searchInput" },
+          [
+            _c("vs-input", {
+              staticClass: "py-2 mb-4",
+              attrs: { placeholder: "Search by poll or users" },
+              model: {
+                value: _vm.searchQuery,
+                callback: function($$v) {
+                  _vm.searchQuery = $$v
+                },
+                expression: "searchQuery"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm._l(_vm.filteredPolls, function(poll) {
           return _c(
             "div",
             { key: poll.id, staticClass: "vs-card py-4 px-6 mb-4" },

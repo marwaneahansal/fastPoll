@@ -13,9 +13,9 @@
             <vs-button flat transparent @click="$router.push({name: 'register'})">Register</vs-button>
           </div>
           <div v-else class="flex relative">
-            <vs-button flat transparent>My Polls</vs-button>
+            <vs-button flat transparent @click="$router.push({name: 'mypolls'})">My Polls</vs-button>
             <div class="dropdown">
-              <vs-button flat transparent>Profile</vs-button>
+              <vs-button flat transparent @click="logout">Log out</vs-button>
               <div class="dropdown-items absolute bg-white mt-2 shadow hidden">
                 <vs-button flat transparent>Profile</vs-button>
                 <vs-button flat transparent>Settings</vs-button>
@@ -32,8 +32,23 @@
 <script>
 export default {
   computed: {
-    isUserLoggedIn() {
-      return localStorage.getItem('user') && localStorage.getItem('accessToken') && (localStorage.getItem('loggedIn') == 'true');
+    isUserLoggedIn: {
+      get() {
+        return localStorage.getItem('user') && localStorage.getItem('accessToken') && (localStorage.getItem('loggedIn') == 'true');
+      },
+      set(val) {
+        this.isUserLoggedIn = val;
+      }
+
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('loggedIn');
+      // this.isUserLoggedIn = false;
+      this.$router.push({name: 'home'});
     }
   }
 }

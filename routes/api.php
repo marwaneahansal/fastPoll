@@ -19,11 +19,12 @@ use App\Http\Controllers\AuthController;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
+Route::get('polls/{id}', [PollController::class, 'getUserPoll']);
 Route::apiResource('polls', PollController::class)->except('store', 'update');
-// 10 request per one minutes
-Route::post('polls', [PollController::class, 'store'])->middleware('throttle:10,1');
+// 40 request per one minutes
+Route::post('polls', [PollController::class, 'store'])->middleware('throttle:40,1');
 
-// 10 request per one minutes
-Route::put('polls/{id}', [PollController::class, 'update'])->middleware('throttle:10,1');
+// 40 request per one minutes
+Route::put('polls/{id}', [PollController::class, 'update'])->middleware('throttle:40,1');
 
 Route::get('/poll/{uri}', [PollController::class, 'getPoll']);

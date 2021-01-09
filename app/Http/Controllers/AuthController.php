@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -29,11 +30,11 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if(!auth()->attempt($validation)) {
+        if(!Auth::attempt($validation)) {
             return response(["success" => false, "message" => 'Invalid Email or Password']);
         }
 
-        $token = auth()->user()->createToken('authToken')->accessToken;
+        $token = Auth::user()->createToken('authToken')->accessToken;
 
 
         return response(["success" => true, 'user' => auth()->user(), 'token' => $token]);

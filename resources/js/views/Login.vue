@@ -44,9 +44,9 @@ export default {
           password: this.password
         }).then(res => {
           loading.close();
-          if(res.success) {
-            localStorage.setItem('user', res.user);
-            localStorage.setItem('accessToken', res.token);
+          if(res.data.success === true) {
+            localStorage.setItem('user', res.data.user);
+            localStorage.setItem('accessToken', res.data.token);
             localStorage.setItem('loggedIn', true);
             this.$router.push({name: 'dashboard'});
           } else {

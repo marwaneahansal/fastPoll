@@ -59,7 +59,6 @@ export default {
         
         }).then(res => {
           loading.close();
-          console.log(res);
           if(res.data.success === true) {
             localStorage.setItem('user', JSON.stringify(res.data.user));
             localStorage.setItem('accessToken', res.data.token);

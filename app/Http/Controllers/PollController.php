@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Poll;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +28,11 @@ class PollController extends Controller
         return ['poll' => $poll];
     }
 
+    public function getUserPoll($id) {
+        $polls = Poll::where('user_id', $id)->get();
+        return response()->json(["polls" => $polls]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -44,10 +51,11 @@ class PollController extends Controller
      */
     public function store(Request $request)
     {
-        $validateRequest = $request->validate([
+        $request->validate([
             'pollQuestion' => 'required',
             'pollOptions' => 'required'
         ]);
+
 
         $uri = Str::Random(10);
         $searchUri = DB::table('polls')->where('uri', $uri)->first();
@@ -61,6 +69,10 @@ class PollController extends Controller
         $poll->uri = $uri;
         $poll->poll_question = $request->input('pollQuestion');
         $poll->pollOptions = $request->input('pollOptions');
+        if($request->input('userId')) {
+            $poll->user_id = $request->input('userId');
+            $poll->created_by = User::find($request->input('userId'))->name;
+        }
         
         $poll->save();
 
