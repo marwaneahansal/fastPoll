@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="vs-card py-4 px-6 mb-4" v-for="poll in polls" :key="poll.id">
-                <div class="pollHeader flex items-center justify-between">
+                <div class="pollHeader flex items-center justify-between cursor-pointer" @click="$router.push({name: 'poll', params:{ uri: poll.uri }})">
                     <h2 class="text-2xl font-semibold" v-if="poll.poll_question[poll.poll_question.length - 1] === '?'">{{ poll.poll_question }}</h2>
                     <h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
                 </div>
@@ -52,14 +52,14 @@ export default {
     .header {
         width: 60%;
     }
-    .vs-card {
+    #publicPolls .vs-card {
         max-width: none;
         width: 60%;
         transition: transform 1s ease;
     }
 
 
-    .vs-card:hover {
+    #publicPolls .vs-card:hover {
         transform: translateY(-8px);
         /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */
     }

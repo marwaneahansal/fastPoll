@@ -103,14 +103,15 @@ class PollController extends Controller
      * @param  \App\Models\Poll  $poll
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Poll $poll)
-    {
+    public function update(Request $request, $id)
+    {   
+        $poll = Poll::find($id);
         $poll->pollOptions = $request->input('pollOptions');
         $poll->totalVotes = $poll->totalVotes + 1;
-        $poll->update($request->all());
+        $poll->save();
 
 
-        return ['message' => 'Thank you for your vote'];
+        return response()->json(['message' => 'Thank you for your vote', 'poll' => $poll]);
         
     }
 

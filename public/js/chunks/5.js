@@ -73,7 +73,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".header {\n  width: 60%;\n}\n.vs-card {\n  max-width: none;\n  width: 60%;\n  transition: transform 1s ease;\n}\n.vs-card:hover {\n  transform: translateY(-8px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n", ""]);
+exports.push([module.i, ".header {\n  width: 60%;\n}\n#publicPolls .vs-card {\n  max-width: none;\n  width: 60%;\n  transition: transform 1s ease;\n}\n#publicPolls .vs-card:hover {\n  transform: translateY(-8px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n", ""]);
 
 // exports
 
@@ -139,7 +139,18 @@ var render = function() {
             [
               _c(
                 "div",
-                { staticClass: "pollHeader flex items-center justify-between" },
+                {
+                  staticClass:
+                    "pollHeader flex items-center justify-between cursor-pointer",
+                  on: {
+                    click: function($event) {
+                      return _vm.$router.push({
+                        name: "poll",
+                        params: { uri: poll.uri }
+                      })
+                    }
+                  }
+                },
                 [
                   poll.poll_question[poll.poll_question.length - 1] === "?"
                     ? _c("h2", { staticClass: "text-2xl font-semibold" }, [

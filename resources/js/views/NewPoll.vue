@@ -77,7 +77,7 @@ export default {
             .then(res => {
                 loading.close();
                 this.pollUri = res.data.uri;
-                this.pollUrl = `localhost:3000/poll/${this.pollUri}`;
+                this.pollUrl = `localhost:8000/poll/${this.pollUri}`;
                 this.isPollCreated = true;
             })
             .catch(err => {

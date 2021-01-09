@@ -7,7 +7,7 @@
             <p>Poll you requested not found, Please check again your poll url.</p>
         </vs-alert>
         <div class="mx-auto w-1/2 mb-12" v-if="poll">
-            <div class="vs-card py-4 px-6">
+            <div class="vs-card py-4 px-6" id="pollDetails">
                 <div class="pollHeader flex items-center justify-between">
                     <h2 class="text-2xl font-semibold" v-if="this.poll.poll_question[this.poll.poll_question.length - 1] === '?'">{{ poll.poll_question }}</h2>
                     <h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
@@ -116,7 +116,8 @@ export default {
                     title: 'Vote saved successfully',
                     text: `${res.data.message}`,
                     color: 'success'
-                })
+                });
+                // localStorage.setItem(res.)
             })
             .catch(err => {
                 loading.close();
@@ -124,7 +125,7 @@ export default {
                 if(err.response.status === 429) {
                     this.$vs.notification({
                         title: 'Error',
-                        text: `You already voted for this poll`,
+                        text: `Too Many Attempts`,
                         color: 'danger'
                     });
                 } else {
@@ -148,12 +149,18 @@ export default {
 </script>
 
 <style>
-.vs-card {
+#pollDetails {
     cursor: auto !important;
     max-width: 100% !important;
 }
 
+#pollDetails {
+    width: 100% !important;
+}
+
 .pollOption {
+    max-width: 100% !important;
+    width: 100% !important;
     transition: transform 1s ease;
 }
 

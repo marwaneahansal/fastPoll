@@ -23,7 +23,7 @@ Route::apiResource('polls', PollController::class)->except('store', 'update');
 // 10 request per one minutes
 Route::post('polls', [PollController::class, 'store'])->middleware('throttle:10,1');
 
-// 1 request per 24 hours
-Route::put('polls/{id}', [PollController::class, 'update'])->middleware('throttle:1,1440');
+// 10 request per one minutes
+Route::put('polls/{id}', [PollController::class, 'update'])->middleware('throttle:10,1');
 
 Route::get('/poll/{uri}', [PollController::class, 'getPoll']);

@@ -140,7 +140,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           title: 'Vote saved successfully',
           text: "".concat(res.data.message),
           color: 'success'
-        });
+        }); // localStorage.setItem(res.)
+
       })["catch"](function (err) {
         loading.close();
         console.log(err.response);
@@ -148,7 +149,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         if (err.response.status === 429) {
           _this2.$vs.notification({
             title: 'Error',
-            text: "You already voted for this poll",
+            text: "Too Many Attempts",
             color: 'danger'
           });
         } else {
@@ -184,7 +185,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".vs-card {\n  cursor: auto !important;\n  max-width: 100% !important;\n}\n.pollOption {\n  transition: transform 1s ease;\n}\n.pollOption:hover {\n  transform: translateY(-5px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n.vs-radio-content {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n", ""]);
+exports.push([module.i, "#pollDetails {\n  cursor: auto !important;\n  max-width: 100% !important;\n}\n#pollDetails {\n  width: 100% !important;\n}\n.pollOption {\n  max-width: 100% !important;\n  width: 100% !important;\n  transition: transform 1s ease;\n}\n.pollOption:hover {\n  transform: translateY(-5px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n.vs-radio-content {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n", ""]);
 
 // exports
 
@@ -273,179 +274,190 @@ var render = function() {
       _vm._v(" "),
       _vm.poll
         ? _c("div", { staticClass: "mx-auto w-1/2 mb-12" }, [
-            _c("div", { staticClass: "vs-card py-4 px-6" }, [
-              _c(
-                "div",
-                { staticClass: "pollHeader flex items-center justify-between" },
-                [
-                  this.poll.poll_question[
-                    this.poll.poll_question.length - 1
-                  ] === "?"
-                    ? _c("h2", { staticClass: "text-2xl font-semibold" }, [
-                        _vm._v(_vm._s(_vm.poll.poll_question))
-                      ])
-                    : _c("h2", { staticClass: "text-2xl font-semibold" }, [
-                        _vm._v(_vm._s(_vm.poll.poll_question) + "?")
-                      ]),
-                  _vm._v(" "),
-                  !_vm.showPoll
-                    ? _c("p", [
-                        _vm._v("Total Votes: " + _vm._s(_vm.poll.totalVotes))
-                      ])
-                    : _vm._e()
-                ]
-              ),
-              _vm._v(" "),
-              _vm.showPoll
-                ? _c("div", [
-                    _c(
-                      "div",
-                      { staticClass: "mt-5" },
-                      _vm._l(_vm.pollOptions, function(pollOption) {
-                        return _c(
-                          "vs-radio",
-                          {
-                            key: pollOption.id,
-                            staticClass: "mt-2",
-                            attrs: { val: pollOption.id },
-                            model: {
-                              value: _vm.option,
-                              callback: function($$v) {
-                                _vm.option = $$v
-                              },
-                              expression: "option"
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(pollOption.option) +
-                                "\n                    "
-                            )
-                          ]
-                        )
-                      }),
-                      1
-                    ),
+            _c(
+              "div",
+              {
+                staticClass: "vs-card py-4 px-6",
+                attrs: { id: "pollDetails" }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "pollHeader flex items-center justify-between"
+                  },
+                  [
+                    this.poll.poll_question[
+                      this.poll.poll_question.length - 1
+                    ] === "?"
+                      ? _c("h2", { staticClass: "text-2xl font-semibold" }, [
+                          _vm._v(_vm._s(_vm.poll.poll_question))
+                        ])
+                      : _c("h2", { staticClass: "text-2xl font-semibold" }, [
+                          _vm._v(_vm._s(_vm.poll.poll_question) + "?")
+                        ]),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "flex items-center justify-between mt-6" },
-                      [
-                        _c(
-                          "vs-button",
-                          {
-                            ref: "button",
-                            attrs: {
-                              primary: "",
-                              icon: "",
-                              disabled: !_vm.option
-                            },
-                            on: { click: _vm.submitPoll }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        Submit\n                    "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "vs-button",
-                          {
-                            attrs: { shadow: "", primary: "" },
-                            on: {
-                              click: function($event) {
-                                _vm.showPoll = false
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        Jump to result\n                    "
-                            )
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                : _c("div", [
-                    _c(
-                      "div",
-                      { staticClass: "mt-5" },
-                      [
-                        _vm._l(_vm.pollOptionsSorted, function(
-                          pollOption,
-                          index
-                        ) {
+                    !_vm.showPoll
+                      ? _c("p", [
+                          _vm._v("Total Votes: " + _vm._s(_vm.poll.totalVotes))
+                        ])
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.showPoll
+                  ? _c("div", [
+                      _c(
+                        "div",
+                        { staticClass: "mt-5" },
+                        _vm._l(_vm.pollOptions, function(pollOption) {
                           return _c(
-                            "div",
+                            "vs-radio",
                             {
                               key: pollOption.id,
-                              staticClass: "pollOption vs-card py-4 px-6 mb-3"
+                              staticClass: "mt-2",
+                              attrs: { val: pollOption.id },
+                              model: {
+                                value: _vm.option,
+                                callback: function($$v) {
+                                  _vm.option = $$v
+                                },
+                                expression: "option"
+                              }
                             },
                             [
-                              _c(
-                                "h3",
-                                { staticClass: "text-xl mb-4 font-semibold" },
-                                [_vm._v(_vm._s(pollOption.option))]
-                              ),
-                              _vm._v(" "),
-                              _c("k-progress", {
-                                attrs: {
-                                  color: _vm.colors[index],
-                                  percent: _vm.getVotesPercent(
-                                    pollOption.votes,
-                                    _vm.poll.totalVotes
-                                  )
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(pollOption.option) +
+                                  "\n                    "
+                              )
+                            ]
+                          )
+                        }),
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "flex items-center justify-between mt-6"
+                        },
+                        [
+                          _c(
+                            "vs-button",
+                            {
+                              ref: "button",
+                              attrs: {
+                                primary: "",
+                                icon: "",
+                                disabled: !_vm.option
+                              },
+                              on: { click: _vm.submitPoll }
+                            },
+                            [
+                              _vm._v(
+                                "\n                        Submit\n                    "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "vs-button",
+                            {
+                              attrs: { shadow: "", primary: "" },
+                              on: {
+                                click: function($event) {
+                                  _vm.showPoll = false
                                 }
-                              }),
-                              _vm._v(" "),
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                        Jump to result\n                    "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  : _c("div", [
+                      _c(
+                        "div",
+                        { staticClass: "mt-5" },
+                        [
+                          _vm._l(_vm.pollOptionsSorted, function(
+                            pollOption,
+                            index
+                          ) {
+                            return _c(
+                              "div",
+                              {
+                                key: pollOption.id,
+                                staticClass: "pollOption vs-card py-4 px-6 mb-3"
+                              },
+                              [
+                                _c(
+                                  "h3",
+                                  { staticClass: "text-xl mb-4 font-semibold" },
+                                  [_vm._v(_vm._s(pollOption.option))]
+                                ),
+                                _vm._v(" "),
+                                _c("k-progress", {
+                                  attrs: {
+                                    color: _vm.colors[index],
+                                    percent: _vm.getVotesPercent(
+                                      pollOption.votes,
+                                      _vm.poll.totalVotes
+                                    )
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  { staticClass: "mt-4 text-sm text-black" },
+                                  [_vm._v(_vm._s(pollOption.votes) + " Votes")]
+                                )
+                              ],
+                              1
+                            )
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "flex justify-end mt-6" },
+                            [
                               _c(
-                                "p",
-                                { staticClass: "mt-4 text-sm text-black" },
-                                [_vm._v(_vm._s(pollOption.votes) + " Votes")]
+                                "vs-button",
+                                {
+                                  attrs: { shadow: "", primary: "" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.showPoll = true
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Back to vote\n                        "
+                                  )
+                                ]
                               )
                             ],
                             1
                           )
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "flex justify-end mt-6" },
-                          [
-                            _c(
-                              "vs-button",
-                              {
-                                attrs: { shadow: "", primary: "" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.showPoll = true
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                            Back to vote\n                        "
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      2
-                    )
-                  ]),
-              _vm._v(" "),
-              _c(
-                "p",
-                { staticClass: "text-sm mt-4 text-gray-900 text-opacity-50" },
-                [_vm._v("Created by " + _vm._s(_vm.poll.created_by))]
-              )
-            ])
+                        ],
+                        2
+                      )
+                    ]),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  { staticClass: "text-sm mt-4 text-gray-900 text-opacity-50" },
+                  [_vm._v("Created by " + _vm._s(_vm.poll.created_by))]
+                )
+              ]
+            )
           ])
         : _vm._e()
     ],

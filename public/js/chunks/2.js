@@ -97,7 +97,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         loading.close();
         _this.pollUri = res.data.uri;
-        _this.pollUrl = "localhost:3000/poll/".concat(_this.pollUri);
+        _this.pollUrl = "localhost:8000/poll/".concat(_this.pollUri);
         _this.isPollCreated = true;
       })["catch"](function (err) {
         loading.close();

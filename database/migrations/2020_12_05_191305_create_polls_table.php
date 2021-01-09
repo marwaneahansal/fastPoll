@@ -20,6 +20,7 @@ class CreatePollsTable extends Migration
             $table->json('pollOptions');
             $table->integer('optionsCount')->default(2);
             $table->integer('totalVotes')->default(0);
+            $table->string('status')->default('private');
             $table->string('created_by')->default('anonymous');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
