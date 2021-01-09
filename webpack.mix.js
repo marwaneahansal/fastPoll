@@ -16,8 +16,8 @@ mix.js('resources/js/app.js', 'public/js')
         require("tailwindcss"),
     ])
     .copy('node_modules/vuesax/dist/vuesax.css', 'public/css/vuesax.css')
-    .copyDirectory('resources/assets/', 'public/assets/')
-    .browserSync('localhost:8000');
+    .copyDirectory('resources/assets/', 'public/assets/');
+    
 
 
 mix.webpackConfig({
