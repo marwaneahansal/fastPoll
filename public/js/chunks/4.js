@@ -184,7 +184,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".vs-card {\n  cursor: auto !important;\n  max-width: 100% !important;\n}\n.pollOption {\n  transition: transform 1s ease;\n}\n.pollOption:hover {\n  transform: translateY(-5px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n.vs-radio-content {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\r\n", ""]);
+exports.push([module.i, ".vs-card {\n  cursor: auto !important;\n  max-width: 100% !important;\n}\n.pollOption {\n  transition: transform 1s ease;\n}\n.pollOption:hover {\n  transform: translateY(-5px);\n  /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */\n}\n.vs-radio-content {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n", ""]);
 
 // exports
 
@@ -443,7 +443,7 @@ var render = function() {
               _c(
                 "p",
                 { staticClass: "text-sm mt-4 text-gray-900 text-opacity-50" },
-                [_vm._v("asked by " + _vm._s(_vm.poll.created_by))]
+                [_vm._v("Created by " + _vm._s(_vm.poll.created_by))]
               )
             ])
           ])

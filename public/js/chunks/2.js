@@ -155,7 +155,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".vs-input-content {\n  background-color: white !important;\n}\n.vs-input {\n  width: 100%;\n}\n.copy {\n  top: 50%;\n  right: 10px;\n  transform: translateY(-50%);\n}\r\n", ""]);
+exports.push([module.i, ".vs-input-content {\n  background-color: white !important;\n}\n.vs-input {\n  width: 100%;\n}\n.copy {\n  top: 50%;\n  right: 10px;\n  transform: translateY(-50%);\n}\n", ""]);
 
 // exports
 

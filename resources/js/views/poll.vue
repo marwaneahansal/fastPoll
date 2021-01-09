@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-sm mt-4 text-gray-900 text-opacity-50">asked by {{ poll.created_by }}</p>
+                <p class="text-sm mt-4 text-gray-900 text-opacity-50">Created by {{ poll.created_by }}</p>
             </div>
         </div>
     </div>

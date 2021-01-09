@@ -73406,8 +73406,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\Projects\Laravel\fastPoll\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\Projects\Laravel\fastPoll\resources\css\app.css */"./resources/css/app.css");
+__webpack_require__(/*! /home/noone/Desktop/projects/fastPoll/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/noone/Desktop/projects/fastPoll/resources/css/app.css */"./resources/css/app.css");
 
 
 /***/ })

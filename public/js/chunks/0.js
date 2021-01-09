@@ -158,7 +158,7 @@ render._withStripped = true
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/images/hero.svg?6067f2cb2c5d1808672ff76e299314b3";
+module.exports = "/images/hero.svg?574f82d0aa7a7e29ab38e0fd4886bf45";
 
 /***/ }),
 
