@@ -31,12 +31,12 @@ class AuthController extends Controller
         ]);
 
         if(!Auth::attempt($validation)) {
-            return response(["success" => false, "message" => 'Invalid Email or Password']);
+            return response()->json(["success" => false, "message" => 'Invalid Email or Password']);
         }
 
         $token = Auth::user()->createToken('authToken')->accessToken;
 
 
-        return response(["success" => true, 'user' => auth()->user(), 'token' => $token]);
+        return response()->json(["success" => true, 'user' => auth()->user(), 'token' => $token]);
     }
 }
