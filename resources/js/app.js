@@ -2,6 +2,10 @@ require('./bootstrap');
 
 
 import Vue from 'vue';
+
+
+import store from './store/index';
+
 import 'boxicons';
 
 import Vuesax from 'vuesax';
@@ -23,5 +27,6 @@ import router from './router.js';
 
 new Vue({
     router,
+    store,
     render: h => h(App)
 }).$mount('#app')
