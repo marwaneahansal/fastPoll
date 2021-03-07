@@ -49,7 +49,7 @@ class AuthController extends Controller
         return [
             'name' => '_token',
             'value' => $token,
-            'minutes' => 1440,
+            'minutes' => 60 * 60 * 24, // 1 hour
             'path' => null,
             'domain' => null,
             // 'secure' => true, // for production

@@ -23,7 +23,6 @@ export default {
     logout() {
       axios.get('api/logout')
         .then(res => {
-          console.log(res);
           if(res.data.success == true) {
             this.error = null;
             this.$router.push({ name: 'home'});
