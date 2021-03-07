@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PollController;
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\AddAuthHeader;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,10 @@ use App\Http\Controllers\AuthController;
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
+
+Route::middleware([AddAuthHeader::class])->group(function() {
+  Route::get('logout', [AuthController::class, 'logout']);
+});
 
 Route::get('polls/{id}', [PollController::class, 'getUserPoll']);
 Route::apiResource('polls', PollController::class)->except('store', 'update');

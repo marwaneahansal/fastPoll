@@ -23,6 +23,11 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
+    // protected $middlewarePriority = [
+    //     \App\Http\Middleware\AddAuthHeader::class,
+    //     \Illuminate\Auth\Middleware\Authenticate::class,
+    // ];
+
     /**
      * The application's route middleware groups.
      *
@@ -43,6 +48,14 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'auth.api' => [
+            \App\Http\Middleware\AddAuthHeader::class,
+            'throttle:60,1',
+            'bindings',
+            'auth:api',
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class
+        ]
     ];
 
     /**
@@ -53,6 +66,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'auth.api' => \App\Http\Middleware\AddAuthHeader::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

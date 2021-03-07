@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -30,13 +32,40 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if(!Auth::attempt($validation)) {
-            return response()->json(["success" => false, "message" => 'Invalid Email or Password']);
+        if(Auth::attempt($validation)) {
+            $token = Auth::user()->createToken('authToken')->accessToken;
+            $cookie = $this->getCookieDetails($token);
+            
+            return response()->json(["success" => true, 'user' => auth()->user(), 'token' => $token])->cookie(
+                $cookie['name'], $cookie['value'], $cookie['minutes'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite']
+            );
         }
+        
+        return response()->json(["success" => false, "message" => 'Invalid Email or Password']);
+    }
 
-        $token = Auth::user()->createToken('authToken')->accessToken;
+    private function getCookieDetails($token)
+    {
+        return [
+            'name' => '_token',
+            'value' => $token,
+            'minutes' => 1440,
+            'path' => null,
+            'domain' => null,
+            // 'secure' => true, // for production
+            'secure' => null, // for localhost
+            'httponly' => true,
+            'samesite' => true,
+        ];
+    }
 
 
-        return response()->json(["success" => true, 'user' => auth()->user(), 'token' => $token]);
+    public function logout(Request $request) {
+        $request->user('api')->token()->revoke();
+        $cookie = Cookie::forget('_token');
+        return response()->json([
+            "success" => true,
+            "message" => "You're logout successfully"
+        ])->withCookie($cookie);
     }
 }
