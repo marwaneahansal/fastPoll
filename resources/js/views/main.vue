@@ -1,65 +1,72 @@
 <template>
-<div class="container mx-auto">
+<div>
   <vs-navbar center-collapsed>
-        <template #left>
-          <h2 class="text-2xl font-semibold cursor-pointer" @click="$router.push('/')">FastPoll</h2>
-        </template>
-        <template #right>
-          <vs-button flat transparent @click="$router.push({name: 'publicPolls'})">Public Polls</vs-button>
-          <vs-button @click="$router.push({name: 'create_poll'})">Create poll</vs-button>
-          <p class="mx-2">|</p>
-          <div v-if="!isUserLoggedIn" class="flex">
-            <vs-button flat transparent @click="$router.push({name: 'login'})">Login</vs-button>
-            <vs-button flat transparent @click="$router.push({name: 'register'})">Register</vs-button>
-          </div>
-          <div v-else class="flex relative">
-            <vs-button flat transparent @click="$router.push({name: 'mypolls'})">My Polls</vs-button>
-            <div class="dropdown">
-              <vs-button flat transparent @click="logout">Log out</vs-button>
-              <div class="dropdown-items absolute bg-white mt-2 shadow hidden">
-                <vs-button flat transparent>Profile</vs-button>
-                <vs-button flat transparent>Settings</vs-button>
-                <vs-button flat transparent>Log out</vs-button>
-              </div>
+    <template #left class="ml-5">
+      <h2 class="text-2xl font-semibold cursor-pointer" @click="$router.push('/')">FastPoll</h2>
+    </template>
+    <template #right class="mr-5">
+      <vs-button flat transparent @click="$router.push({name: 'publicPolls'})">Public Polls</vs-button>
+      <vs-button @click="$router.push({name: 'create_poll'})">Create poll</vs-button>
+      <p class="mx-2">|</p>
+      <div v-if="!isUserLoggedIn" class="flex">
+        <vs-button flat transparent @click="$router.push({name: 'login'})">Login</vs-button>
+        <vs-button flat transparent @click="$router.push({name: 'register'})">Register</vs-button>
+      </div>
+      <div v-else class="flex relative">
+        <vs-button flat transparent @click="$router.push({name: 'mypolls'})">My Polls</vs-button>
+        <div class="h-auto profileDropdown">
+          <div class="dropdown">
+            <vs-button flat transparent @focus="showDropdown(true)" @focusout="showDropdown(false)" tabindex="0">More</vs-button>
+            <div class="dropdown-items absolute bg-white mt-2 mr-4 shadow" :class="{'hidden': !isShowDropdown}">
+              <vs-button flat transparent>Profile</vs-button>
+              <vs-button flat transparent>Settings</vs-button>
+              <vs-button flat transparent>Log out</vs-button>
             </div>
           </div>
-        </template>
-      </vs-navbar>
-  <router-view class="mt-16"></router-view>
+        </div>
+      </div>
+    </template>
+  </vs-navbar>
+  <router-view class="mt-16 layout"></router-view>
 </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      isShowDropdown: false,
+    }
+  },
   computed: {
-    isUserLoggedIn: {
-      get() {
-        return localStorage.getItem('user') && localStorage.getItem('accessToken') && (localStorage.getItem('loggedIn') == 'true');
-      },
-      set(val) {
-        this.isUserLoggedIn = val;
-      }
-
+    isUserLoggedIn() {
+      return this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn
     }
   },
   methods: {
     logout() {
-      localStorage.removeItem('user');
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('loggedIn');
-      // this.isUserLoggedIn = false;
-      this.$router.push({name: 'home'});
+      //TODO: for later
+    },
+    showDropdown (val) {
+      this.isShowDropdown = val;
     }
   }
 }
 </script>
 
 <style lang="css">
+  .vs-navbar, .layout {
+    width: 80% !important;
+    margin: 0 auto;
+  }
+
+  .vs-navbar {
+    padding: 0;
+  }
+
   .dropdown-items {
     border-radius: 8px 18px 18px 18px;
     z-index: 1000;
   }
-  .dropdown:hover .dropdown-items, .dropdown-items:hover .dropdown-items {
-    display: block !important;
-  }
+
 </style>
