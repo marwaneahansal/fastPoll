@@ -22,6 +22,7 @@ Route::post('register', [AuthController::class, 'register']);
 
 Route::middleware([AddAuthHeader::class])->group(function() {
   Route::get('logout', [AuthController::class, 'logout']);
+  Route::get('user', [AuthController::class, 'getLoggedInUser']);
 });
 
 Route::get('polls/{id}', [PollController::class, 'getUserPoll']);

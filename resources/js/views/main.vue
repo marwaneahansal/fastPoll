@@ -49,7 +49,23 @@ export default {
     },
     showDropdown (val) {
       this.isShowDropdown = val;
+    },
+    getUserInfo() {
+      let loading = this.$vs.loading();
+      this.$store.dispatch('auth/getloggedInUser')
+        .then(_ => loading.close())
+        .catch(err => {
+          loading.close();
+          this.$vs.notification({
+            title: 'Ooops',
+            text: `Something went wrong, ${err}` ,
+            color: 'danger'
+          });
+        })
     }
+  },
+  mounted() {
+    this.getUserInfo();
   }
 }
 </script>

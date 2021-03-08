@@ -47,6 +47,10 @@ class AuthController extends Controller
         return response()->json(["success" => false, "message" => 'Invalid Email or Password']);
     }
 
+    public function getLoggedInUser(Request $request) {
+        return response()->json(['user' => $request->user('api')->token()]);
+    }
+
     private function getCookieDetails($token)
     {
         return [

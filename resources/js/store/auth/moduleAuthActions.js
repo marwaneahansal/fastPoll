@@ -39,6 +39,25 @@ export default {
       );
     })
   },
+  getloggedInUser({ commit }) {
+    return new Promise((resolve, reject) => {
+      axios.get('user')
+        .then(res => {
+          if(res.data.user !== null) {
+            commit('SET_LOGGED_IN_USER_INFO', res.data.user);
+            resolve(res);
+          }
+          else {
+            commit('LOGOUT_USER');
+            reject('Ooops, Something went wrong!')
+          }
+        })
+        .catch(err => {
+          commit('LOGOUT_USER');
+          reject(err);
+        })
+    })
+  },
   logout ({ commit }) {
     return new Promise((resolve, reject) => {
       axios.get('logout')
