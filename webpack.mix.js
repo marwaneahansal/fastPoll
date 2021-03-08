@@ -12,12 +12,13 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    // Seems to be not working
-    resolve: {
-      alias: {
-          js: path.resolve(__dirname, 'resources/js'),
-      }
-    }
+    .webpackConfig({
+			resolve: {
+				alias: {
+						js: path.resolve(__dirname, 'resources/js'),
+				}
+			}
+    })
     .postCss('resources/css/app.css', 'public/css/app.css', [
         require("tailwindcss"),
     ])
