@@ -22,8 +22,11 @@ class AuthController extends Controller
         $user = User::create($validation);
 
         $token = $user->createToken('authToken')->accessToken;
+        $cookie = $this->getCookieDetails($token);
 
-        return response(["success" => true, 'user' => $user, 'token' => $token]);
+        return response()->json(["success" => true, 'user' => $user])->cookie(
+            $cookie['name'], $cookie['value'], $cookie['minutes'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite']
+        );
     }
 
     public function login(Request $request) {
@@ -36,7 +39,7 @@ class AuthController extends Controller
             $token = Auth::user()->createToken('authToken')->accessToken;
             $cookie = $this->getCookieDetails($token);
             
-            return response()->json(["success" => true, 'user' => auth()->user(), 'token' => $token])->cookie(
+            return response()->json(["success" => true, 'user' => auth()->user()])->cookie(
                 $cookie['name'], $cookie['value'], $cookie['minutes'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite']
             );
         }

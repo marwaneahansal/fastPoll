@@ -28,61 +28,47 @@
           </vs-input>
 
           <vs-button size="large" class="mx-auto" @click="register">Register</vs-button>
-          <p class="text-red-500 text-sm mx-auto mt-2" v-if="error">{{ error }}</p>
+          <p class="text-red-500 text-sm mx-auto mt-2" v-html="error"></p>
       </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
-    data() {
-        return {
-            name: '',
-            email: '',
-            password: '',
-            confirmpassword: '',
-            error: null,
-        }
-    },
-    methods: {
-      register() {
-        const loading = this.$vs.loading({
-          type: 'circles'
+  data() {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      confirmpassword: '',
+      error: null,
+    }
+  },
+  methods: {
+    register() {
+      const loading = this.$vs.loading({
+        type: 'circles'
+      });
+      this.error = null;
+      this.$store.dispatch('auth/register', {
+        email: this.email,
+        name: this.name,
+        password: this.password,
+        password_confirmation: this.confirmpassword
+      }).then(_ => {
+        loading.close();
+        this.$vs.notificattion({
+          title: 'Success',
+          text: "You're registred successfully",
+          color: 'success'
         });
-        this.error = null;
-        axios.post('/api/register', {
-          email: this.email,
-          name: this.name,
-          password: this.password,
-          password_confirmation: this.confirmpassword
-        
-        }).then(res => {
-          loading.close();
-          if(res.data.success === true) {
-            localStorage.setItem('user', JSON.stringify(res.data.user));
-            localStorage.setItem('accessToken', res.data.token);
-            localStorage.setItem('loggedIn', true);
-            this.$router.push({name: 'dashboard'});
-          } else {
-            this.error = 'Something gone wrong! Please try again!';
-          }
-        }).catch(err => {
-            loading.close();
-            console.log(err.response.data.errors);
-            if(err.response.data.errors) {
-              if(err.response.data.errors.name) this.error = err.response.data.errors.name[0];
-              else if(err.response.data.errors.email) this.error = err.response.data.errors.email[0];
-              else if(err.response.data.errors.password) this.error = err.response.data.errors.password[0];
-            }
-            this.$vs.notification({
-                title: 'Error',
-                text: 'Sorry. Something went wrong',
-                color: 'danger'
-            })
-        });
-      }
-    },
+      }).catch(err => {
+        console.log(err);
+        loading.close();
+        this.error = `${Object.values(err).join(' <br>')}`;
+      });
+    }
+  },
 }
 </script>
 

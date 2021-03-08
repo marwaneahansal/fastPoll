@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     data() {
         return {
@@ -39,24 +38,16 @@ export default {
           type: 'circles'
         });
         this.error = null;
-        axios.post('/api/login', {
-          email: this.email,
-          password: this.password
-        }).then(res => {
-          loading.close();
-          if(res.data.success === true) {
+        this.$store.dispatch('auth/login', {email: this.email, password: this.password})
+          .then(_ => {
+            loading.close();
             this.$router.push({name: 'dashboard'});
-          } else {
-            this.error = 'Invalid Email or password. Please Try Again!'
-          }
-        }).catch(err => {
-          loading.close();
-          this.$vs.notification({
-            title: 'Error',
-            text: 'Sorry. Something went wrong',
-            color: 'danger'
           })
-        });
+          .catch(err => {
+            loading.close();
+            this.error = err
+          }
+        );
       }
     },
 }
