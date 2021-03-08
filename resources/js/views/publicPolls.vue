@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'js/axios';
 export default {
     data() {
         return {
@@ -41,7 +41,7 @@ export default {
     methods: {
         getPolls() {
             const loading = this.$vs.loading();
-            axios.get('/api/polls')
+            axios.get('polls')
             .then(res => {
                 this.polls = res.data.polls;
                 this.filteredPolls = this.polls;

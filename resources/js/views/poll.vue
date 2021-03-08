@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'js/axios';
 export default {
     data() {
         return {
@@ -82,7 +82,7 @@ export default {
                 text: 'loading...',
                 type: 'circles',
             });
-            axios.get(`/api/poll/${this.$route.params.uri}`)
+            axios.get(`poll/${this.$route.params.uri}`)
             .then(res => {
                 if(res.data.poll) {
                     fetchLoading.close();
@@ -107,7 +107,7 @@ export default {
             selectedOption.votes += 1;
             this.poll.totalVotes += 1;
             this.pollOptionsSorted = [...this.pollOptions].sort((a,b) => a.votes > b.votes ? -1 : 1);
-            axios.put(`/api/polls/${this.poll.id}`, {
+            axios.put(`polls/${this.poll.id}`, {
                 pollOptions: this.pollOptions
             })
             .then(res => {

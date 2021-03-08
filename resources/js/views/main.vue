@@ -27,7 +27,7 @@
       </div>
     </template>
   </vs-navbar>
-  <router-view class="mt-16 layout"></router-view>
+  <router-view class="mt-16 layout" v-if="this.$store.state.auth.isUserLoggedIn !== null"></router-view>
 </div>
 </template>
 
