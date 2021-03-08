@@ -48,7 +48,9 @@ class AuthController extends Controller
     }
 
     public function getLoggedInUser(Request $request) {
-        return response()->json(['user' => $request->user('api')->token()]);
+        if($request->user('api')) return response()->json(['loggedIn' => true,'user' => $request->user('api')]);
+
+        return response()->json(['loggedIn' => false]);
     }
 
     private function getCookieDetails($token)

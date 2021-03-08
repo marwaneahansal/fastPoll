@@ -16,11 +16,11 @@
         <vs-button flat transparent @click="$router.push({name: 'mypolls'})">My Polls</vs-button>
         <div class="h-auto profileDropdown">
           <div class="dropdown">
-            <vs-button flat transparent @focus="showDropdown(true)" @focusout="showDropdown(false)" tabindex="0">More</vs-button>
+            <vs-button flat transparent tabindex="0" @focus="showDropdown(true)" @focusout="showDropdown(false)">More</vs-button>
             <div class="dropdown-items absolute bg-white mt-2 mr-4 shadow" :class="{'hidden': !isShowDropdown}">
               <vs-button flat transparent>Profile</vs-button>
               <vs-button flat transparent>Settings</vs-button>
-              <vs-button flat transparent>Log out</vs-button>
+              <vs-button flat transparent @click.stop="logout">Logout</vs-button>
             </div>
           </div>
         </div>
@@ -45,15 +45,35 @@ export default {
   },
   methods: {
     logout() {
-      //TODO: for later
+      let loading = this.$vs.loading();
+      this.$store.dispatch('auth/logout')
+        .then(_ => {
+          loading.close();
+          this.$vs.notification({
+            title: 'Success',
+            text: "You've successfully logged out",
+            color: 'success'
+          });
+        })
+        .catch(err => {
+          loading.close();
+          this.$vs.notification({
+            title: 'Ooops',
+            text: `Something went wrong, ${err}`,
+            color: 'danger'
+          })
+        })
     },
     showDropdown (val) {
+      console.log(val);
       this.isShowDropdown = val;
     },
     getUserInfo() {
       let loading = this.$vs.loading();
       this.$store.dispatch('auth/getloggedInUser')
-        .then(_ => loading.close())
+        .then(res => {
+          loading.close();
+        })
         .catch(err => {
           loading.close();
           this.$vs.notification({

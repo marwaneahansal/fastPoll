@@ -43,13 +43,12 @@ export default {
     return new Promise((resolve, reject) => {
       axios.get('user')
         .then(res => {
-          if(res.data.user !== null) {
+          if(res.data.loggedIn === true) {
             commit('SET_LOGGED_IN_USER_INFO', res.data.user);
-            resolve(res);
-          }
-          else {
+            resolve(res.data.loggedIn);
+          } else {
             commit('LOGOUT_USER');
-            reject('Ooops, Something went wrong!')
+            resolve(res)
           }
         })
         .catch(err => {
@@ -66,7 +65,7 @@ export default {
           resolve(res)
         })
         .catch(err => {
-          resolve('Ooops, Something went wrong!');
+          reject('Ooops, Something went wrong!');
         })
     })
   }

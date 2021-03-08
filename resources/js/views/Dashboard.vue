@@ -1,8 +1,6 @@
 <template>
-  <div id="dashboard">
-    <p>You're logged in</p>
-    <vs-button flat transparent @click="logout">Logout</vs-button>
-    <p v-if="error" class="text-danger">{{ error }}</p>
+  <div id="dashboard" v-if="user">
+    <h1>Welcome {{ user.name }}</h1>
   </div>
 </template>
 
@@ -15,25 +13,10 @@ export default {
     }
   },
   computed: {
-    loggedIn() {
-      return localStorage.getItem('loggedIn') && localStorage.getItem('accessToken') && localStorage.getItem('user');
-    }
+    user () {
+      return this.$store.state.auth.loggedInUser;
+    },
   },
-  methods: {
-    logout() {
-      axios.get('api/logout')
-        .then(res => {
-          if(res.data.success == true) {
-            this.error = null;
-            this.$router.push({ name: 'home'});
-          }
-          else this.error = "Something happend"
-        })
-        .catch(err => {
-          this.err = err
-        })
-    }
-  }
 }
 </script>
 
