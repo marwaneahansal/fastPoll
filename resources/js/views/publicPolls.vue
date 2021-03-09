@@ -23,71 +23,77 @@
 </template>
 
 <script>
-import axios from 'js/axios';
 export default {
-    data() {
-        return {
-            polls: null,
-            filteredPolls: [],
-            searchQuery: '',
-            filters: {},
-        }
-    },
-    watch: {
-        searchQuery() {
-            this.filteredPolls = this.searchPolls(this.polls, this.searchQuery);
-        }
-    },
-    methods: {
-        getPolls() {
-            const loading = this.$vs.loading();
-            axios.get('polls')
-            .then(res => {
-                this.polls = res.data.polls;
-                this.filteredPolls = this.polls;
-                loading.close();
-            })
-            .catch(err => {
-                console.log(err);
-                loading.close();
-            });
-        },
-        searchPolls(polls, query) {
-            return polls.filter(item => {
-                return item.poll_question.toLowerCase().includes(query.toLowerCase()) || item.created_by.toLowerCase().includes(query.toLowerCase());
-            });
-        }
-    },
-    created() {
-        this.getPolls();
-    }
+	data() {
+		return {
+			filteredPolls: [],
+			searchQuery: '',
+			filters: {},
+		}
+	},
+	computed: {
+		polls () {
+			return this.$store.state.polls.publicPolls;
+		}
+	},
+	watch: {
+		searchQuery() {
+			this.filteredPolls = this.searchPolls(this.polls, this.searchQuery);
+		}
+	},
+	methods: {
+		getPolls() {
+			const loading = this.$vs.loading();
+			this.$store.dispatch('polls/getPublicPolls')
+			.then(_ => {
+				this.filteredPolls = this.polls;
+				loading.close();
+			})
+			.catch(err => {
+				this.$vs.notification({
+					title: 'Ooops',
+					text: `Something went wrong, ${err}`,
+					color: 'danger'
+				});
+				loading.close();
+			});
+		},
+		searchPolls(polls, query) {
+			return polls.filter(item => {
+				return item.poll_question.toLowerCase().includes(query.toLowerCase()) || item.created_by.toLowerCase().includes(query.toLowerCase());
+			});
+		}
+	},
+	created() {
+		this.getPolls();
+	}
 }
 </script>
     
 <style>
-    .header {
-        width: 60%;
-    }
-    #publicPolls .vs-card {
-        max-width: none;
-        width: 60%;
-        transition: transform 1s ease;
-    }
+	.header {
+		width: 60%;
+	}
+	#publicPolls .vs-card {
+		max-width: none;
+		width: 60%;
+		transition: transform 1s ease;
+	}
 
 
-    #publicPolls .vs-card:hover {
-        transform: translateY(-8px);
-        /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */
-    }
+	#publicPolls .vs-card:hover {
+		transform: translateY(-8px);
+		/* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */
+	}
 
-    #publicPolls .searchInput {
-        width: 60% !important;
-    }
+	#publicPolls .searchInput {
+		width: 60% !important;
+	}
 
-    #publicPolls .vs-input-content, #publicPolls .vs-input{
-    background-color: white !important;
-    }
-    #publicPolls .vs-input {
-        width: 100%;
-    }
+	#publicPolls .vs-input-content, #publicPolls .vs-input{
+		background-color: white !important;
+	}
+	#publicPolls .vs-input {
+		width: 100%;
+	}
 </style>

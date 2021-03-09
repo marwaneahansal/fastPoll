@@ -12,6 +12,7 @@ import actions from './actions';
 
 // store modules
 import moduleAuth from './auth/moduleAuth';
+import modulePolls from './polls/modulePolls';
 
 
 export default new Vuex.Store({
@@ -20,7 +21,8 @@ export default new Vuex.Store({
   actions,
   mutations,
   modules: {
-    auth: moduleAuth
+    auth: moduleAuth,
+    polls: modulePolls
   },
   strict: process.env.NODE_ENV !== 'production',
 });

@@ -32,12 +32,14 @@ import axios from 'js/axios';
 export default {
 	data() {
 		return {
-				polls: [],
 				filteredPolls: [],
 				searchQuery: '',
 		}
 	},
 	computed: {
+		polls() {
+			return this.$store.state.polls.userPolls;
+		},
 		user() {
 			return this.$store.state.auth.loggedInUser;
 		}
@@ -52,16 +54,18 @@ export default {
 			let userId = this.user.id;
 			if(userId) {
 				const loading = this.$vs.loading();
-				axios.get(`polls/${userId}`)
-				.then(res => {
-						console.log(res)
-						this.polls = res.data.polls;
-						this.filteredPolls = this.polls;
-						loading.close();
+				this.$store.dispatch('polls/getUserPolls', { userId })
+				.then(_ => {
+					this.filteredPolls = this.polls;
+					loading.close();
 				})
 				.catch(err => {
-						console.log(err);
-						loading.close();
+					this.$vs.notification({
+						title: 'Ooops',
+						text: `Something went wrong, ${err}`,
+						color: 'danger'
+					});
+					loading.close();
 				});
 			}
 		},
