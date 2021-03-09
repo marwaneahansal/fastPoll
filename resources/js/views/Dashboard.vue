@@ -1,11 +1,15 @@
 <template>
-  <div id="dashboard" v-if="user">
-    <h1>Welcome {{ user.name }}</h1>
+  <div id="dashboard">
+    <div v-if="user && isLoggedIn">
+      <h1>Welcome {{ user.name }}</h1>
+    </div>
+    <div v-else>
+      <h1>You're not logged in</h1>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
   data() {
     return {
@@ -13,6 +17,9 @@ export default {
     }
   },
   computed: {
+    isLoggedIn () {
+      return this.$store.state.auth.isUserLoggedIn;
+    },
     user () {
       return this.$store.state.auth.loggedInUser;
     },
