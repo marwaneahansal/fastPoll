@@ -25,4 +25,37 @@ export default {
         });
     });
   },
+  createPoll({  }, payload) {
+    return new Promise((resolve, reject) => {
+      axios.post('polls', payload)
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        });
+    })
+  },
+  votePoll({ }, payload) {
+    return new Promise((resolve, reject) => {
+      axios.put(`polls/${payload.pollId}`, { pollOptions: payload.pollOptions })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        })
+    });
+  },
+  getPoll({ }, payload) {
+    return new Promise((resolve, reject) => {
+      axios.get(`poll/${payload.pollId}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        })
+    });
+  }
 }

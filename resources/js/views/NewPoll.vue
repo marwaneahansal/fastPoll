@@ -48,69 +48,66 @@
 <script>
 import axios from 'js/axios';
 export default {
-    data() {
-        return {
-            pollQuestion: '',
-            pollOptions: [
-                {id: 1, option: '', votes: 0},
-                {id: 2, option: '', votes: 0},
-            ],
-            isPollCreated: false,
-            pollUrl: '',
-            pollUri: '',
-        }
-    },
-    methods: {
-        createPoll() {
-            const loading = this.$vs.loading({
-                target: this.$refs.button,
-                scale: '0.6',
-                opacity: 1,
-                color: '#000'
-            });
-            //! filter pollOptions from null options
-            let pollOptionsFiltered = this.pollOptions.filter(option => option.option !== '');
-            let data = {...{},pollQuestion: this.pollQuestion,pollOptions: pollOptionsFiltered};
-            if(this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn) {
-                    data = {...data, userId:  this.$store.state.auth.loggedInUser.id};
-            }
+	data() {
+		return {
+			pollQuestion: '',
+			pollOptions: [
+				{id: 1, option: '', votes: 0},
+				{id: 2, option: '', votes: 0},
+			],
+			isPollCreated: false,
+			pollUrl: '',
+			pollUri: '',
+		}
+	},
+	methods: {
+		createPoll() {
+			const loading = this.$vs.loading({
+				target: this.$refs.button,
+				scale: '0.6',
+				opacity: 1,
+				color: '#000'
+			});
 
-            axios.post('polls', data)
-            .then(res => {
-                loading.close();
-                this.pollUri = res.data.uri;
-                this.pollUrl = `localhost:8000/poll/${this.pollUri}`;
-                this.isPollCreated = true;
-            })
-            .catch(err => {
-                loading.close();
-                this.$vs.notification({
-                    title: 'Error',
-                    text: `${err.response.data.message}`,
-                    color: 'danger'
-                });
-            })
-        },
-        checkPoll() {
-            this.isPollCreated = false;
-            this.$router.push({name: 'poll', params: {uri: this.pollUri}})
-        },
-        addOption() {
-            this.pollOptions.push({id: this.pollOptions.length + 1, option: '', votes: 0});
-        },
-        copyUrl() {
-            navigator.clipboard.writeText(this.pollUrl).then(() => {
-                this.$vs.notification({
-                     title: 'Text copied',
-                    text: 'Poll Url copied successfully',
-                    color: 'success'
-                });
-            }, (err) => {
-                console.log('Poll Url not copied', err)
-            });
+			let pollOptionsFiltered = this.pollOptions.filter(option => option.option !== '' || option.option !== null);
+			let data = {...{},pollQuestion: this.pollQuestion,pollOptions: pollOptionsFiltered};
+			if(this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn) {
+				data = {...data, userId:  this.$store.state.auth.loggedInUser.id};
+			}
 
-        }
-    },
+			this.$store.dispatch('polls/createPoll', data)
+			.then(res => {
+				loading.close();
+				this.pollUri = res.data.uri;
+				this.pollUrl = `${process.env.MIX_APP_URL}/poll/${this.pollUri}`;
+				this.isPollCreated = true;
+			})
+			.catch(err => {
+				loading.close();
+				this.$vs.notification({
+					title: 'Error',
+					text: `${err.response.data.message}`,
+					color: 'danger'
+				});
+			})
+		},
+		checkPoll() {
+			this.isPollCreated = false;
+			this.$router.push({name: 'poll', params: {uri: this.pollUri}})
+		},
+		addOption() {
+			this.pollOptions.push({id: this.pollOptions.length + 1, option: '', votes: 0});
+		},
+		copyUrl() {
+			navigator.clipboard.writeText(this.pollUrl).then(() => {
+				this.$vs.notification({
+					title: 'Text copied',
+					text: 'Poll Url copied successfully',
+					color: 'success'
+					});
+			}, err => console.log('Poll Url not copied', err));
+		}
+	},
     
 }
 </script>
