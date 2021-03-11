@@ -12,17 +12,19 @@
         <vs-button flat transparent @click="$router.push({name: 'login'})">Login</vs-button>
         <vs-button flat transparent @click="$router.push({name: 'register'})">Register</vs-button>
       </div>
-      <div v-else class="flex relative">
-        <vs-button flat transparent @click="$router.push({name: 'mypolls'})">My Polls</vs-button>
-        <div class="h-auto profileDropdown">
-          <div class="dropdown">
-            <vs-button flat transparent tabindex="0" @focus="showDropdown(true)" @focusout="showDropdown(false)">More</vs-button>
-            <div class="dropdown-items absolute bg-white mt-2 mr-4 shadow" :class="{'hidden': !isShowDropdown}">
-              <vs-button flat transparent>Profile</vs-button>
-              <vs-button flat transparent>Settings</vs-button>
-              <vs-button flat transparent @click.stop="logout">Logout</vs-button>
+      <div v-else class="flex">
+        <vs-button flat transparent @click="$router.push({name: 'mypolls'})" class="inline-block">My Polls</vs-button>
+        <div class="relative w-16">
+          <span class="profileDropdown absolute" :class="{'showProfileDropdown': isShowDropdown}" @mouseenter="showDropdown(true)" @mouseleave="showDropdown(false)">
+            <div class="dropdown relative">
+              <vs-button flat transparent>More</vs-button>
+              <div class="dropdown-items absolute bg-white mt-2 mr-4 shadow" :class="{'hidden': !isShowDropdown}">
+                <vs-button flat transparent>Profile</vs-button>
+                <vs-button flat transparent>Settings</vs-button>
+                <vs-button flat transparent @click.stop="logout">Logout</vs-button>
+              </div>
             </div>
-          </div>
+          </span>
         </div>
       </div>
     </template>
@@ -98,6 +100,12 @@ export default {
 
   .vs-navbar {
     padding: 0;
+  }
+
+  .showProfileDropdown {
+    position: absolute;
+    min-height: 160px;
+    min-width: 90px;
   }
 
   .dropdown-items {
