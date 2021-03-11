@@ -11,13 +11,13 @@
 							<vs-input v-model="searchQuery" placeholder="Search by poll or users" class="py-2 mb-4"/>
 					</div>
 					<div v-if="filteredPolls.length > 0" class="card">
-							<div class="vs-card py-4 px-6 mb-4" v-for="poll in filteredPolls" :key="poll.id">
+							<div class="vs-card py-4 px-6 mb-4 relative" v-for="poll in filteredPolls" :key="poll.id">
+									<box-icon class="absolute right-4 cursor-click" color="#D52941" name='trash' @click="deletePoll(poll.id)"></box-icon>
 									<div class="pollHeader flex items-center justify-between cursor-pointer" @click="$router.push({name: 'poll', params:{ uri: poll.uri }})">
 											<h2 class="text-2xl font-semibold" v-if="poll.poll_question[poll.poll_question.length - 1] === '?'">{{ poll.poll_question }}</h2>
 											<h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
 									</div>
 									<p class="text-xl mt-6">Total Votes: {{ poll.totalVotes }}</p>
-									<p class="mt-4 text-gray-900 text-opacity-50">asked by {{ poll.created_by }}</p>
 							</div>
 					</div>
 					<div v-else>
@@ -73,6 +73,28 @@ export default {
 			return polls.filter(item => {
 					return item.poll_question.toLowerCase().includes(query.toLowerCase()) || item.created_by.toLowerCase().includes(query.toLowerCase());
 			});
+		},
+		deletePoll(pollId) {
+			let loading = this.$vs.loading();
+			this.$store.dispatch('polls/deletePoll', { pollId })
+				.then(res => {
+					loading.close();
+					this.$vs.notification({
+						title: 'Success',
+						text: `${res.data.message}`,
+						color: 'success'
+					});
+					//TODO: For now!
+					this.getPolls();
+				})
+				.catch(err => {
+					loading.close();
+					this.$vs.notification({
+						title: 'Ooops',
+						text: `${err}`,
+						color: 'danger'
+					});
+				})
 		}
 	},
 	created() {
@@ -93,7 +115,7 @@ export default {
     #userPolls .vs-card {
         max-width: none;
         width: 100%;
-        transition: transform 1s ease;
+        transition: transform .5s ease;
     }
 
 

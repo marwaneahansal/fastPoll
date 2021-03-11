@@ -77,7 +77,7 @@ export default {
 	#publicPolls .vs-card {
 		max-width: none;
 		width: 60%;
-		transition: transform 1s ease;
+		transition: transform .5s ease;
 	}
 
 
