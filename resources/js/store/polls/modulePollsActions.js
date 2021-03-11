@@ -57,5 +57,12 @@ export default {
           reject(err);
         })
     });
+  },
+  deletePoll({ }, payload) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`polls/${payload.pollId}`)
+        .then(res => resolve(res))
+        .catch(err => reject(err));
+    });
   }
 }

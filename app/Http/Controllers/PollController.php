@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Poll;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -135,6 +134,9 @@ class PollController extends Controller
      */
     public function destroy(Poll $poll)
     {
-        //
+        //TODO: Check user that created this poll
+        $poll->delete();
+        return response()->json(['success' => true, 'message' => 'Poll is deleted with success']);
+
     }
 }
