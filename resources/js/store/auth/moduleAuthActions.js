@@ -25,7 +25,7 @@ export default {
           email: payload.email,
           name: payload.name,
           password: payload.password,
-          password_confirmation: payload.confirmpassword
+          password_confirmation: payload.password_confirmation
         }).then(res => {
           if(res.data.success === true) {
             commit('SET_LOGGED_IN_USER_INFO', res.data.user);
