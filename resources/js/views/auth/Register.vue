@@ -92,6 +92,7 @@ export default {
                 })
                 .catch(err => {
                     loading.close();
+										console.log("jkjsd");
                     this.error = `${Object.values(err).join(" <br>")}`;
                 });
         }

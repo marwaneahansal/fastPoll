@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'js/axios';
+
 export default {
 	data() {
 		return {
@@ -69,7 +69,7 @@ export default {
 				'#0e153a',
 			],
 			pollOptionsSorted: [],
-		}
+		};
 	},
 	computed: {
 		pollOptions() {
@@ -83,71 +83,70 @@ export default {
 				type: 'circles',
 			});
 			this.$store.dispatch('polls/getPoll', { pollId: this.$route.params.uri })
-			.then(res => {
-				console.log(res);
-				if(res.data.poll) {
-					fetchLoading.close();
-					this.poll = res.data.poll;
-					this.pollOptionsSorted = [...this.pollOptions].sort((a,b) => a.votes > b.votes ? -1 : 1);
-				} else {
-					fetchLoading.close();
-					this.error = true;
-				}
-			})
-			.catch(err => console.log(err))
-		},
-			submitPoll() {
-				const loading = this.$vs.loading({
-					target: this.$refs.button,
-					scale: '0.6',
-					background: 'primary',
-					opacity: 1,
-					color: '#fff'
-				});
-				let selectedOption = this.pollOptions.find(option => this.option === option.id);
-				selectedOption.votes += 1;
-				this.poll.totalVotes += 1;
-				this.pollOptionsSorted = [...this.pollOptions].sort((a,b) => a.votes > b.votes ? -1 : 1);
-				this.$store.dispatch('polls/votePoll', 
-					{ 
-						pollId: this.poll.id,
-						pollOptions: this.pollOptions,
+				.then(res => {
+					console.log(res);
+					if (res.data.poll) {
+						fetchLoading.close();
+						this.poll = res.data.poll;
+						this.pollOptionsSorted = [...this.pollOptions].sort((a, b) => (a.votes > b.votes ? -1 : 1));
+					} else {
+						fetchLoading.close();
+						this.error = true;
 					}
-				).then(res => {
-					this.showPoll = false;
-					loading.close();
-					this.$vs.notification({
-						title: 'Vote saved successfully',
-						text: `${res.data.message}`,
-						color: 'success'
-					});
 				})
+				.catch(err => console.log(err));
+		},
+		submitPoll() {
+			const loading = this.$vs.loading({
+				target: this.$refs.button,
+				scale: '0.6',
+				background: 'primary',
+				opacity: 1,
+				color: '#fff',
+			});
+			const selectedOption = this.pollOptions.find(option => this.option === option.id);
+			selectedOption.votes += 1;
+			this.poll.totalVotes += 1;
+			this.pollOptionsSorted = [...this.pollOptions].sort((a, b) => (a.votes > b.votes ? -1 : 1));
+			this.$store.dispatch('polls/votePoll',
+				{
+					pollId: this.poll.id,
+					pollOptions: this.pollOptions,
+				}).then(res => {
+				this.showPoll = false;
+				loading.close();
+				this.$vs.notification({
+					title: 'Vote saved successfully',
+					text: `${res.data.message}`,
+					color: 'success',
+				});
+			})
 				.catch(err => {
 					loading.close();
-					if(err.response.status === 429) {
+					if (err.response.status === 429) {
 						this.$vs.notification({
 							title: 'Error',
-							text: `Too Many Attempts`,
-							color: 'danger'
+							text: 'Too Many Attempts',
+							color: 'danger',
 						});
 					} else {
 						this.$vs.notification({
 							title: 'Error',
 							text: `${err.response.data.message}`,
-							color: 'danger'
+							color: 'danger',
 						});
 					}
-				})
-			},
-			getVotesPercent(votes, totalVotes) {
-				if(totalVotes === 0) return 0
-				return parseFloat(((votes / totalVotes) * 100).toFixed(1)); 
-			},
+				});
+		},
+		getVotesPercent(votes, totalVotes) {
+			if (totalVotes === 0) return 0;
+			return parseFloat(((votes / totalVotes) * 100).toFixed(1));
+		},
 	},
 	created() {
 		this.fetchPollDetails();
-	}
-}
+	},
+};
 </script>
 
 <style>

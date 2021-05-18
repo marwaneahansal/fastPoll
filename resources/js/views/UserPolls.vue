@@ -28,13 +28,13 @@
 </template>
 
 <script>
-import axios from 'js/axios';
+
 export default {
 	data() {
 		return {
-				filteredPolls: [],
-				searchQuery: '',
-		}
+			filteredPolls: [],
+			searchQuery: '',
+		};
 	},
 	computed: {
 		polls() {
@@ -42,49 +42,47 @@ export default {
 		},
 		user() {
 			return this.$store.state.auth.loggedInUser;
-		}
+		},
 	},
 	watch: {
 		searchQuery() {
 			this.filteredPolls = this.searchPolls(this.polls, this.searchQuery);
-		}
+		},
 	},
 	methods: {
 		getPolls() {
-			let userId = this.user.id;
-			if(userId) {
+			const userId = this.user.id;
+			if (userId) {
 				const loading = this.$vs.loading();
 				this.$store.dispatch('polls/getUserPolls', { userId })
-				.then(_ => {
-					this.filteredPolls = this.polls;
-					loading.close();
-				})
-				.catch(err => {
-					this.$vs.notification({
-						title: 'Ooops',
-						text: `Something went wrong, ${err}`,
-						color: 'danger'
+					.then(_ => {
+						this.filteredPolls = this.polls;
+						loading.close();
+					})
+					.catch(err => {
+						this.$vs.notification({
+							title: 'Ooops',
+							text: `Something went wrong, ${err}`,
+							color: 'danger',
+						});
+						loading.close();
 					});
-					loading.close();
-				});
 			}
 		},
 		searchPolls(polls, query) {
-			return polls.filter(item => {
-					return item.poll_question.toLowerCase().includes(query.toLowerCase()) || item.created_by.toLowerCase().includes(query.toLowerCase());
-			});
+			return polls.filter(item => item.poll_question.toLowerCase().includes(query.toLowerCase()) || item.created_by.toLowerCase().includes(query.toLowerCase()));
 		},
 		deletePoll(pollId) {
-			let loading = this.$vs.loading();
+			const loading = this.$vs.loading();
 			this.$store.dispatch('polls/deletePoll', { pollId })
 				.then(res => {
 					loading.close();
 					this.$vs.notification({
 						title: 'Success',
 						text: `${res.data.message}`,
-						color: 'success'
+						color: 'success',
 					});
-					//TODO: For now!
+					// TODO: For now!
 					this.getPolls();
 				})
 				.catch(err => {
@@ -92,17 +90,17 @@ export default {
 					this.$vs.notification({
 						title: 'Ooops',
 						text: `${err}`,
-						color: 'danger'
+						color: 'danger',
 					});
-				})
-		}
+				});
+		},
 	},
 	created() {
 		this.getPolls();
-	}
-}
+	},
+};
 </script>
-    
+
 <style>
     .header {
         width: 60%;
