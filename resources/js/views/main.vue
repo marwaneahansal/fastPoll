@@ -35,61 +35,60 @@
 
 <script>
 export default {
-  data() {
-    return {
-      isShowDropdown: false,
-    }
-  },
-  computed: {
-    isUserLoggedIn() {
-      return this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn
-    }
-  },
-  methods: {
-    logout() {
-      let loading = this.$vs.loading();
-      this.$store.dispatch('auth/logout')
-        .then(_ => {
-          loading.close();
-          this.$vs.notification({
-            title: 'Success',
-            text: "You've successfully logged out",
-            color: 'success'
-          });
-        })
-        .catch(err => {
-          loading.close();
-          this.$vs.notification({
-            title: 'Ooops',
-            text: `Something went wrong, ${err}`,
-            color: 'danger'
-          })
-        })
-    },
-    showDropdown (val) {
-      console.log(val);
-      this.isShowDropdown = val;
-    },
-    getUserInfo() {
-      let loading = this.$vs.loading();
-      this.$store.dispatch('auth/getloggedInUser')
-        .then(res => {
-          loading.close();
-        })
-        .catch(err => {
-          loading.close();
-          this.$vs.notification({
-            title: 'Ooops',
-            text: `Something went wrong, ${err}` ,
-            color: 'danger'
-          });
-        })
-    }
-  },
-  mounted() {
-    this.getUserInfo();
-  }
-}
+	data() {
+		return {
+			isShowDropdown: false,
+		};
+	},
+	computed: {
+		isUserLoggedIn() {
+			return this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn;
+		},
+	},
+	methods: {
+		logout() {
+			const loading = this.$vs.loading();
+			this.$store.dispatch('auth/logout')
+				.then(_ => {
+					loading.close();
+					this.$vs.notification({
+						title: 'Success',
+						text: "You've successfully logged out",
+						color: 'success',
+					});
+				})
+				.catch(err => {
+					loading.close();
+					this.$vs.notification({
+						title: 'Ooops',
+						text: `Something went wrong, ${err}`,
+						color: 'danger',
+					});
+				});
+		},
+		showDropdown(val) {
+			this.isShowDropdown = val;
+		},
+		getUserInfo() {
+			const loading = this.$vs.loading();
+			this.$store.dispatch('auth/getloggedInUser')
+				.then(_res => {
+					loading.close();
+				})
+				.catch(err => {
+					loading.close();
+					this.$vs.notification({
+						title: 'Ooops',
+						text: `Something went wrong, ${err}`,
+						color: 'danger',
+					});
+				});
+		},
+	},
+	mounted() {
+		this.getUserInfo();
+	},
+};
 </script>
 
 <style lang="css">
