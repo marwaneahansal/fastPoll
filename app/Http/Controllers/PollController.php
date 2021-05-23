@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Poll;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -21,14 +22,16 @@ class PollController extends Controller
         return response(['polls' => $polls], 200);
     }
 
-    public function getPoll($uri) {
-        $poll = DB::table('polls')->where('uri','=', $uri)->first();
-        if($poll == null) return ['error' => 'Poll not found, Please check the url again!'];
+    public function getPoll($uri)
+    {
+        $poll = DB::table('polls')->where('uri', '=', $uri)->first();
+        if ($poll == null) return ['error' => 'Poll not found, Please check the url again!'];
         return ['poll' => $poll];
     }
 
-    public function getUserPoll($id) {
-        $polls = Poll::where('user_id', $id)->get();
+    public function getUserPoll(Request $request)
+    {
+        $polls = Poll::where('user_id', $request->user('api')->id)->get();
         return response()->json(["polls" => $polls]);
     }
 
@@ -58,7 +61,7 @@ class PollController extends Controller
 
         $uri = Str::Random(10);
         $searchUri = DB::table('polls')->where('uri', $uri)->first();
-        while($searchUri != null) {
+        while ($searchUri != null) {
             $uri = Str::Random(10);
             $searchUri = DB::table('polls')->where('uri', $uri)->first();
         }
@@ -68,14 +71,15 @@ class PollController extends Controller
         $poll->uri = $uri;
         $poll->poll_question = $request->input('pollQuestion');
         $poll->pollOptions = $request->input('pollOptions');
-        if($request->input('userId')) {
-            $poll->user_id = $request->input('userId');
-            $poll->created_by = User::find($request->input('userId'))->name;
+        if ($request->user('api')) {
+            $user = $request->user('api');
+            $poll->user_id = $user->id;
+            $poll->created_by = $user->name;
         }
-        
+
         $poll->save();
 
-       
+
         return [
             'uri' => $uri,
             'poll' => [
@@ -93,7 +97,6 @@ class PollController extends Controller
      */
     public function show(Poll $poll)
     {
-
     }
 
     /**
@@ -115,7 +118,7 @@ class PollController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         $poll = Poll::find($id);
         $poll->pollOptions = $request->input('pollOptions');
         $poll->totalVotes = $poll->totalVotes + 1;
@@ -123,7 +126,6 @@ class PollController extends Controller
 
 
         return response()->json(['message' => 'Thank you for your vote', 'poll' => $poll]);
-        
     }
 
     /**
@@ -137,6 +139,5 @@ class PollController extends Controller
         //TODO: Check user that created this poll
         $poll->delete();
         return response()->json(['success' => true, 'message' => 'Poll is deleted with success']);
-
     }
 }

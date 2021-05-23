@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $validation = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -24,31 +25,48 @@ class AuthController extends Controller
         $token = $user->createToken('authToken')->accessToken;
         $cookie = $this->getCookieDetails($token);
 
-        return response()->json(["success" => true, 'user' => $user])->cookie(
-            $cookie['name'], $cookie['value'], $cookie['minutes'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite']
+        return response()->json(["success" => true, 'user' => $user, 'token' => $token])->cookie(
+            $cookie['name'],
+            $cookie['value'],
+            $cookie['minutes'],
+            $cookie['path'],
+            $cookie['domain'],
+            $cookie['secure'],
+            $cookie['httponly'],
+            $cookie['samesite']
         );
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $validation = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        if(Auth::attempt($validation)) {
+        if (Auth::attempt($validation)) {
             $token = Auth::user()->createToken('authToken')->accessToken;
             $cookie = $this->getCookieDetails($token);
-            
-            return response()->json(["success" => true, 'user' => auth()->user()])->cookie(
-                $cookie['name'], $cookie['value'], $cookie['minutes'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly'], $cookie['samesite']
+
+            return response()->json(["success" => true, 'user' => auth()->user(), 'token' => $token])->cookie(
+                $cookie['name'],
+                $cookie['value'],
+                $cookie['minutes'],
+                $cookie['path'],
+                $cookie['domain'],
+                $cookie['secure'],
+                $cookie['httponly'],
+                $cookie['samesite']
             );
         }
-        
+
         return response()->json(["success" => false, "message" => 'Invalid Email or Password']);
     }
 
-    public function getLoggedInUser(Request $request) {
-        if($request->user('api')) return response()->json(['loggedIn' => true,'user' => $request->user('api')]);
+    public function getLoggedInUser(Request $request)
+    {
+        // return Auth::user();
+        if ($request->user('api')) return response()->json(['loggedIn' => true, 'user' => $request->user('api'), 'token' => $request->cookie('_token')]);
 
         return response()->json(['loggedIn' => false]);
     }
@@ -69,7 +87,8 @@ class AuthController extends Controller
     }
 
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $request->user('api')->token()->revoke();
         $cookie = Cookie::forget('_token');
         return response()->json([

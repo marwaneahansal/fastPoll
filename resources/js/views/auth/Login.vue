@@ -25,32 +25,31 @@
 
 <script>
 export default {
-    data() {
-        return {
-            email: '',
-            password: '',
-            error: null,
-        }
-    },
-    methods: {
-      login() {
-        const loading = this.$vs.loading({
-          type: 'circles'
-        });
-        this.error = null;
-        this.$store.dispatch('auth/login', {email: this.email, password: this.password})
-          .then(_ => {
-            loading.close();
-            this.$router.push({name: 'dashboard'});
-          })
-          .catch(err => {
-            loading.close();
-            this.error = err
-          }
-        );
-      }
-    },
-}
+	data() {
+		return {
+			email: '',
+			password: '',
+			error: null,
+		};
+	},
+	methods: {
+		login() {
+			const loading = this.$vs.loading({
+				type: 'circles',
+			});
+			this.error = null;
+			this.$store.dispatch('auth/login', { email: this.email, password: this.password })
+				.then(_ => {
+					loading.close();
+					this.$router.push({ name: 'dashboard' });
+				})
+				.catch(err => {
+					loading.close();
+					this.error = err;
+				});
+		},
+	},
+};
 </script>
 
 <style>

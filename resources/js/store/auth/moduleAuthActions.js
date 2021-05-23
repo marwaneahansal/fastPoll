@@ -11,6 +11,7 @@ export default {
 				.then(res => {
 					if (res.data.success === true) {
 						commit('SET_LOGGED_IN_USER_INFO', res.data.user);
+						commit('SET_BEARER', res.data.token);
 						resolve('Success');
 					} else {
 						reject('Email or password is worng. Please try again!');
@@ -30,6 +31,7 @@ export default {
 			}).then(res => {
 				if (res.data.success === true) {
 					commit('SET_LOGGED_IN_USER_INFO', res.data.user);
+					commit('SET_BEARER', res.data.token);
 					resolve('Success');
 				} else {
 					reject('Ooops! something went wrong! Please try again!');
@@ -45,6 +47,7 @@ export default {
 				.then(res => {
 					if (res.data.loggedIn === true) {
 						commit('SET_LOGGED_IN_USER_INFO', res.data.user);
+						commit('SET_BEARER', res.data.token);
 						resolve(res.data.loggedIn);
 					} else {
 						commit('LOGOUT_USER');
@@ -62,6 +65,7 @@ export default {
 			axios.get('logout')
 				.then(res => {
 					commit('LOGOUT_USER');
+					commit('SET_BEARER', '');
 					resolve(res);
 				})
 				.catch(_ => {

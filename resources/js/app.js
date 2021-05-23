@@ -1,32 +1,34 @@
-require('./bootstrap');
-
-
 import Vue from 'vue';
 
 
-import store from './store/index';
 
 import 'boxicons';
 
 import Vuesax from 'vuesax';
 // vuesax scss
-import 'vuesax/dist/vuesax.css'
+import 'vuesax/dist/vuesax.css';
 
-import VeeValidate from 'vee-validate'
-Vue.use(VeeValidate)
-
-Vue.use(Vuesax);
+import VeeValidate from 'vee-validate';
 
 import KProgress from 'k-progress';
-Vue.component('k-progress', KProgress);
+
+
+import store from './store/index';
 
 
 // Vue.component('home-component', require('./views/app.vue').default);
 import App from './views/App.vue';
-import router from './router.js';
+import router from './router';
+
+
+require('./bootstrap');
+
+Vue.use(VeeValidate);
+Vue.use(Vuesax);
+Vue.component('k-progress', KProgress);
 
 new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
+	router,
+	store,
+	render: h => h(App),
+}).$mount('#app');

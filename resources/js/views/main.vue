@@ -56,6 +56,7 @@ export default {
 						text: "You've successfully logged out",
 						color: 'success',
 					});
+					this.$router.push({ name: 'home' });
 				})
 				.catch(err => {
 					loading.close();

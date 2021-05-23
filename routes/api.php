@@ -20,12 +20,12 @@ use App\Http\Middleware\AddAuthHeader;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-Route::middleware([AddAuthHeader::class])->group(function() {
+Route::middleware([AddAuthHeader::class])->group(function () {
   Route::get('logout', [AuthController::class, 'logout']);
   Route::get('user', [AuthController::class, 'getLoggedInUser']);
 });
 
-Route::get('polls/{id}', [PollController::class, 'getUserPoll']);
+Route::get('mypolls', [PollController::class, 'getUserPoll']);
 Route::apiResource('polls', PollController::class)->except('store', 'update');
 // 40 request per one minutes
 Route::post('polls', [PollController::class, 'store'])->middleware('throttle:40,1');

@@ -70,10 +70,10 @@ export default {
 			});
 
 			const pollOptionsFiltered = this.pollOptions.filter(option => option.option !== '' || option.option !== null);
-			let data = { ...{}, pollQuestion: this.pollQuestion, pollOptions: pollOptionsFiltered };
-			if (this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn) {
-				data = { ...data, userId: this.$store.state.auth.loggedInUser.id };
-			}
+			const data = { ...{}, pollQuestion: this.pollQuestion, pollOptions: pollOptionsFiltered };
+			// if (this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn) {
+			// 	data = { ...data, userId: this.$store.state.auth.loggedInUser.id };
+			// }
 
 			this.$store.dispatch('polls/createPoll', data)
 				.then(res => {
@@ -105,7 +105,13 @@ export default {
 					text: 'Poll Url copied successfully',
 					color: 'success',
 				});
-			}, err => console.log('Poll Url not copied', err));
+			}, err => {
+				this.$vs.notification({
+					title: 'Text copied',
+					text: `Poll Url not copied: ${err}`,
+					color: 'success',
+				});
+			});
 		},
 	},
 
