@@ -123,10 +123,14 @@ class PollController extends Controller
         $poll = Poll::findOrFail($id);
         // Create vote in votes
         if ($request->user('api')) {
-            Votes::create([
-                'user_id' => $request->user('api')->id,
-                'poll_id' => $poll->id
-            ]);
+            $vote = Votes::where(['user_id' => $request->user('api')->id, 'poll_id' => $poll->id])->first();
+            if (!$vote) {
+                Votes::create([
+                    'user_id' => $request->user('api')->id,
+                    'poll_id' => $poll->id
+                ]);
+            }
+            return response()->json(['success' => false, 'message' => 'You already voted on this poll!']);
         }
         $poll->pollOptions = $request->input('pollOptions');
         $poll->totalVotes = $poll->totalVotes + 1;

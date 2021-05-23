@@ -84,7 +84,6 @@ export default {
 			});
 			this.$store.dispatch('polls/getPoll', { pollId: this.$route.params.uri })
 				.then(res => {
-					console.log(res);
 					if (res.data.poll) {
 						fetchLoading.close();
 						this.poll = res.data.poll;
@@ -94,7 +93,13 @@ export default {
 						this.error = true;
 					}
 				})
-				.catch(err => console.log(err));
+				.catch(err => {
+					this.$vs.notification({
+						title: 'Error',
+						text: err,
+						color: 'danger',
+					});
+				});
 		},
 		submitPoll() {
 			const loading = this.$vs.loading({
@@ -112,15 +117,24 @@ export default {
 				{
 					pollId: this.poll.id,
 					pollOptions: this.pollOptions,
-				}).then(res => {
-				this.showPoll = false;
-				loading.close();
-				this.$vs.notification({
-					title: 'Vote saved successfully',
-					text: `${res.data.message}`,
-					color: 'success',
-				});
-			})
+				})
+				.then(res => {
+					this.showPoll = false;
+					loading.close();
+					if (res.data.success === true) {
+						this.$vs.notification({
+							title: 'Vote saved successfully',
+							text: `${res.data.message}`,
+							color: 'success',
+						});
+					} else {
+						this.$vs.notification({
+							title: 'Already voted',
+							text: 'You already voted on this poll!',
+							color: 'warning',
+						});
+					}
+				})
 				.catch(err => {
 					loading.close();
 					if (err.response.status === 429) {
