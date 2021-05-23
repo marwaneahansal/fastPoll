@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Poll;
 use App\Models\User;
+use App\Models\Votes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -111,15 +112,22 @@ class PollController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Vote the specified poll
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Poll  $poll
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function vote(Request $request, $id)
     {
-        $poll = Poll::find($id);
+        $poll = Poll::findOrFail($id);
+        // Create vote in votes
+        if ($request->user('api')) {
+            Votes::create([
+                'user_id' => $request->user('api')->id,
+                'poll_id' => $poll->id
+            ]);
+        }
         $poll->pollOptions = $request->input('pollOptions');
         $poll->totalVotes = $poll->totalVotes + 1;
         $poll->save();

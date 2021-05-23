@@ -26,11 +26,8 @@ Route::middleware([AddAuthHeader::class])->group(function () {
 });
 
 Route::get('mypolls', [PollController::class, 'getUserPoll']);
-Route::apiResource('polls', PollController::class)->except('store', 'update');
-// 40 request per one minutes
-Route::post('polls', [PollController::class, 'store'])->middleware('throttle:40,1');
+Route::apiResource('polls', PollController::class)->except('update');
 
-// 40 request per one minutes
-Route::put('polls/{id}', [PollController::class, 'update'])->middleware('throttle:40,1');
+Route::put('polls/{id}', [PollController::class, 'vote']);
 
-Route::get('/poll/{uri}', [PollController::class, 'getPoll']);
+Route::get('poll/{uri}', [PollController::class, 'getPoll']);
