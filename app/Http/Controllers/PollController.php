@@ -134,10 +134,13 @@ class PollController extends Controller
      * @param  \App\Models\Poll  $poll
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Poll $poll)
+    public function destroy(Poll $poll, Request $request)
     {
-        //TODO: Check user that created this poll
-        $poll->delete();
-        return response()->json(['success' => true, 'message' => 'Poll is deleted with success']);
+        if ($request->user('api')->id === $poll->user_id) {
+            $poll->delete();
+            return response()->json(['success' => true, 'message' => 'Poll is deleted with success']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Poll not found']);
     }
 }
