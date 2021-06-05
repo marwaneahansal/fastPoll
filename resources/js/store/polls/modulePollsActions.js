@@ -6,7 +6,7 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.get('polls')
 				.then(res => {
-					commit('SET_PUBLIC_POLLS', res.data.polls);
+					commit('SET_PUBLIC_POLLS', res.data.data);
 					resolve(res);
 				})
 				.catch(err => {

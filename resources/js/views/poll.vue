@@ -6,7 +6,7 @@
             </template>
             <p>Poll you requested not found, Please check again your poll url.</p>
         </vs-alert>
-        <div class="mx-auto w-1/2 mb-12" v-if="poll">
+        <div class="mx-auto w-full mb-12" v-if="poll">
             <div class="vs-card py-4 px-6" id="pollDetails">
                 <div class="pollHeader flex items-center justify-between">
                     <h2 class="text-2xl font-semibold" v-if="this.poll.poll_question[this.poll.poll_question.length - 1] === '?'">{{ poll.poll_question }}</h2>
@@ -15,7 +15,7 @@
                 </div>
                 <div v-if="showPoll">
                     <div class="mt-5">
-                        <vs-radio class="mt-2" v-model="option" :val="pollOption.id" v-for="pollOption in pollOptions" :key="pollOption.id">
+                        <vs-radio class="mt-2" v-model="option" :val="index" v-for="(pollOption, index) in poll.poll_options" :key="index">
                             {{ pollOption.option }}
                         </vs-radio>
                     </div>
@@ -30,7 +30,7 @@
                 </div>
                 <div v-else>
                     <div class="mt-5">
-                        <div class="pollOption vs-card py-4 px-6 mb-3"  v-for="(pollOption, index) in pollOptionsSorted" :key="pollOption.id">
+                        <div class="pollOption vs-card py-4 px-6 mb-3"  v-for="(pollOption, index) in pollOptionsSorted" :key="index">
                             <h3 class="text-xl mb-4 font-semibold">{{ pollOption.option }}</h3>
                             <k-progress :color="colors[index]"  :percent="getVotesPercent(pollOption.votes, poll.totalVotes)" />
                             <p class="mt-4 text-sm text-black">{{ pollOption.votes }} Votes</p>
@@ -71,11 +71,6 @@ export default {
 			pollOptionsSorted: [],
 		};
 	},
-	computed: {
-		pollOptions() {
-			return JSON.parse(this.poll.pollOptions);
-		},
-	},
 	methods: {
 		fetchPollDetails() {
 			const fetchLoading = this.$vs.loading({
@@ -87,7 +82,7 @@ export default {
 					if (res.data.poll) {
 						fetchLoading.close();
 						this.poll = res.data.poll;
-						this.pollOptionsSorted = [...this.pollOptions].sort((a, b) => (a.votes > b.votes ? -1 : 1));
+						this.pollOptionsSorted = [...this.poll.poll_options].sort((a, b) => (a.votes > b.votes ? -1 : 1));
 					} else {
 						fetchLoading.close();
 						this.error = true;
@@ -112,7 +107,7 @@ export default {
 			const selectedOption = this.pollOptions.find(option => this.option === option.id);
 			selectedOption.votes += 1;
 			this.poll.totalVotes += 1;
-			this.pollOptionsSorted = [...this.pollOptions].sort((a, b) => (a.votes > b.votes ? -1 : 1));
+			this.pollOptionsSorted = [...this.this.poll.poll_options].sort((a, b) => (a.votes > b.votes ? -1 : 1));
 			this.$store.dispatch('polls/votePoll',
 				{
 					pollId: this.poll.id,

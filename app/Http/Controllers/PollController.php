@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Poll\Poll as PollPoll;
 use App\Http\Resources\Poll\PollCollection;
 use App\Models\Poll;
 use App\Models\PollOptions;
-use App\Models\User;
 use App\Models\Votes;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -27,9 +26,8 @@ class PollController extends Controller
 
     public function getPoll($uri)
     {
-        $poll = DB::table('polls')->where('uri', '=', $uri)->first();
-        if ($poll == null) return ['error' => 'Poll not found, Please check the url again!'];
-        return ['poll' => $poll];
+        $poll = Poll::where('uri', '=', $uri)->firstOrFail();
+        return ['poll' => new PollPoll($poll)];
     }
 
     public function getUserPoll(Request $request)
