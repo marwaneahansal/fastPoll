@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Poll;
+use App\Models\PollOptions;
 use App\Models\User;
 use App\Models\Votes;
 use Illuminate\Http\Request;
@@ -56,7 +57,7 @@ class PollController extends Controller
     {
         $request->validate([
             'pollQuestion' => 'required',
-            'pollOptions' => 'required'
+            'pollOptions' => 'required|array'
         ]);
 
 
@@ -70,8 +71,14 @@ class PollController extends Controller
         $poll = new Poll();
 
         $poll->uri = $uri;
-        $poll->poll_question = $request->input('pollQuestion');
-        $poll->pollOptions = $request->input('pollOptions');
+        $poll->poll_question = $request->get('pollQuestion');
+
+        $InoutPollOptions = $request->get('pollOptions');
+
+        $pollOptions = array_map(function ($pollOption) {
+            return new PollOptions(['option' => $pollOption['option'], 'votes' => 0]);
+        }, $InoutPollOptions);
+
         if ($request->user('api')) {
             $user = $request->user('api');
             $poll->user_id = $user->id;
@@ -80,12 +87,15 @@ class PollController extends Controller
 
         $poll->save();
 
+        $poll->options()->saveMany($pollOptions);
+
+        $poll->refresh();
 
         return [
             'uri' => $uri,
             'poll' => [
                 'poll_question' => $poll->poll_question,
-                'poll_options' => $poll->pollOptions,
+                'poll_options' => $poll->options,
             ]
         ];
     }

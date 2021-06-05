@@ -15,7 +15,7 @@ class Poll extends Model
 
     protected $fillable = ['pollOptions'];
 
-    public function pollOptions()
+    public function options()
     {
         return $this->hasMany(PollOptions::class);
     }

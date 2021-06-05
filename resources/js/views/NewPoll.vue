@@ -52,8 +52,8 @@ export default {
 		return {
 			pollQuestion: '',
 			pollOptions: [
-				{ id: 1, option: '', votes: 0 },
-				{ id: 2, option: '', votes: 0 },
+				{ option: '' },
+				{ option: '' },
 			],
 			isPollCreated: false,
 			pollUrl: '',
@@ -69,11 +69,8 @@ export default {
 				color: '#000',
 			});
 
-			const pollOptionsFiltered = this.pollOptions.filter(option => option.option !== '' || option.option !== null);
+			const pollOptionsFiltered = this.pollOptions.filter(option => option.option.trim() !== '' || option.option === null);
 			const data = { ...{}, pollQuestion: this.pollQuestion, pollOptions: pollOptionsFiltered };
-			// if (this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn) {
-			// 	data = { ...data, userId: this.$store.state.auth.loggedInUser.id };
-			// }
 
 			this.$store.dispatch('polls/createPoll', data)
 				.then(res => {
@@ -96,7 +93,7 @@ export default {
 			this.$router.push({ name: 'poll', params: { uri: this.pollUri } });
 		},
 		addOption() {
-			this.pollOptions.push({ id: this.pollOptions.length + 1, option: '', votes: 0 });
+			this.pollOptions.push({ option: '' });
 		},
 		copyUrl() {
 			navigator.clipboard.writeText(this.pollUrl).then(() => {
