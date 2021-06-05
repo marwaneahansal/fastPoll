@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Poll\PollCollection;
 use App\Models\Poll;
 use App\Models\PollOptions;
 use App\Models\User;
@@ -21,7 +22,7 @@ class PollController extends Controller
     public function index()
     {
         $polls = Poll::orderByRaw('updated_at - created_at ASC')->get();
-        return response(['polls' => $polls], 200);
+        return new PollCollection($polls);
     }
 
     public function getPoll($uri)

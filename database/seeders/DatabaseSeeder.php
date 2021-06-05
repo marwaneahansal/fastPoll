@@ -15,7 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(4)->create();
-        Poll::factory(6)->create();
+        User::factory(4)
+            ->has(Poll::factory()->count(2)->state(function (array $attributes, User $user) {
+                return ['created_by' => $user->name];
+            })->hasOptions(4))
+            ->create();
     }
 }

@@ -15,6 +15,8 @@ class EditPollOptionsColumnInPollsTable extends Migration
     {
         Schema::table('polls', function (Blueprint $table) {
             $table->json('pollOptions')->nullable()->change();
+            $table->json('optionsCount')->nullable()->change();
+            $table->json('totalVotes')->nullable()->change();
         });
     }
 
@@ -27,6 +29,8 @@ class EditPollOptionsColumnInPollsTable extends Migration
     {
         Schema::table('polls', function (Blueprint $table) {
             $table->json('pollOptions')->change();
+            $table->json('optionsCount')->change();
+            $table->json('totalVotes')->change();
         });
     }
 }
