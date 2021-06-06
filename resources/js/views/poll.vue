@@ -15,7 +15,7 @@
                 </div>
                 <div v-if="showPoll">
                     <div class="mt-5">
-                        <vs-radio class="mt-2" v-model="option" :val="index" v-for="(pollOption, index) in poll.poll_options" :key="index">
+                        <vs-radio class="mt-2" v-model="option" :val="pollOption.id" v-for="pollOption in poll.poll_options" :key="pollOption.id">
                             {{ pollOption.option }}
                         </vs-radio>
                     </div>
@@ -72,6 +72,9 @@ export default {
 		};
 	},
 	methods: {
+		sortOptions(pollOptions) {
+			return [...pollOptions].sort((a, b) => (a.votes > b.votes ? -1 : 1));
+		},
 		fetchPollDetails() {
 			const fetchLoading = this.$vs.loading({
 				text: 'loading...',
@@ -82,7 +85,7 @@ export default {
 					if (res.data.poll) {
 						fetchLoading.close();
 						this.poll = res.data.poll;
-						this.pollOptionsSorted = [...this.poll.poll_options].sort((a, b) => (a.votes > b.votes ? -1 : 1));
+						this.pollOptionsSorted = this.sortOptions(this.poll.poll_options);
 					} else {
 						fetchLoading.close();
 						this.error = true;
@@ -104,19 +107,20 @@ export default {
 				opacity: 1,
 				color: '#fff',
 			});
-			const selectedOption = this.pollOptions.find(option => this.option === option.id);
-			selectedOption.votes += 1;
-			this.poll.totalVotes += 1;
-			this.pollOptionsSorted = [...this.this.poll.poll_options].sort((a, b) => (a.votes > b.votes ? -1 : 1));
+			// const selectedOption = this.pollOptions.find(option => this.option === option.id);
+			// selectedOption.votes += 1;
+			// this.poll.totalVotes += 1;
+			// this.pollOptionsSorted = [...this.this.poll.poll_options].sort((a, b) => (a.votes > b.votes ? -1 : 1));
 			this.$store.dispatch('polls/votePoll',
 				{
 					pollId: this.poll.id,
-					pollOptions: this.pollOptions,
+					option: this.option,
 				})
 				.then(res => {
-					this.showPoll = false;
 					loading.close();
 					if (res.data.success === true) {
+						this.poll = res.data.poll;
+						this.pollOptionsSorted = this.sortOptions(this.poll.poll_options);
 						this.$vs.notification({
 							title: 'Vote saved successfully',
 							text: `${res.data.message}`,
@@ -129,6 +133,7 @@ export default {
 							color: 'warning',
 						});
 					}
+					this.showPoll = false;
 				})
 				.catch(err => {
 					loading.close();

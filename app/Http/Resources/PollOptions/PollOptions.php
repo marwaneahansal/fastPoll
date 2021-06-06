@@ -15,6 +15,7 @@ class PollOptions extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'option' => $this->option,
             'votes' => $this->votes
         ];

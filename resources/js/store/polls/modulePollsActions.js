@@ -39,7 +39,7 @@ export default {
 	},
 	votePoll({ _ }, payload) {
 		return new Promise((resolve, reject) => {
-			axios.put(`polls/${payload.pollId}`, { pollOptions: payload.pollOptions })
+			axios.put(`polls/${payload.pollId}`, { option: payload.option })
 				.then(res => {
 					resolve(res);
 				})

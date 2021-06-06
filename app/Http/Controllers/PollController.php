@@ -7,9 +7,12 @@ use App\Http\Resources\Poll\PollCollection;
 use App\Models\Poll;
 use App\Models\PollOptions;
 use App\Models\Votes;
+use App\Rules\PollOptionExist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class PollController extends Controller
 {
@@ -129,24 +132,37 @@ class PollController extends Controller
      */
     public function vote(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'option' => [
+                'required',
+                new PollOptionExist($id)
+            ]
+        ]);
+
+        if ($validator->fails()) return response()->json(['errors' => $validator->errors()]);
+
         $poll = Poll::findOrFail($id);
         // Create vote in votes
         if ($request->user('api')) {
             $vote = Votes::where(['user_id' => $request->user('api')->id, 'poll_id' => $poll->id])->first();
-            if (!$vote) {
-                Votes::create([
-                    'user_id' => $request->user('api')->id,
-                    'poll_id' => $poll->id
-                ]);
-            }
-            return response()->json(['success' => false, 'message' => 'You already voted on this poll!']);
+
+            if ($vote) return response()->json(['success' => false, 'message' => 'You already voted on this poll!']);
+
+            Votes::create([
+                'user_id' => $request->user('api')->id,
+                'poll_id' => $poll->id
+            ]);
         }
-        $poll->pollOptions = $request->input('pollOptions');
-        $poll->totalVotes = $poll->totalVotes + 1;
-        $poll->save();
+
+        $pollOption = PollOptions::where(['poll_id' => $poll->id, 'id' => $request->get('option')])->firstOrFail();
+
+        $pollOption->update([
+            'votes' => $pollOption->votes + 1
+        ]);
 
 
-        return response()->json(['message' => 'Thank you for your vote', 'poll' => $poll]);
+
+        return response()->json(['success' => true, 'message' => 'Thank you for your vote', 'poll' => new PollPoll($poll)]);
     }
 
     /**

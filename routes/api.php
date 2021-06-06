@@ -26,8 +26,9 @@ Route::middleware([AddAuthHeader::class])->group(function () {
 });
 
 Route::get('mypolls', [PollController::class, 'getUserPoll']);
-Route::apiResource('polls', PollController::class)->except('update');
 
 Route::put('polls/{id}', [PollController::class, 'vote']);
 
 Route::get('poll/{uri}', [PollController::class, 'getPoll']);
+
+Route::apiResource('polls', PollController::class)->except('update');
