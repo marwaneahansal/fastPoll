@@ -24,7 +24,6 @@ module.exports = {
     'global-require': 'off',
 
     'no-tabs': 'off',
-    'indent': ['error', 'tab'],
     'no-multiple-empty-lines': ['error', { 'max': 3}],
     'max-len': 'off',
     'no-param-reassign': 'off'

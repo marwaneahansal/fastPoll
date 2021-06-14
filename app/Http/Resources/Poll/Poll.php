@@ -18,6 +18,7 @@ class Poll extends JsonResource
         $pollOptions = $this->options;
         return [
             'id' => $this->id,
+            'user_id' => $this->user_id,
             'poll_question' => $this->poll_question,
             'uri' => $this->uri,
             'poll_options' => new PollOptionsCollection($pollOptions),

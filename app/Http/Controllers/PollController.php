@@ -35,8 +35,8 @@ class PollController extends Controller
 
     public function getUserPoll(Request $request)
     {
-        $polls = Poll::where('user_id', $request->user('api')->id)->get();
-        return response()->json(["polls" => $polls]);
+        $polls = Poll::where('user_id', $request->user('api')->id)->orderByRaw('updated_at - created_at ASC')->get();
+        return new PollCollection($polls);
     }
 
     /**

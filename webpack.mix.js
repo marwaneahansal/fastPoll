@@ -12,24 +12,24 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-	.webpackConfig({
-		resolve: {
-			alias: {
-				// eslint-disable-next-line no-undef
-				'@js': path.resolve(__dirname, 'resources/js'),
-			},
-		},
-	})
-	.postCss('resources/css/app.css', 'public/css/app.css', [
-		require('tailwindcss'),
-	])
-	.copy('node_modules/vuesax/dist/vuesax.css', 'public/css/vuesax.css')
-	.copyDirectory('resources/assets/', 'public/assets/');
+  .webpackConfig({
+    resolve: {
+      alias: {
+        // eslint-disable-next-line no-undef
+        '@js': path.resolve(__dirname, 'resources/js'),
+      },
+    },
+  })
+  .postCss('resources/css/app.css', 'public/css/app.css', [
+    require('tailwindcss'),
+  ])
+  .copy('node_modules/vuesax/dist/vuesax.css', 'public/css/vuesax.css')
+  .copyDirectory('resources/assets/', 'public/assets/');
 
 
 
 mix.webpackConfig({
-	output: {
-		chunkFilename: 'js/chunks/[name].js',
-	},
+  output: {
+    chunkFilename: 'js/chunks/[name].js',
+  },
 });
