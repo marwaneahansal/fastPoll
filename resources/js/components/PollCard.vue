@@ -8,7 +8,9 @@
         <h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
     </div>
     <p class="text-xl mt-6">Total Votes: {{ poll.totalVotes }}</p>
-    <p class="mt-4 text-gray-900 text-opacity-50" v-if="displayAuthor">asked by {{ poll.created_by }}</p>
+    <p class="mt-4 text-gray-900 text-opacity-50">
+      Asked by <span class="font-bold">{{ belongsToAuthUser ? "You" : poll.created_by }}</span>.
+    </p>
   </div>
 </template>
 
@@ -18,10 +20,6 @@ export default {
     poll: {
       type: Object,
       required: true,
-    },
-    displayAuthor: {
-      type: Boolean,
-      default: true,
     },
   },
   computed: {

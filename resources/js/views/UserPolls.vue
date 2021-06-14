@@ -13,7 +13,7 @@
           <!-- TODO: refresh poll when deleted -->
 					<div v-if="filteredPolls.length > 0" class="card">
 							<div class="vs-card py-4 px-8 mb-4" v-for="poll in filteredPolls" :key="poll.id">
-                <poll-card :poll="poll" :displayAuthor="false"></poll-card>
+                <poll-card :poll="poll"></poll-card>
 							</div>
 					</div>
 					<div v-else>
