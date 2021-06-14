@@ -59,7 +59,7 @@ class PollController extends Controller
     {
         $request->validate([
             'pollQuestion' => 'required',
-            'pollOptions' => 'required|array'
+            'pollOptions' => 'required|array|min:2'
         ]);
 
 

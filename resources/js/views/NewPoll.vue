@@ -13,8 +13,8 @@
                     <vs-input  class="py-2" color="success" shadow primary v-model="pollOption.option" :label-placeholder="'Option ' + (index + 1)"/>
                 </div>
                 <div class="flex">
-                    <vs-button size="large" @click="addOption" :disabled="pollOptions.length === 8">Add another Option</vs-button>
-                    <vs-button size="large" success flat shadow  class="ml-4" @click="createPoll" ref="button">Create your poll</vs-button>
+                    <vs-button size="large" primary @click="createPoll" ref="button">Create your poll</vs-button>
+                    <vs-button size="large" class="ml-4" flat @click="addOption" :disabled="pollOptions.length === 8"><i class="bx bx-plus mr-1"></i> Add option</vs-button>
                     <vs-dialog width="300px" not-center v-model="isPollCreated">
                         <template #header>
                             <h4 class="not-margin">
@@ -48,69 +48,79 @@
 <script>
 
 export default {
-	data() {
-		return {
-			pollQuestion: '',
-			pollOptions: [
-				{ option: '' },
-				{ option: '' },
-			],
-			isPollCreated: false,
-			pollUrl: '',
-			pollUri: '',
-		};
-	},
-	methods: {
-		createPoll() {
-			const loading = this.$vs.loading({
-				target: this.$refs.button,
-				scale: '0.6',
-				opacity: 1,
-				color: '#000',
-			});
+  data() {
+    return {
+      pollQuestion: '',
+      pollOptions: [
+        { option: '' },
+        { option: '' },
+      ],
+      isPollCreated: false,
+      pollUrl: '',
+      pollUri: '',
+    };
+  },
+  methods: {
+    createPoll() {
+      const loading = this.$vs.loading({
+        target: this.$refs.button,
+        scale: '0.6',
+        opacity: 1,
+        color: '#000',
+      });
 
-			const pollOptionsFiltered = this.pollOptions.filter(option => option.option.trim() !== '' || option.option === null);
-			const data = { ...{}, pollQuestion: this.pollQuestion, pollOptions: pollOptionsFiltered };
+      const pollOptionsFiltered = this.pollOptions.filter(option => option.option.trim() !== '' || option.option === null);
+      const data = { ...{}, pollQuestion: this.pollQuestion, pollOptions: pollOptionsFiltered };
 
-			this.$store.dispatch('polls/createPoll', data)
-				.then(res => {
-					loading.close();
-					this.pollUri = res.data.uri;
-					this.pollUrl = `${process.env.MIX_APP_URL}/poll/${this.pollUri}`;
-					this.isPollCreated = true;
-				})
-				.catch(err => {
-					loading.close();
-					this.$vs.notification({
-						title: 'Error',
-						text: `${err.response.data.message}`,
-						color: 'danger',
-					});
-				});
-		},
-		checkPoll() {
-			this.isPollCreated = false;
-			this.$router.push({ name: 'poll', params: { uri: this.pollUri } });
-		},
-		addOption() {
-			this.pollOptions.push({ option: '' });
-		},
-		copyUrl() {
-			navigator.clipboard.writeText(this.pollUrl).then(() => {
-				this.$vs.notification({
-					title: 'Text copied',
-					text: 'Poll Url copied successfully',
-					color: 'success',
-				});
-			}, err => {
-				this.$vs.notification({
-					title: 'Text copied',
-					text: `Poll Url not copied: ${err}`,
-					color: 'success',
-				});
-			});
-		},
-	},
+      if (pollOptionsFiltered.length <= 1) {
+        loading.close();
+        this.$vs.notification({
+          title: 'Error',
+          text: 'Poll need at least two options!!',
+          color: 'danger',
+        });
+        return;
+      }
+
+      this.$store.dispatch('polls/createPoll', data)
+        .then(res => {
+          loading.close();
+          this.pollUri = res.data.uri;
+          this.pollUrl = `${process.env.MIX_APP_URL}/poll/${this.pollUri}`;
+          this.isPollCreated = true;
+        })
+        .catch(err => {
+          loading.close();
+          this.$vs.notification({
+            title: 'Error',
+            text: `${err.response.data.message}`,
+            color: 'danger',
+          });
+        });
+    },
+    checkPoll() {
+      this.isPollCreated = false;
+      this.$router.push({ name: 'poll', params: { uri: this.pollUri } });
+    },
+    addOption() {
+      this.pollOptions.push({ option: '' });
+    },
+    copyUrl() {
+      navigator.clipboard.writeText(this.pollUrl).then(() => {
+        this.$vs.notification({
+          title: 'Text copied',
+          text: 'Poll Url copied successfully',
+          color: 'success',
+        });
+      }, err => {
+        this.$vs.notification({
+          title: 'Text copied',
+          text: `Poll Url not copied: ${err}`,
+          color: 'success',
+        });
+      });
+    },
+  },
 
 };
 </script>
