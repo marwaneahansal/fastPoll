@@ -23,7 +23,7 @@ class PollController extends Controller
      */
     public function index()
     {
-        $polls = Poll::orderByRaw('updated_at - created_at ASC')->get();
+        $polls = Poll::orderBy('updated_at', 'desc')->get();
         return new PollCollection($polls);
     }
 
@@ -35,7 +35,7 @@ class PollController extends Controller
 
     public function getUserPoll(Request $request)
     {
-        $polls = Poll::where('user_id', $request->user('api')->id)->orderByRaw('updated_at - created_at ASC')->get();
+        $polls = Poll::where('user_id', $request->user('api')->id)->orderBy('updated_at', 'desc')->get();
         return new PollCollection($polls);
     }
 

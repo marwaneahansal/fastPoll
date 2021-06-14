@@ -60,6 +60,27 @@ export default {
           loading.close();
         });
     },
+    deletePoll(pollId) {
+      const loading = this.$vs.loading();
+      this.$store.dispatch('polls/deletePoll', { pollId })
+        .then(res => {
+          loading.close();
+          this.$vs.notification({
+            title: 'Success',
+            text: `${res.data.message}`,
+            color: 'success',
+          });
+          this.getPolls();
+        })
+        .catch(err => {
+          loading.close();
+          this.$vs.notification({
+            title: 'Ooops',
+            text: `${err}`,
+            color: 'danger',
+          });
+        });
+    },
     searchPolls(polls, query) {
       return polls.filter(item => item.poll_question.toLowerCase().includes(query.toLowerCase()) || item.created_by.toLowerCase().includes(query.toLowerCase()));
     },

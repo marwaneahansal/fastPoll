@@ -13,7 +13,7 @@
           <!-- TODO: refresh poll when deleted -->
 					<div v-if="filteredPolls.length > 0" class="card">
 							<div class="vs-card py-4 px-8 mb-4" v-for="poll in filteredPolls" :key="poll.id">
-                <poll-card :poll="poll"></poll-card>
+                <poll-card :poll="poll" @deletePoll="deletePoll(poll.id)"></poll-card>
 							</div>
 					</div>
 					<div v-else>
@@ -69,6 +69,27 @@ export default {
             loading.close();
           });
       }
+    },
+    deletePoll(pollId) {
+      const loading = this.$vs.loading();
+      this.$store.dispatch('polls/deletePoll', { pollId })
+        .then(res => {
+          loading.close();
+          this.$vs.notification({
+            title: 'Success',
+            text: `${res.data.message}`,
+            color: 'success',
+          });
+          this.getPolls();
+        })
+        .catch(err => {
+          loading.close();
+          this.$vs.notification({
+            title: 'Ooops',
+            text: `${err}`,
+            color: 'danger',
+          });
+        });
     },
     searchPolls(polls, query) {
       return polls.filter(item => item.poll_question.toLowerCase().includes(query.toLowerCase()) || item.created_by.toLowerCase().includes(query.toLowerCase()));
