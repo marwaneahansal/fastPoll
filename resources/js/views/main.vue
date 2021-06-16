@@ -1,16 +1,16 @@
 <template>
 <div>
-  <vs-navbar center-collapsed>
+  <vs-navbar center-collapsed class="dark:bg-gray-900 dark:text-white">
     <template #left class="ml-5">
       <h2 class="text-2xl font-semibold cursor-pointer" @click="$router.push('/')">FastPoll</h2>
     </template>
     <template #right class="mr-5">
-      <vs-button flat transparent @click="$router.push({name: 'publicPolls'})">Public Polls</vs-button>
+      <vs-button flat transparent class="dark:text-white" @click="$router.push({name: 'publicPolls'})">Public Polls</vs-button>
       <vs-button @click="$router.push({name: 'create_poll'})">Create poll</vs-button>
       <p class="mx-2">|</p>
       <div v-if="!isUserLoggedIn" class="flex">
-        <vs-button flat transparent @click="$router.push({name: 'login'})">Login</vs-button>
-        <vs-button flat transparent @click="$router.push({name: 'register'})">Register</vs-button>
+        <vs-button flat transparent class="dark:text-white" @click="$router.push({name: 'login'})">Login</vs-button>
+        <vs-button flat transparent class="dark:text-white" @click="$router.push({name: 'register'})">Register</vs-button>
       </div>
       <div v-else class="flex">
         <vs-button flat transparent @click="$router.push({name: 'mypolls'})" class="inline-block">My Polls</vs-button>
@@ -27,6 +27,16 @@
           </span>
         </div>
       </div>
+
+      <div>
+        <vs-switch v-model="isDarkTheme">
+            <template #circle>
+                <i v-if="isDarkTheme" class='bx bxs-moon' ></i>
+                <i v-else class='bx bxs-sun' ></i>
+            </template>
+          </vs-switch>
+      </div>
+
     </template>
   </vs-navbar>
   <router-view class="mt-16 layout" v-if="this.$store.state.auth.isUserLoggedIn !== null"></router-view>
@@ -38,12 +48,22 @@ export default {
   data() {
     return {
       isShowDropdown: false,
+      isDarkTheme: true,
     };
+  },
+  watch: {
+    isDarkTheme() {
+      // eslint-disable-next-line no-unused-expressions
+      this.isDarkTheme ? document.getElementsByTagName('html')[0].classList.add('dark') : document.getElementsByTagName('html')[0].classList.remove('dark');
+    },
   },
   computed: {
     isUserLoggedIn() {
       return this.$store.state.auth.loggedInUser && this.$store.state.auth.isUserLoggedIn;
     },
+    // isDarkTheme() {
+    //   return false;
+    // },
   },
   methods: {
     logout() {
