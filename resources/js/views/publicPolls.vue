@@ -11,9 +11,14 @@
                 <vs-input v-model="searchQuery" primary placeholder="Search by poll or users" class="py-2 mb-4"/>
             </div>
 
-            <div class="vs-card py-4 px-8 mb-4 dark:bg-gray-900 dark:text-white dark:text-opacity-90" v-for="poll in filteredPolls" :key="poll.id">
-              <poll-card :poll="poll" @deletePoll="deletePoll(poll.id)"></poll-card>
-						</div>
+            <div v-if="filteredPolls.length > 0" class="card">
+              <div class="vs-card py-4 px-8 mb-4 dark:bg-gray-900 dark:text-white dark:text-opacity-90" v-for="poll in filteredPolls" :key="poll.id">
+                <poll-card :poll="poll" @deletePoll="deletePoll(poll.id)"></poll-card>
+              </div>
+            </div>
+            <div v-else>
+							<p class="text-center text-gray-200">No Polls found!</p>
+            </div>
         </div>
     </div>
 </template>
@@ -117,6 +122,7 @@ export default {
 	#publicPolls .vs-input {
 		width: 100%;
 	}
+
   html.dark #publicPolls .vs-input {
       background-color: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
       color: white;

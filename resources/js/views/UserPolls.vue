@@ -4,20 +4,19 @@
 					<div class="header mb-8">
 							<div class="self-start">
 									<h2 class="text-4xl">My Polls</h2>
-									<p class="mt-4 text-gray-900 text-opacity-50">Below are the polls created by you.</p>
+									<p class="mt-4 text-gray-900 text-opacity-50 dark:text-gray-300">Below are the polls created by you.</p>
 							</div>
 					</div>
 					<div class="searchInput">
 							<vs-input v-model="searchQuery" placeholder="Search by poll or users" class="py-2 mb-4"/>
 					</div>
-          <!-- TODO: refresh poll when deleted -->
 					<div v-if="filteredPolls.length > 0" class="card">
-							<div class="vs-card py-4 px-8 mb-4" v-for="poll in filteredPolls" :key="poll.id">
+							<div class="vs-card py-4 px-8 mb-4 dark:bg-gray-900 dark:text-white dark:text-opacity-90" v-for="poll in filteredPolls" :key="poll.id">
                 <poll-card :poll="poll" @deletePoll="deletePoll(poll.id)"></poll-card>
 							</div>
 					</div>
 					<div v-else>
-							<p class="text-center">No Polls found!</p>
+							<p class="text-center text-gray-200">No Polls found!</p>
 					</div>
 			</div>
 	</div>
@@ -131,5 +130,14 @@ export default {
     }
     #userPolls .vs-input {
         width: 100%;
+    }
+
+    html.dark #userPolls .vs-input {
+      background-color: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
+      color: white;
+    }
+
+    html.dark #userPolls .vs-input-content {
+      background-color: unset !important;
     }
 </style>
