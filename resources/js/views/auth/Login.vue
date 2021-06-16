@@ -5,12 +5,12 @@
             <div class="divider"></div>
             <h1 class="text-xl text-center">Welcome back</h1>
           </div>
-          <vs-input v-model="email" placeholder="Email" class="w-full mb-2">
+          <vs-input primary v-model="email" placeholder="Email" class="w-full mb-2">
             <template #icon>
                 <i class='bx bx-user text-xl'></i>
             </template>
           </vs-input>
-          <vs-input type="password" v-model="password" placeholder="Password" class="w-full mb-4">
+          <vs-input type="password" primary v-model="password" placeholder="Password" class="w-full mb-4">
               <template #icon>
                   <i class='bx bx-lock-alt text-xl'></i>
               </template>
@@ -67,6 +67,7 @@ export default {
 
     html.dark #login .vs-input {
       background-color: rgba(31, 41, 55, var(--tw-bg-opacity)) !important;
+      color: white;
     }
 
     html.dark #login .vs-input__icon {

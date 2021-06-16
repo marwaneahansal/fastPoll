@@ -1,9 +1,9 @@
 <template>
-    <div id="login h-full flex items-center justify-center">
-        <div class="vs-card w-1/3 p-4 mx-auto">
+    <div id="register" class="h-full flex items-center justify-center">
+        <div class="vs-card w-1/3 p-4 mx-auto dark:bg-gray-900 dark:text-white">
             <div class="header mb-4 mt-8">
                 <div class="divider"></div>
-                <h1 class="text-xl">Welcome</h1>
+                <h1 class="text-xl text-center">Welcome</h1>
             </div>
             <vs-input
                 primary
@@ -12,7 +12,7 @@
                 class="w-full mb-2"
             >
                 <template #icon>
-                    <box-icon name="user"></box-icon>
+                    <i class='bx bx-user text-xl'></i>
                 </template>
             </vs-input>
             <vs-input
@@ -22,7 +22,7 @@
                 class="w-full mb-2"
             >
                 <template #icon>
-                    <box-icon name="user"></box-icon>
+                    <i class='bx bx-user text-xl'></i>
                 </template>
             </vs-input>
             <vs-input
@@ -33,7 +33,7 @@
                 class="w-full mb-4"
             >
                 <template #icon>
-                    <box-icon name="lock-alt"></box-icon>
+                    <i class='bx bx-lock-alt text-xl'></i>
                 </template>
             </vs-input>
 
@@ -45,7 +45,7 @@
                 class="w-full mb-4"
             >
                 <template #icon>
-                    <box-icon name="lock-alt"></box-icon>
+                    <i class='bx bx-lock-alt text-xl'></i>
                 </template>
             </vs-input>
 
@@ -59,57 +59,66 @@
 
 <script>
 export default {
-    data() {
-        return {
-            name: "",
-            email: "",
-            password: "",
-            confirmpassword: "",
-            error: null
-        };
+  data() {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      confirmpassword: '',
+      error: null,
+    };
+  },
+  methods: {
+    register() {
+      const loading = this.$vs.loading({
+        type: 'circles',
+      });
+      this.error = null;
+      this.$store
+        .dispatch('auth/register', {
+          email: this.email,
+          name: this.name,
+          password: this.password,
+          password_confirmation: this.confirmpassword,
+        })
+        .then(_ => {
+          loading.close();
+          this.$router.push({ name: 'dashboard' });
+          this.$vs.notificattion({
+            title: 'Success',
+            text: "You're registred successfully",
+            color: 'success',
+          });
+        })
+        .catch(err => {
+          loading.close();
+          this.error = `${Object.values(err).join(' <br>')}`;
+        });
     },
-    methods: {
-        register() {
-            const loading = this.$vs.loading({
-                type: "circles"
-            });
-            this.error = null;
-            this.$store
-                .dispatch("auth/register", {
-                    email: this.email,
-                    name: this.name,
-                    password: this.password,
-                    password_confirmation: this.confirmpassword
-                })
-                .then(_ => {
-                    loading.close();
-										this.$router.push({name: 'dashboard'});
-                    this.$vs.notificattion({
-                        title: "Success",
-                        text: "You're registred successfully",
-                        color: "success"
-                    });
-                })
-                .catch(err => {
-                    loading.close();
-										console.log("jkjsd");
-                    this.error = `${Object.values(err).join(" <br>")}`;
-                });
-        }
-    }
+  },
 };
 </script>
 
 <style>
-.vs-card {
-    max-width: 100% !important;
-}
+    .vs-card {
+        max-width: 100% !important;
+    }
 
-.vs-input {
-    width: 100% !important;
-}
+    .vs-input {
+        width: 100% !important;
+    }
 
-.vs-card p {
-    width: fit-content !important;
-}
+    .vs-card p {
+        width: fit-content !important;
+    }
+
+    html.dark #register .vs-input {
+      background-color: rgba(31, 41, 55, var(--tw-bg-opacity)) !important;
+      color: white;
+    }
+
+    html.dark #register .vs-input__icon {
+      background-color: rgba(31, 41, 55, var(--tw-bg-opacity)) !important;
+      color: white;
+    }
 </style>

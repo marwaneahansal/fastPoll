@@ -1,6 +1,6 @@
 <template>
 <div>
-  <vs-navbar center-collapsed class="dark:bg-gray-900 dark:text-white">
+  <vs-navbar center-collapsed class="py-2 dark:bg-gray-900 dark:text-white">
     <template #left class="ml-5">
       <h2 class="text-2xl font-semibold cursor-pointer" @click="$router.push('/')">FastPoll</h2>
     </template>
@@ -39,7 +39,7 @@
 
     </template>
   </vs-navbar>
-  <router-view class="mt-16 layout" v-if="this.$store.state.auth.isUserLoggedIn !== null"></router-view>
+  <router-view class="mt-20 layout" v-if="this.$store.state.auth.isUserLoggedIn !== null"></router-view>
 </div>
 </template>
 
