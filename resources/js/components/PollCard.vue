@@ -8,7 +8,7 @@
         <h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
     </div>
     <p class="text-xl mt-6">Total Votes: {{ poll.totalVotes }}</p>
-    <p class="mt-4 text-gray-900 text-opacity-50">
+    <p class="mt-4 text-gray-900 text-opacity-50 dark:text-gray-400">
       Asked by <span class="font-bold">{{ belongsToAuthUser ? "You" : poll.created_by }}</span>.
     </p>
   </div>

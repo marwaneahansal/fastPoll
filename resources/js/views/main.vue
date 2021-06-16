@@ -13,15 +13,15 @@
         <vs-button flat transparent class="dark:text-white" @click="$router.push({name: 'register'})">Register</vs-button>
       </div>
       <div v-else class="flex">
-        <vs-button flat transparent @click="$router.push({name: 'mypolls'})" class="inline-block">My Polls</vs-button>
+        <vs-button flat transparent  @click="$router.push({name: 'mypolls'})" class="inline-block dark:text-white">My Polls</vs-button>
         <div class="relative w-16">
           <span class="profileDropdown absolute" :class="{'showProfileDropdown': isShowDropdown}" @mouseenter="showDropdown(true)" @mouseleave="showDropdown(false)">
             <div class="dropdown relative">
-              <vs-button flat transparent>More</vs-button>
-              <div class="dropdown-items absolute bg-white mt-2 mr-4 shadow" :class="{'hidden': !isShowDropdown}">
-                <vs-button flat transparent>Profile</vs-button>
-                <vs-button flat transparent>Settings</vs-button>
-                <vs-button flat transparent @click.stop="logout">Logout</vs-button>
+              <vs-button flat transparent class="dark:text-white">More</vs-button>
+              <div class="dropdown-items absolute bg-white mt-2 mr-4 shadow dark:bg-gray-900" :class="{'hidden': !isShowDropdown}">
+                <vs-button flat transparent class="dark:text-white">Profile</vs-button>
+                <vs-button flat transparent class="dark:text-white">Settings</vs-button>
+                <vs-button flat transparent class="dark:text-white" @click.stop="logout">Logout</vs-button>
               </div>
             </div>
           </span>

@@ -4,15 +4,15 @@
             <div class="header mb-8">
                 <div class="self-start">
                     <h2 class="text-4xl">Public polls</h2>
-                    <p class="mt-4 text-gray-900 text-opacity-50">Below are the public polls created by Fast Poll members.</p>
+                    <p class="mt-4 text-gray-900 text-opacity-50 dark:text-gray-300">Below are the public polls created by Fast Poll members.</p>
                 </div>
             </div>
             <div class="searchInput">
-                <vs-input v-model="searchQuery" placeholder="Search by poll or users" class="py-2 mb-4"/>
+                <vs-input v-model="searchQuery" primary placeholder="Search by poll or users" class="py-2 mb-4"/>
             </div>
-            <!-- TODO: refresh poll when deleted -->
-            <div class="vs-card py-4 px-8 mb-4" v-for="poll in filteredPolls" :key="poll.id">
-              <poll-card :poll="poll"></poll-card>
+
+            <div class="vs-card py-4 px-8 mb-4 dark:bg-gray-900 dark:text-white dark:text-opacity-90" v-for="poll in filteredPolls" :key="poll.id">
+              <poll-card :poll="poll" @deletePoll="deletePoll(poll.id)"></poll-card>
 						</div>
         </div>
     </div>
@@ -116,5 +116,13 @@ export default {
 	}
 	#publicPolls .vs-input {
 		width: 100%;
+	}
+  html.dark #publicPolls .vs-input {
+      background-color: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
+      color: white;
+  }
+
+  html.dark #publicPolls .vs-input-content {
+		background-color: unset !important;
 	}
 </style>
