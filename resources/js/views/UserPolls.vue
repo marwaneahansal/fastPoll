@@ -10,7 +10,7 @@
 					<div class="searchInput">
 							<vs-input v-model="searchQuery" placeholder="Search by poll or users" class="py-2 mb-4"/>
 					</div>
-					<div v-if="filteredPolls.length > 0" class="card">
+					<div v-if="filteredPolls.length > 0" class="cards">
 							<div class="vs-card py-4 px-8 mb-4 dark:bg-gray-900 dark:text-white dark:text-opacity-90" v-for="poll in filteredPolls" :key="poll.id">
                 <poll-card :poll="poll" @deletePoll="deletePoll(poll.id)"></poll-card>
 							</div>
@@ -105,7 +105,7 @@ export default {
         width: 60%;
     }
 
-    #userPolls .card {
+    #userPolls .cards, #userPolls .searchInput {
         width: 60% !important;
     }
 
@@ -121,13 +121,10 @@ export default {
         /* box-shadow: 0px 1px 2px 0px rgba(0,0,0,.25); */
     }
 
-    #userPolls .searchInput {
-        width: 60% !important;
-    }
-
     #userPolls .vs-input-content, #userPolls .vs-input{
     background-color: white !important;
     }
+
     #userPolls .vs-input {
         width: 100%;
     }

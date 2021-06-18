@@ -1,13 +1,13 @@
 <template>
     <div class="w-full">
-        <vs-alert color="danger" v-if="error">
+        <vs-alert color="danger" v-if="error" class="dark:text-white">
             <template #title>
                 Poll Not Found
             </template>
-            <p>Poll you requested not found, Please check again your poll url.</p>
+            <p>Poll you requested not found, Please check again poll url.</p>
         </vs-alert>
         <div class="mx-auto w-full mb-12" v-if="poll">
-            <div class="vs-card py-4 px-6" id="pollDetails">
+            <div class="vs-card py-4 px-6 dark:text-white dark:bg-gray-900" id="pollDetails">
                 <div class="pollHeader flex items-center justify-between">
                     <h2 class="text-2xl font-semibold" v-if="this.poll.poll_question[this.poll.poll_question.length - 1] === '?'">{{ poll.poll_question }}</h2>
                     <h2 class="text-2xl font-semibold" v-else>{{ poll.poll_question }}?</h2>
@@ -29,11 +29,11 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div class="mt-5">
-                        <div class="pollOption vs-card py-4 px-6 mb-3"  v-for="(pollOption, index) in pollOptionsSorted" :key="index">
+                    <div class="mt-8">
+                        <div class="pollOption vs-card py-4 px-6 mb-3 dark:bg-gray-800 dark:text-white"  v-for="(pollOption, index) in pollOptionsSorted" :key="index">
                             <h3 class="text-xl mb-4 font-semibold">{{ pollOption.option }}</h3>
-                            <k-progress :color="colors[index]"  :percent="getVotesPercent(pollOption.votes, poll.totalVotes)" />
-                            <p class="mt-4 text-sm text-black">{{ pollOption.votes }} Votes</p>
+                            <k-progress :color="colors[index]" class="dark:text-gray-200"  :percent="getVotesPercent(pollOption.votes, poll.totalVotes)" />
+                            <p class="mt-4 text-sm text-black dark:text-gray-300">{{ pollOption.votes }} Votes</p>
                         </div>
                         <div class="flex justify-end mt-6">
                             <vs-button shadow primary @click="showPoll = true">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-sm mt-4 text-gray-900 text-opacity-50">Created by {{ poll.created_by }}</p>
+                <p class="text-sm mt-2 text-gray-900 text-opacity-50 dark:text-gray-200">Created by {{ poll.created_by }}</p>
             </div>
         </div>
     </div>
@@ -92,6 +92,8 @@ export default {
           }
         })
         .catch(err => {
+          fetchLoading.close();
+          this.error = true;
           this.$vs.notification({
             title: 'Error',
             text: err,
@@ -107,10 +109,6 @@ export default {
         opacity: 1,
         color: '#fff',
       });
-      // const selectedOption = this.pollOptions.find(option => this.option === option.id);
-      // selectedOption.votes += 1;
-      // this.poll.totalVotes += 1;
-      // this.pollOptionsSorted = [...this.this.poll.poll_options].sort((a, b) => (a.votes > b.votes ? -1 : 1));
       this.$store.dispatch('polls/votePoll',
         {
           pollId: this.poll.id,
