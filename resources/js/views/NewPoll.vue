@@ -1,40 +1,87 @@
 <template>
-    <div class="mt-12 w-1/2 mx-auto">
+    <div class="mt-12 w-1/2 mx-auto" id="newpoll">
         <p class="text-3xl font-semibold">Create a poll</p>
-        <p class="mt-2 text-gray-900 text-opacity-50">Complete the below fileds to create your poll</p>
+        <p class="mt-2 text-gray-900 text-opacity-50 dark:text-gray-400">
+            Complete the below fileds to create your poll
+        </p>
 
         <div class="poll w-full mt-8 mb-12">
             <div class="pollQuestion w-full">
-                <vs-input class="w-full mb-3" shadow primary v-model="pollQuestion" label-placeholder="Poll Question" />
+                <vs-input
+                    class="w-full mb-3"
+                    shadow
+                    dark
+                    v-model="pollQuestion"
+                    label-placeholder="Poll Question"
+                />
             </div>
 
             <div class="pollOptions">
-                <div class="mb-3 relative" v-for="(pollOption, index) in pollOptions" :key="index">
-                    <vs-input  class="py-2" color="success" shadow primary v-model="pollOption.option" :label-placeholder="'Option ' + (index + 1)"/>
+                <div
+                    class="mb-3 relative"
+                    v-for="(pollOption, index) in pollOptions"
+                    :key="index"
+                >
+                    <vs-input
+                        class="py-2"
+                        color="success"
+                        shadow
+                        primary
+                        v-model="pollOption.option"
+                        :label-placeholder="'Option ' + (index + 1)"
+                    />
                 </div>
                 <div class="flex">
-                    <vs-button size="large" primary @click="createPoll" ref="button">Create your poll</vs-button>
-                    <vs-button size="large" class="ml-4" flat @click="addOption" :disabled="pollOptions.length === 8"><i class="bx bx-plus mr-1"></i> Add option</vs-button>
-                    <vs-dialog width="300px" not-center v-model="isPollCreated">
+                    <vs-button
+                        size="large"
+                        primary
+                        @click="createPoll"
+                        ref="button"
+                        >Create your poll</vs-button
+                    >
+                    <vs-button
+                        size="large"
+                        class="ml-4 text-gray-800 dark:text-gray-300"
+                        border
+                        success
+                        @click="addOption"
+                        :disabled="pollOptions.length === 8"
+                        ><i class="bx bx-plus mr-1 text-gray-800 dark:text-gray-300"></i> Add option</vs-button
+                    >
+                    <vs-dialog width="300px" not-center v-model="isPollCreated" id="pollUrlDialog">
                         <template #header>
                             <h4 class="not-margin">
                                 Your poll created successfully
                             </h4>
                         </template>
 
-
                         <div class="con-content relative">
-                            <vs-input ref="urlInput" v-model="pollUrl" placeholder="Poll Url"></vs-input>
-                            <box-icon name='copy' @click="copyUrl" class="cursor-pointer absolute copy"></box-icon>
+                            <vs-input
+                                ref="urlInput"
+                                v-model="pollUrl"
+                                placeholder="Poll Url"
+                            ></vs-input>
+                            <box-icon
+                                name="copy"
+                                @click="copyUrl"
+                                class="cursor-pointer absolute copy"
+                            ></box-icon>
                         </div>
 
                         <template #footer>
-                            <div class="con-footer flex items-center justify-between">
+                            <div
+                                class="con-footer flex items-center justify-between"
+                            >
                                 <vs-button @click="checkPoll">
-                                Check poll
+                                    Check poll
                                 </vs-button>
-                                <vs-button @click="isPollCreated=false" dark transparent>
-                                Cancel
+                                <vs-button
+                                    @click="isPollCreated = false"
+                                    dark
+                                    transparent
+                                    class="dark:text-white"
+                                >
+                                    Cancel
                                 </vs-button>
                             </div>
                         </template>
@@ -46,15 +93,11 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
       pollQuestion: '',
-      pollOptions: [
-        { option: '' },
-        { option: '' },
-      ],
+      pollOptions: [{ option: '' }, { option: '' }],
       isPollCreated: false,
       pollUrl: '',
       pollUri: '',
@@ -69,8 +112,14 @@ export default {
         color: '#000',
       });
 
-      const pollOptionsFiltered = this.pollOptions.filter(option => option.option.trim() !== '' || option.option === null);
-      const data = { ...{}, pollQuestion: this.pollQuestion, pollOptions: pollOptionsFiltered };
+      const pollOptionsFiltered = this.pollOptions.filter(
+        option => option.option.trim() !== '' || option.option === null,
+      );
+      const data = {
+        ...{},
+        pollQuestion: this.pollQuestion,
+        pollOptions: pollOptionsFiltered,
+      };
 
       if (pollOptionsFiltered.length <= 1) {
         loading.close();
@@ -82,7 +131,8 @@ export default {
         return;
       }
 
-      this.$store.dispatch('polls/createPoll', data)
+      this.$store
+        .dispatch('polls/createPoll', data)
         .then(res => {
           loading.close();
           this.pollUri = res.data.uri;
@@ -106,37 +156,65 @@ export default {
       this.pollOptions.push({ option: '' });
     },
     copyUrl() {
-      navigator.clipboard.writeText(this.pollUrl).then(() => {
-        this.$vs.notification({
-          title: 'Text copied',
-          text: 'Poll Url copied successfully',
-          color: 'success',
-        });
-      }, err => {
-        this.$vs.notification({
-          title: 'Text copied',
-          text: `Poll Url not copied: ${err}`,
-          color: 'success',
-        });
-      });
+      navigator.clipboard.writeText(this.pollUrl).then(
+        () => {
+          this.$vs.notification({
+            title: 'Text copied',
+            text: 'Poll Url copied successfully',
+            color: 'success',
+          });
+        },
+        err => {
+          this.$vs.notification({
+            title: 'Text copied',
+            text: `Poll Url not copied: ${err}`,
+            color: 'success',
+          });
+        },
+      );
     },
   },
-
 };
 </script>
 
 <style>
-.vs-input-content {
-    background-color: white !important;
-}
-.vs-input {
-    width: 100%;
-}
+  .vs-input-content {
+      background-color: white !important;
+  }
+  .vs-input {
+      width: 100%;
+  }
 
-.copy {
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-}
+  .copy {
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+  }
+
+  html.dark #newpoll .vs-input-content {
+    background-color: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
+  }
+
+  html.dark #pollUrlDialog .vs-input {
+    color: white;
+    background-color: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
+  }
+
+  html.dark #pollUrlDialog .vs-input-content {
+    background-color: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
+  }
+
+  html.dark #pollUrlDialog .vs-dialog {
+    color: white;
+    background-color: rgba(31, 41, 55, var(--tw-bg-opacity)) !important;
+  }
+
+  html.dark #newpoll .vs-input, html.dark #newpoll .vs-input + label {
+    color: white;
+  }
+
+  html.dark #pollUrlDialog .vs-dialog .vs-dialog__close i:before,
+  html.dark #pollUrlDialog .vs-dialog .vs-dialog__close i:after  {
+    background-color: white;
+  }
 </style>
-
