@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     belongsToAuthUser() {
-      return this.poll.user_id === this.$store.state.auth.loggedInUser.id;
+      return this.poll.user_id === this.$store.state.auth.loggedInUser?.id;
     },
   },
   methods: {
