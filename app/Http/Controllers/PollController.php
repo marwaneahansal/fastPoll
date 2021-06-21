@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class PollController extends Controller
 {
@@ -23,8 +22,17 @@ class PollController extends Controller
      */
     public function index()
     {
-        $polls = Poll::orderBy('updated_at', 'desc')->get();
-        return new PollCollection($polls);
+        $query = Poll::where('status', 'public');
+
+        if (request('query')) {
+            $query->where('poll_question', 'like', '%' . request('query') . '%')->orWhere('created_by', 'like', '%' . request('query') . '%');
+        }
+
+        if (request('order')) {
+            $query->orderOption(request('order'));
+        }
+
+        return new PollCollection($query->get());
     }
 
     public function getPoll($uri)
@@ -74,6 +82,7 @@ class PollController extends Controller
 
         $poll->uri = $uri;
         $poll->poll_question = $request->get('pollQuestion');
+        $poll->status = 'public';
 
         $InoutPollOptions = $request->get('pollOptions');
 

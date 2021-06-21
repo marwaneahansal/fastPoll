@@ -15,14 +15,13 @@ class Poll extends JsonResource
      */
     public function toArray($request)
     {
-        $pollOptions = $this->options;
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
             'poll_question' => $this->poll_question,
             'uri' => $this->uri,
-            'poll_options' => new PollOptionsCollection($pollOptions),
-            'totalVotes' => $pollOptions->sum('votes'),
+            'poll_options' => new PollOptionsCollection($this->options),
+            'totalVotes' => $this->totalVotes,
             'created_by' => $this->created_by
         ];
     }

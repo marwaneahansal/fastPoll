@@ -2,9 +2,9 @@
 import axios from '@js/axios';
 
 export default {
-  getPublicPolls({ commit }) {
+  getPublicPolls({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      axios.get('polls')
+      axios.get(`polls?query=${payload.searchQuery}&order=${payload.orderByOption}`)
         .then(res => {
           commit('SET_PUBLIC_POLLS', res.data.data);
           resolve(res);
