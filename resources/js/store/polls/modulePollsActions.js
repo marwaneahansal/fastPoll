@@ -14,9 +14,9 @@ export default {
         });
     });
   },
-  getUserPolls({ commit }) {
+  getUserPolls({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      axios.get('mypolls')
+      axios.get(`mypolls?query=${payload.searchQuery}&order=${payload.orderByOption}`)
         .then(res => {
           commit('SET_USER_POLLS', res.data.data);
           resolve(res);

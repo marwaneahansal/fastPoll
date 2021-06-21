@@ -43,8 +43,17 @@ class PollController extends Controller
 
     public function getUserPoll(Request $request)
     {
-        $polls = Poll::where('user_id', $request->user('api')->id)->orderBy('updated_at', 'desc')->get();
-        return new PollCollection($polls);
+        $query = Poll::where('user_id', $request->user('api')->id)->where('status', 'public');
+
+        if (request('query')) {
+            $query->where('poll_question', 'like', '%' . request('query') . '%');
+        }
+
+        if (request('order')) {
+            $query->orderOption(request('order'));
+        }
+
+        return new PollCollection($query->get());
     }
 
     /**

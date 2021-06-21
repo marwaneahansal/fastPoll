@@ -12,13 +12,14 @@
       <div class="filters flex items-center justify-between mb-5">
         <vs-input
           v-model="searchQuery"
+          v-on:keyup.enter="getPolls()"
           primary
           icon-after
           placeholder="Search by poll or users"
           class="w-3/4"
         >
           <template #icon>
-            <i class='bx bx-search dark:text-white' @click="getPolls()"></i>
+            <i class='bx bx-search dark:text-white' @click="getPolls()" :class="{'pointer-events-none': searchQuery.trim().length == 0}"></i>
           </template>
         </vs-input>
         <vs-select placeholder="Order by" v-model="orderByOption" color="success">
@@ -122,12 +123,6 @@ export default {
             color: 'danger',
           });
         });
-    },
-    searchPolls(polls, query) {
-      return polls.filter(
-        item => item.poll_question.toLowerCase().includes(query.toLowerCase())
-                || item.created_by.toLowerCase().includes(query.toLowerCase()),
-      );
     },
   },
   created() {
